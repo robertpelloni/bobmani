@@ -14,10 +14,12 @@ The first target was the `ffr-difficulty-model`.
 The second target is the `ddc` (Dance Dance Convolution) model.
 - Scaffolding for `src/ddc/mod.rs` and `src/ddc/autochart.rs` was created.
 - The `AutoChart` struct was implemented as an empty boundary ready to ingest the ML onset-detection logic.
+- The core math logic from `ddc/learn/beatcalc.py` was translated into `src/ddc/beatcalc.rs`, handling complex timing intersections, 'stops', and epsilon-based sub-divisions required for rhythm game timing.
 
 ## Current State
-The `ffr-difficulty-model` pipeline structure is fully mapped out, implemented, and executing in Rust. The `ddc` scaffolding is attached to the monolith.
+The project is unblocked and steadily porting submodules to Rust.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on `src/ddc/autochart.rs`. You must begin translating the Python `librosa`-based onset/beat tracking logic (likely found in `ddc/learn/beatcalc.py` or similar audio processing scripts) into native Rust logic to fill out the `analyze_audio` stub.
-2. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
+1. Focus on `src/ddc/autochart.rs`. You must begin translating the Python `librosa`-based onset extraction logic (likely found in `ddc/learn/extract_feats.py` or `onset_extract.py`) into native Rust logic to fill out the `analyze_audio` stub.
+2. You will likely need to rely on Rust audio processing crates (like `hound` for WAV parsing and `rustfft` for Mel Spectrograms) to replicate the `librosa` logic.
+3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
