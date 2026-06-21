@@ -21,11 +21,12 @@ The directive to "port all submodules into a massive rust program" has actively 
 4. `arrowvortex` editor:
 - The core charting data structures (`NoteType`, `ExpandedNote`) from C++ were translated to Rust in `src/arrowvortex/notes.rs`.
 - The `Chart` struct, `Difficulty` enum, and utility methods (like `step_count`) from `Chart.h/cpp` were successfully ported to `src/arrowvortex/chart.rs`.
+- The `Tempo` struct and rhythm calculations (e.g. `sec_per_row`) from `Tempo.h/cpp` were ported to `src/arrowvortex/tempo.rs`.
 
 ## Current State
 The project has a firm Rust monolith foundation. The structural integration boundaries for all DDC modules, the core inference map for FFR, and the data foundations for ArrowVortex are in place.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on the `arrowvortex` editor codebase. Now that the `Chart` and `ExpandedNote` structs exist, explore `arrowvortex/src/Simfile/Tempo.cpp` to port the `Tempo` logic into Rust (`src/arrowvortex/tempo.rs`). This module manages BPM changes, stops, and segment lists for chart editing.
+1. Focus on the `arrowvortex` editor codebase. Now that the `Chart`, `Tempo`, and `ExpandedNote` structs exist, explore `arrowvortex/src/Simfile/GameMode.cpp` or `arrowvortex/src/Simfile/NoteSet.cpp` to map out the rules and validation bounds of the various rhythm games modes (e.g., Pump, DDR, Keyboard) natively in Rust.
 2. The ML inference and Audio DSP logic remain stubbed across `ffr-difficulty-model` and `ddc`. Continue relying on stubs for these complex boundaries while the simpler logic/data structures (like `arrowvortex` and `beatoraja`) are consolidated first.
 3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
