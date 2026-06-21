@@ -22,12 +22,13 @@ The directive to "port all submodules into a massive rust program" has actively 
 - The core charting data structures (`NoteType`, `ExpandedNote`) from C++ were translated to Rust in `src/arrowvortex/notes.rs`.
 - The `Chart` struct, `Difficulty` enum, and utility methods (like `step_count`) from `Chart.h/cpp` were successfully ported to `src/arrowvortex/chart.rs`.
 - The `Tempo` struct and rhythm calculations (e.g. `sec_per_row`) from `Tempo.h/cpp` were ported to `src/arrowvortex/tempo.rs`.
-- The `GameMode` struct, managing multi-game pad mappings (e.g. 4-panel DDR vs 10-panel PIU), was successfully ported from `GameMode.h/cpp` into `src/arrowvortex/gamemode.rs`.
+- The `GameMode` struct, managing multi-game pad mappings, was successfully ported from `GameMode.h/cpp` into `src/arrowvortex/gamemode.rs`.
+- The root `Simfile` struct mapping was successfully ported from `Simfile.h/cpp` into `src/arrowvortex/simfile.rs`, structurally unifying all previously ported components.
 
 ## Current State
-The project has an increasingly dense Rust monolith foundation. The `arrowvortex` structural dependency tree is nearing completion.
+The data foundations for `arrowvortex` are heavily implemented. The structural integration boundaries for all DDC modules and the core inference map for FFR are in place.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on the `arrowvortex` editor codebase. Now that `GameMode`, `Chart`, `Tempo`, and `ExpandedNote` structs exist, explore `arrowvortex/src/Simfile/Simfile.cpp` or `arrowvortex/src/Simfile/NoteSet.cpp` to port the overarching `Simfile` root object that encompasses all these structures.
+1. Focus on the `arrowvortex` editor codebase. With the foundational data structures (`Simfile`, `Chart`, `Tempo`) built, the next major feature to port is the file loading logic. Explore `arrowvortex/src/Simfile/LoadSm.cpp` and `LoadOsu.cpp` to port the file parsers into native Rust (you can build off the simple Regex parser made for the `ffr-difficulty-model`).
 2. The ML inference and Audio DSP logic remain stubbed across `ffr-difficulty-model` and `ddc`. Continue relying on stubs for these complex boundaries while the simpler logic/data structures (like `arrowvortex` and `beatoraja`) are consolidated first.
 3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
