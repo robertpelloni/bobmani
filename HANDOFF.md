@@ -11,10 +11,13 @@ The first target was the `ffr-difficulty-model`.
 - A custom Rust `SMChartPreprocessor` was written to parse `.sm` files using the `regex` crate, effectively replacing the Python `simfile` dependency.
 - The entire pipeline was wired into `main.rs` and executed successfully against a test file.
 
+The second target is the `ddc` (Dance Dance Convolution) model.
+- Scaffolding for `src/ddc/mod.rs` and `src/ddc/autochart.rs` was created.
+- The `AutoChart` struct was implemented as an empty boundary ready to ingest the ML onset-detection logic.
+
 ## Current State
-The `ffr-difficulty-model` pipeline structure is fully mapped out, implemented, and executing in Rust. The project is completely unblocked and the first submodule logic has been successfully ported.
+The `ffr-difficulty-model` pipeline structure is fully mapped out, implemented, and executing in Rust. The `ddc` scaffolding is attached to the monolith.
 
 **Next Immediate Steps for Successor Models:**
-1. The `ffr-difficulty-model` currently extracts mathematical features, but it needs the actual ML model inference (e.g., loading the Scikit-learn `.p` weights). Determine if you want to port the model weights to a Rust ML format (like ONNX) or finalize the module here and move on.
-2. Select the next submodule from the repository to port. `ddc` (Dance Dance Convolution) or `arrowvortex` are good candidates for Phase 2 Consolidation.
-3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
+1. Focus on `src/ddc/autochart.rs`. You must begin translating the Python `librosa`-based onset/beat tracking logic (likely found in `ddc/learn/beatcalc.py` or similar audio processing scripts) into native Rust logic to fill out the `analyze_audio` stub.
+2. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
