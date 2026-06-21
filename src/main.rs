@@ -1,5 +1,6 @@
 mod ffr_diff_model;
 mod ddc;
+mod ddc_onset;
 
 fn main() {
     println!("Universal Rhythm Engine (Rust Monolith)");

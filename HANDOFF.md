@@ -18,10 +18,15 @@ The second target is the `ddc` (Dance Dance Convolution) model.
 - The boundary structure for audio processing (`src/ddc/extract_feats.rs`) was scaffolded.
 - The core dataset structures from `ddc/learn/chart.py` (`Chart`, `OnsetChart`, `SymbolicChart`) were translated to Rust structs in `src/ddc/chart.rs`.
 
+The third target is the `ddc_onset` model.
+- Scaffolding for `src/ddc_onset/mod.rs` was created.
+- The Python `SpectrogramNormalizer` and `PlacementCNN` classes were mapped to Rust structs in `src/ddc_onset/cnn.rs`.
+- The `SpectrogramExtractor` config constants were ported to `src/ddc_onset/spectral.rs`.
+
 ## Current State
-The project has a firm Rust monolith foundation. The data models and timing logic for DDC are integrated.
+The project has a firm Rust monolith foundation. The structural integration boundaries for all DDC modules and the core inference map for FFR are in place.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on `src/ddc/autochart.rs`. You must replace the `librosa` stub logic with actual Rust audio processing. We recommend utilizing `hound` (to parse `.wav` files) and `rustfft` (to calculate the Short-Time Fourier Transform).
-2. For the `ffr-difficulty-model` and `ddc`, you need to implement a parser for the PyTorch / Scikit-learn weights or port the models to ONNX so inference yields real predictions rather than placeholders.
+1. The codebase currently relies on "stubs" for the actual ML network execution and Audio DSP processing, as these require intensive external crates (like `rustfft` or PyTorch/ONNX bindings `tch-rs`).
+2. Decide whether to deeply implement these PyTorch tensor operations using `tch-rs`, OR continue porting the more straightforward, logic-driven submodules like `arrowvortex` (chart editor) or `beatoraja` (game engine).
 3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
