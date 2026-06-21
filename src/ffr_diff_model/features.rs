@@ -201,5 +201,158 @@ impl VerticalDensity {
     }
 }
 
-pub struct StreamDetector;
-pub struct PatternDetector;
+pub struct StreamDetector {
+    pub stream_threshold: f64,
+}
+
+impl StreamDetector {
+    pub fn new(stream_threshold: f64) -> Self {
+        Self { stream_threshold }
+    }
+
+    pub fn compute(&self, chart: &BTreeMap<OrderedFloat, String>) -> HashMap<String, f64> {
+        let mut stream_features = HashMap::new();
+
+        let timestamps: Vec<f64> = chart.keys().map(|k| k.0).collect();
+        if timestamps.len() < 2 {
+            stream_features.insert("stream_percentage".to_string(), 0.0);
+            stream_features.insert("max_stream_length".to_string(), 0.0);
+            return stream_features;
+        }
+
+        let mut stream_notes = 0;
+        let mut max_stream_length = 0;
+        let mut current_stream_length = 0;
+
+        for i in 1..timestamps.len() {
+            let time_diff = timestamps[i] - timestamps[i - 1];
+            if time_diff <= self.stream_threshold {
+                if current_stream_length == 0 {
+                    current_stream_length = 2;
+                } else {
+                    current_stream_length += 1;
+                }
+            } else {
+                if current_stream_length > 0 {
+                    stream_notes += current_stream_length;
+                }
+                if current_stream_length > max_stream_length {
+                    max_stream_length = current_stream_length;
+                }
+                current_stream_length = 0;
+            }
+        }
+
+        if current_stream_length > 0 {
+            stream_notes += current_stream_length;
+        }
+        if current_stream_length > max_stream_length {
+            max_stream_length = current_stream_length;
+        }
+
+        let total_notes = timestamps.len() as f64;
+        let stream_percentage = if total_notes > 0.0 {
+            (stream_notes as f64 / total_notes) * 100.0
+        } else {
+            0.0
+        };
+
+        stream_features.insert("stream_percentage".to_string(), stream_percentage);
+        stream_features.insert("max_stream_length".to_string(), max_stream_length as f64);
+
+        stream_features
+    }
+}
+
+pub struct PatternDetector {
+    pub jack_threshold: f64,
+}
+
+impl PatternDetector {
+    pub fn new(jack_threshold: f64) -> Self {
+        Self { jack_threshold }
+    }
+
+    pub fn compute(&self, chart: &BTreeMap<OrderedFloat, String>) -> HashMap<String, f64> {
+        let mut pattern_features = HashMap::new();
+
+        let timestamps: Vec<f64> = chart.keys().map(|k| k.0).collect();
+        if timestamps.len() < 2 {
+            pattern_features.insert("jack_percentage".to_string(), 0.0);
+            pattern_features.insert("crossover_percentage".to_string(), 0.0);
+            return pattern_features;
+        }
+
+        let first_val = chart.values().next().unwrap();
+        let num_panels = first_val.len();
+
+        if num_panels == 0 {
+            pattern_features.insert("jack_percentage".to_string(), 0.0);
+            pattern_features.insert("crossover_percentage".to_string(), 0.0);
+            return pattern_features;
+        }
+
+        let mut jacks = 0;
+        let mut crossovers = 0;
+        let mut last_note_com = 0.0;
+
+        for i in 1..timestamps.len() {
+            let time_diff = timestamps[i] - timestamps[i - 1];
+            let note = chart.get(&OrderedFloat(timestamps[i])).unwrap();
+            let prev_note = chart.get(&OrderedFloat(timestamps[i - 1])).unwrap();
+
+            let note_chars: Vec<char> = note.chars().collect();
+            let prev_note_chars: Vec<char> = prev_note.chars().collect();
+
+            // Jack detection
+            if time_diff <= self.jack_threshold {
+                for j in 0..num_panels {
+                    if note_chars[j] == '1' && prev_note_chars[j] == '1' {
+                        jacks += 1;
+                    }
+                }
+            }
+
+            // Crossover detection
+            let mut current_note_panels = Vec::new();
+            for (j, &val) in note_chars.iter().enumerate() {
+                if val == '1' {
+                    current_note_panels.push(j as f64);
+                }
+            }
+
+            let current_note_com = if current_note_panels.is_empty() {
+                last_note_com
+            } else {
+                let sum: f64 = current_note_panels.iter().sum();
+                sum / current_note_panels.len() as f64
+            };
+
+            let midline = (num_panels as f64 - 1.0) / 2.0;
+
+            if (last_note_com > midline && current_note_com < midline) ||
+               (last_note_com < midline && current_note_com > midline) {
+                crossovers += 1;
+            }
+
+            last_note_com = current_note_com;
+        }
+
+        let total_notes = timestamps.len() as f64;
+        let jack_percentage = if total_notes > 0.0 {
+            (jacks as f64 / total_notes) * 100.0
+        } else {
+            0.0
+        };
+        let crossover_percentage = if total_notes > 0.0 {
+            (crossovers as f64 / total_notes) * 100.0
+        } else {
+            0.0
+        };
+
+        pattern_features.insert("jack_percentage".to_string(), jack_percentage);
+        pattern_features.insert("crossover_percentage".to_string(), crossover_percentage);
+
+        pattern_features
+    }
+}
