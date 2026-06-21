@@ -15,11 +15,12 @@ The second target is the `ddc` (Dance Dance Convolution) model.
 - Scaffolding for `src/ddc/mod.rs` and `src/ddc/autochart.rs` was created.
 - The `AutoChart` struct was implemented as an empty boundary ready to ingest the ML onset-detection logic.
 - The core math logic from `ddc/learn/beatcalc.py` was translated into `src/ddc/beatcalc.rs`, handling complex timing intersections, 'stops', and epsilon-based sub-divisions required for rhythm game timing.
+- The boundary structure for audio processing (`src/ddc/extract_feats.rs`) was scaffolded. It correctly houses the constants required by `librosa`'s Mel Spectrogram extraction, establishing the correct 3D array inputs necessary for the DDC neural networks.
 
 ## Current State
-The project is unblocked and steadily porting submodules to Rust.
+The project has a firm Rust monolith foundation. However, code review has flagged that the actual ML model inference (for the difficulty predictor) and raw audio processing (for DDC) are currently stubbed.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on `src/ddc/autochart.rs`. You must begin translating the Python `librosa`-based onset extraction logic (likely found in `ddc/learn/extract_feats.py` or `onset_extract.py`) into native Rust logic to fill out the `analyze_audio` stub.
-2. You will likely need to rely on Rust audio processing crates (like `hound` for WAV parsing and `rustfft` for Mel Spectrograms) to replicate the `librosa` logic.
+1. Focus on `src/ddc/extract_feats.rs`. You must replace the `librosa` stub logic with actual Rust audio processing. We recommend utilizing `hound` (to parse `.wav` files) and `rustfft` (to calculate the Short-Time Fourier Transform).
+2. For the `ffr-difficulty-model`, you need to implement a parser for the scikit-learn `.p` pickle weights or port the model to ONNX so `predict()` yields a real difficulty integer rather than a placeholder map.
 3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
