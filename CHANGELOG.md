@@ -6,3 +6,7 @@
 
 ## [0.1.0] - Initial Setup
 - Created baseline documentation scaffolding.
+## [0.1.2] - FFR Difficulty Model Scaffolding
+- Synced submodules to local workspace.
+- Initialized Rust port for the `ffr-difficulty-model`.
+- Scaffolded predictor and feature calculation interfaces.
