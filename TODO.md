@@ -2,6 +2,8 @@
 
 - [x] Initialize Rust Cargo application
 - [x] Define global overarching vision and documentation
-- [ ] Identify source code for submodules that need to be ported (Current blocker: repository is empty of source code)
-- [ ] Begin porting functionality module by module
+- [x] Sync upstream to bring in legacy submodules
+- [x] Begin porting `ffr-difficulty-model` (Horizontal/Vertical Density)
+- [ ] Complete port of `ffr-difficulty-model` (Stream/Pattern Detectors, Preprocessor)
+- [ ] Begin porting next submodule (`ddc` or `arrowvortex`)
 - [ ] Write integration tests for the unified architecture
