@@ -65,15 +65,32 @@ pub fn load_sm_file(filepath: &str) -> Result<Simfile, String> {
     Ok(data.sim)
 }
 
-// Stubbing bpms and stops mapping parsing pending SegmentGroup logic translation
-fn parse_bpms(_data: &mut ParseData, _value_str: &str) {
-    // ArrowVortex uses `data.tempo()->segments->append(bpmc)`
-    // Will link once SegmentSet is ported.
+use crate::arrowvortex::segments::{BpmChange, Stop};
+
+fn parse_bpms(data: &mut ParseData, value_str: &str) {
+    let pairs: Vec<&str> = value_str.split(',').collect();
+    for pair in pairs {
+        let kv: Vec<&str> = pair.split('=').collect();
+        if kv.len() == 2 {
+            if let (Ok(beat), Ok(bpm)) = (kv[0].trim().parse::<f64>(), kv[1].trim().parse::<f64>()) {
+                let row = (beat * crate::arrowvortex::tempo::ROWS_PER_BEAT) as i32;
+                data.sim.tempo.segments.bpm_changes.push(BpmChange { row, bpm });
+            }
+        }
+    }
 }
 
-fn parse_stops(_data: &mut ParseData, _value_str: &str) {
-    // ArrowVortex uses `data.tempo()->segments->append(stop)`
-    // Will link once SegmentSet is ported.
+fn parse_stops(data: &mut ParseData, value_str: &str) {
+    let pairs: Vec<&str> = value_str.split(',').collect();
+    for pair in pairs {
+        let kv: Vec<&str> = pair.split('=').collect();
+        if kv.len() == 2 {
+            if let (Ok(beat), Ok(seconds)) = (kv[0].trim().parse::<f64>(), kv[1].trim().parse::<f64>()) {
+                let row = (beat * crate::arrowvortex::tempo::ROWS_PER_BEAT) as i32;
+                data.sim.tempo.segments.stops.push(Stop { row, seconds });
+            }
+        }
+    }
 }
 
 fn parse_notes(data: &mut ParseData, value_str: &str) {

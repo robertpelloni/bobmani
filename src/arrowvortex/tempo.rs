@@ -61,8 +61,7 @@ pub struct Tempo {
     pub display_bpm_type: DisplayBpmType,
     pub display_bpm_range: BpmRange,
 
-    // Note: SegmentGroup is currently stubbed pending port of SegmentSet.h
-    pub has_segments: bool,
+    pub segments: crate::arrowvortex::segments::SegmentGroup,
 }
 
 impl Tempo {
@@ -74,7 +73,7 @@ impl Tempo {
             misc: Vec::new(),
             display_bpm_type: DisplayBpmType::Actual,
             display_bpm_range: BpmRange { min: 0.0, max: 0.0 },
-            has_segments: false,
+            segments: crate::arrowvortex::segments::SegmentGroup::new(),
         }
     }
 
@@ -87,12 +86,12 @@ impl Tempo {
 
         self.display_bpm_type = other.display_bpm_type;
         self.display_bpm_range = other.display_bpm_range;
-        self.has_segments = other.has_segments;
+        self.segments = other.segments.clone();
     }
 
     /// Returns true if the tempo contains one or more segments, false otherwise.
     pub fn has_segments(&self) -> bool {
-        self.has_segments
+        !self.segments.is_empty()
     }
 }
 
