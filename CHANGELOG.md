@@ -36,3 +36,7 @@
 ## [0.1.7] - 2024-06-21
 ### Added
 - Ported `constants.py` from `ddc_onset` into native Rust `constants.rs`.
+
+## [0.1.8] - 2024-06-22
+### Refined
+- Replaced stub CNN logic in `src/ddc_onset/cnn.rs` with explicitly typed `Conv2dDef`, `MaxPool2dDef`, and `LinearDef` structural outlines for `PlacementCNN` boundary iteration without PyTorch dependency bloat.

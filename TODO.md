@@ -11,5 +11,6 @@
 - [x] Begin porting `ddc` and `ddc_onset` (Data models, basic logic, dataset parsing)
 - [x] Complete port of `ddc` and `ddc_onset` dataset JSON logic and split tools
 - [x] Complete port of `ddc_onset` util logic (peak finding, thresholds, constants)
+- [x] Refine `ddc_onset` CNN logic bounds into explicit safe Rust struct parameters
 - [ ] Complete port of `ddc` and `ddc_onset` remaining logic
 - [ ] Write integration tests for the unified architecture
