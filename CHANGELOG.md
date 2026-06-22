@@ -18,3 +18,8 @@
 ### Fixed
 - Fixed the `.sm` file parser (`load_sm.rs`) to use the encapsulated `NoteList::append` method.
 - Resolved compilation recovery errors with the Segment code logic.
+
+## [0.1.4] - 2024-06-21
+### Added
+- Ported `dataset_json.py` from `ddc` to `DatasetJsonGenerator` in native Rust.
+- Included the `rand` crate to handle random dataset shuffling natively.
