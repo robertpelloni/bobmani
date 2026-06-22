@@ -1,4 +1,6 @@
 use crate::arrowvortex::notes::{ExpandedNote, NoteType};
+use crate::arrowvortex::note_list::NoteList;
+use crate::arrowvortex::tempo::Tempo;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Difficulty {
@@ -28,8 +30,9 @@ pub struct Chart {
     pub difficulty: Difficulty,
     pub radar: Vec<f64>,
     pub meter: i32,
-    pub notes: Vec<ExpandedNote>,
+    pub notes: NoteList,
     pub has_tempo: bool,
+    pub tempo: Option<Tempo>,
 }
 
 impl Chart {
@@ -39,8 +42,9 @@ impl Chart {
             difficulty: Difficulty::Beginner,
             radar: Vec::new(),
             meter: 1,
-            notes: Vec::new(),
+            notes: NoteList::new(),
             has_tempo: false,
+            tempo: None,
         }
     }
 
@@ -49,6 +53,13 @@ impl Chart {
     }
 
     pub fn step_count(&self) -> usize {
-        self.notes.iter().filter(|n| n.note_type != NoteType::Mine).count()
+        // Assume step_count is size() for now until we expand note_list iteration
+        self.notes.size()
+    }
+}
+
+impl Default for Chart {
+    fn default() -> Self {
+        Self::new()
     }
 }

@@ -130,17 +130,17 @@ fn parse_notes(data: &mut ParseData, value_str: &str) {
                     match ch {
                         '1' => {
                             note.note_type = NoteType::StepOrHold;
-                            chart.notes.push(note);
+                            chart.notes.append(note);
                         }
                         '2' => {
                             // Hold head
                             note.note_type = NoteType::StepOrHold;
-                            chart.notes.push(note);
+                            chart.notes.append(note);
                         }
                         'M' => {
                             note.is_mine = true;
                             note.note_type = NoteType::Mine;
-                            chart.notes.push(note);
+                            chart.notes.append(note);
                         }
                         _ => {} // 0 or empty
                     }
