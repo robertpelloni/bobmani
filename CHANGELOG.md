@@ -32,3 +32,7 @@
 ### Added
 - Ported `util.py` logic from `ddc_onset` into `src/ddc_onset/util.rs`.
 - Implemented native Rust peak-finding algorithms and 1D Hamming convolution (replacing `scipy` dependencies).
+
+## [0.1.7] - 2024-06-21
+### Added
+- Ported `constants.py` from `ddc_onset` into native Rust `constants.rs`.
