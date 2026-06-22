@@ -27,3 +27,8 @@
 ## [0.1.5] - 2024-06-21
 ### Added
 - Ported `create_splits.py` from `ddc` to `DatasetSplitter` in native Rust `create_splits.rs`.
+
+## [0.1.6] - 2024-06-21
+### Added
+- Ported `util.py` logic from `ddc_onset` into `src/ddc_onset/util.rs`.
+- Implemented native Rust peak-finding algorithms and 1D Hamming convolution (replacing `scipy` dependencies).
