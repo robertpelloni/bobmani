@@ -6,7 +6,7 @@
 - [x] Begin porting `ffr-difficulty-model` (Horizontal/Vertical Density)
 - [x] Complete port of `ffr-difficulty-model` (Stream/Pattern Detectors, Preprocessor)
 - [ ] Implement Rust ML Model Inference (ONNX or manual weights) for ffr-difficulty-model
-- [x] Begin porting `arrowvortex` (C++ structs and .sm loading logic, Tempo and Segments)
+- [x] Begin porting `arrowvortex` (C++ structs and .sm loading logic, Tempo, Segments, NoteList, NoteSet)
 - [ ] Complete port of `arrowvortex` (Remaining elements, UI integration)
 - [x] Begin porting `ddc` and `ddc_onset` (Data models, basic logic)
 - [ ] Complete port of `ddc` and `ddc_onset`
