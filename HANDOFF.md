@@ -24,11 +24,12 @@ The directive to "port all submodules into a massive rust program" has actively 
 - The `Tempo` struct and rhythm calculations (e.g. `sec_per_row`) from `Tempo.h/cpp` were ported to `src/arrowvortex/tempo.rs`.
 - The `GameMode` struct, managing multi-game pad mappings, was successfully ported from `GameMode.h/cpp` into `src/arrowvortex/gamemode.rs`.
 - The root `Simfile` struct mapping was successfully ported from `Simfile.h/cpp` into `src/arrowvortex/simfile.rs`, structurally unifying all previously ported components.
+- The `LoadSm.cpp` string-parsing logic was ported to `src/arrowvortex/load_sm.rs`. It reads `#TAG:VALUE;` formatted strings (specifically matching `#OFFSET`, `#BPMS`, `#STOPS`, and `#NOTES`) directly into the Rust structs.
 
 ## Current State
-The data foundations for `arrowvortex` are heavily implemented. The structural integration boundaries for all DDC modules and the core inference map for FFR are in place.
+The foundational models, structs, and text parsers for `arrowvortex` and `ddc` are rapidly maturing into the monolithic application structure.
 
 **Next Immediate Steps for Successor Models:**
-1. Focus on the `arrowvortex` editor codebase. With the foundational data structures (`Simfile`, `Chart`, `Tempo`) built, the next major feature to port is the file loading logic. Explore `arrowvortex/src/Simfile/LoadSm.cpp` and `LoadOsu.cpp` to port the file parsers into native Rust (you can build off the simple Regex parser made for the `ffr-difficulty-model`).
+1. Focus on the `arrowvortex` editor codebase. While the `load_sm` parser handles the basic `Simfile` fields, the complex `SegmentGroup` timing arrays (like Stops, BPM changes, and Warps) are currently stubbed. Explore `arrowvortex/src/Simfile/SegmentSet.h` and `SegmentGroup.cpp` to port this timing segment management into native Rust.
 2. The ML inference and Audio DSP logic remain stubbed across `ffr-difficulty-model` and `ddc`. Continue relying on stubs for these complex boundaries while the simpler logic/data structures (like `arrowvortex` and `beatoraja`) are consolidated first.
 3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
