@@ -10,3 +10,11 @@
 - Synced submodules to local workspace.
 - Initialized Rust port for the `ffr-difficulty-model`.
 - Scaffolded predictor and feature calculation interfaces.
+
+## [0.1.3] - 2024-06-21
+### Added
+- Ported `NoteList` and `NoteSet` structures from `arrowvortex` to safe Rust.
+- Ported `TimingData`, `Event`, and `Signature` structures from `arrowvortex`.
+### Fixed
+- Fixed the `.sm` file parser (`load_sm.rs`) to use the encapsulated `NoteList::append` method.
+- Resolved compilation recovery errors with the Segment code logic.

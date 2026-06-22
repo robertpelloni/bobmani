@@ -1,35 +1,27 @@
-# Handoff
+# Session Handoff Document
 
-## Session Summary (Rust Porting Phase 2)
-During this session, the core `bobmani` meta-repo was synchronized, bringing in all 13 legacy submodules (such as `Simply-Love-SM5`, `beatoraja`, `arrowvortex`, etc.).
+## Current Status
+We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
-The directive to "port all submodules into a massive rust program" has actively progressed across multiple modules.
+## Completed Work in This Session
+- Recovered from an unexpected build timeout, executing `cargo check` and verifying tests.
+- Re-established `PROJECT_MEMORY`.
+- Ported the `arrowvortex` Segment structures: `BpmChange`, `Stop`, `SegmentGroup`, etc., into `src/arrowvortex/segments.rs`.
+- Ported `arrowvortex` Note tracking structures: `NoteList` and `NoteSet` into `note_list.rs` and `note_set.rs`.
+- Fixed the `load_sm.rs` parser to utilize the custom `NoteList` append methods instead of vector pushing.
+- Ported the `TimingData` core structure representing `Event` and `Signature` logic from `arrowvortex` into `timing_data.rs`.
+- Continually tracked progress in `TODO.md` and compiled the system securely with `cargo check` & `cargo test`.
+- Committed all individual logical chunks step-by-step.
 
-1. `ffr-difficulty-model`:
-- Mathematical feature extractors (`HorizontalDensity`, `VerticalDensity`, `StreamDetector`, and `PatternDetector`) were successfully translated into performant, memory-safe Rust structs.
-- A custom Rust `SMChartPreprocessor` was written to parse `.sm` files using the `regex` crate, effectively replacing the Python `simfile` dependency.
+## Submodules
+1. `ffr-difficulty-model`: Extractor functions and SM preprocessor ported. ML prediction logic is stubbed out.
+2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added.
+3. `ddc_onset`: Neural network structs mapped (e.g. `PlacementCNN`), PyTorch inferences stubbed.
+4. `arrowvortex`: Core `Chart`, `Simfile`, `Tempo`, `GameMode`, `NoteType`, `ExpandedNote`, and `.sm` parser logic natively ported to safe Rust. Added `Segments` and `TimingData` logic recently.
 
-2. `ddc` (Dance Dance Convolution) model:
-- The core math logic from `ddc/learn/beatcalc.py` was translated into `src/ddc/beatcalc.rs`, handling complex timing intersections, 'stops', and epsilon-based sub-divisions required for rhythm game timing.
-- The boundary structure for audio processing (`src/ddc/extract_feats.rs`) was scaffolded.
-- The core dataset structures from `ddc/learn/chart.py` (`Chart`, `OnsetChart`, `SymbolicChart`) were translated to Rust structs in `src/ddc/chart.rs`.
+## Next Immediate Steps for the Next Session
+1. Execute the Git sanitization protocol (fetch, pull, update submodules).
+2. Continue checking off the remaining elements of the `arrowvortex` submodule, or move to porting the JSON dataset scripts from the `ddc` ML pipeline.
+3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
-3. `ddc_onset` model:
-- The Python `SpectrogramNormalizer` and `PlacementCNN` classes were mapped to Rust structs in `src/ddc_onset/cnn.rs`.
-- The `SpectrogramExtractor` config constants were ported to `src/ddc_onset/spectral.rs`.
-
-4. `arrowvortex` editor:
-- The core charting data structures (`NoteType`, `ExpandedNote`) from C++ were translated to Rust in `src/arrowvortex/notes.rs`.
-- The `Chart` struct, `Difficulty` enum, and utility methods (like `step_count`) from `Chart.h/cpp` were successfully ported to `src/arrowvortex/chart.rs`.
-- The `Tempo` struct and rhythm calculations (e.g. `sec_per_row`) from `Tempo.h/cpp` were ported to `src/arrowvortex/tempo.rs`.
-- The `GameMode` struct, managing multi-game pad mappings, was successfully ported from `GameMode.h/cpp` into `src/arrowvortex/gamemode.rs`.
-- The root `Simfile` struct mapping was successfully ported from `Simfile.h/cpp` into `src/arrowvortex/simfile.rs`, structurally unifying all previously ported components.
-- The `LoadSm.cpp` string-parsing logic was ported to `src/arrowvortex/load_sm.rs`. It reads `#TAG:VALUE;` formatted strings (specifically matching `#OFFSET`, `#BPMS`, `#STOPS`, and `#NOTES`) directly into the Rust structs.
-
-## Current State
-The foundational models, structs, and text parsers for `arrowvortex` and `ddc` are rapidly maturing into the monolithic application structure.
-
-**Next Immediate Steps for Successor Models:**
-1. Focus on the `arrowvortex` editor codebase. While the `load_sm` parser handles the basic `Simfile` fields, the complex `SegmentGroup` timing arrays (like Stops, BPM changes, and Warps) are currently stubbed. Explore `arrowvortex/src/Simfile/SegmentSet.h` and `SegmentGroup.cpp` to port this timing segment management into native Rust.
-2. The ML inference and Audio DSP logic remain stubbed across `ffr-difficulty-model` and `ddc`. Continue relying on stubs for these complex boundaries while the simpler logic/data structures (like `arrowvortex` and `beatoraja`) are consolidated first.
-3. Maintain the unified version number (currently `0.1.2`) and update `CHANGELOG.md` accordingly. Ensure commits are made after every major step.
+**Last Verified Build Status:** Clean `cargo check` and `cargo test` passing.
