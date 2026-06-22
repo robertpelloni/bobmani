@@ -23,3 +23,7 @@
 ### Added
 - Ported `dataset_json.py` from `ddc` to `DatasetJsonGenerator` in native Rust.
 - Included the `rand` crate to handle random dataset shuffling natively.
+
+## [0.1.5] - 2024-06-21
+### Added
+- Ported `create_splits.py` from `ddc` to `DatasetSplitter` in native Rust `create_splits.rs`.

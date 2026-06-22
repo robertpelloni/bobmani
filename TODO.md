@@ -9,5 +9,6 @@
 - [x] Begin porting `arrowvortex` (C++ structs and .sm loading logic, Tempo, Segments, NoteList, NoteSet, TimingData)
 - [ ] Complete port of `arrowvortex` (Remaining elements, UI integration)
 - [x] Begin porting `ddc` and `ddc_onset` (Data models, basic logic, dataset parsing)
-- [ ] Complete port of `ddc` and `ddc_onset`
+- [x] Complete port of `ddc` and `ddc_onset` dataset JSON logic and split tools
+- [ ] Complete port of `ddc` and `ddc_onset` remaining logic
 - [ ] Write integration tests for the unified architecture
