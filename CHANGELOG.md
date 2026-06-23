@@ -40,3 +40,7 @@
 ## [0.1.8] - 2024-06-22
 ### Refined
 - Replaced stub CNN logic in `src/ddc_onset/cnn.rs` with explicitly typed `Conv2dDef`, `MaxPool2dDef`, and `LinearDef` structural outlines for `PlacementCNN` boundary iteration without PyTorch dependency bloat.
+
+## [0.1.9] - 2024-06-22
+### Added
+- Ported `util.py` logic from `ddc` into native Rust string sanitizers (`ezname`) in `src/ddc/util.rs`.

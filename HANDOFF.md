@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- Ported the `util.py` logic from `ddc`, creating string-cleaning utilities in `src/ddc/util.rs`.
 - Explicitly refined the `cnn.py` bounds from `ddc_onset`, creating structural Rust equivalents (`Conv2dDef`, `LinearDef`) to trace the network's layers safely before binding to ONNX or PyTorch integrations.
 - Ported the `constants.py` file from `ddc_onset`, ensuring DDR difficulties and algorithmic thresholds are mapped natively to `constants.rs`.
 - Ported the `util.py` logic from `ddc_onset`, adding native Rust 1D convolution, peak-finding, and thresholding into `src/ddc_onset/util.rs`. This successfully eliminates legacy dependencies on SciPy.
@@ -19,7 +20,7 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 
 ## Submodules
 1. `ffr-difficulty-model`: Extractor functions and SM preprocessor ported. ML prediction logic is stubbed out.
-2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added. `dataset_json.rs` and `create_splits.rs` logic ported for splits.
+2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added. `dataset_json.rs`, `create_splits.rs`, and `util.rs` logic ported for splits and parsing.
 3. `ddc_onset`: Neural network structs mapped (`PlacementCNN` layer bounds), PyTorch inferences stubbed. `util.rs` port eliminates SciPy dependencies for peak finding. `constants.rs` fully mapped.
 4. `arrowvortex`: Core `Chart`, `Simfile`, `Tempo`, `GameMode`, `NoteType`, `ExpandedNote`, and `.sm` parser logic natively ported to safe Rust. Added `Segments` and `TimingData` logic.
 
