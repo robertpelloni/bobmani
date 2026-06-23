@@ -16,3 +16,4 @@ crash_report.log
 .suno_browser_session/
 .hypercode_startup_marker
 .pi/
+.suno_new_session/

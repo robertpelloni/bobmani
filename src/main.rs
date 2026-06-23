@@ -10,6 +10,7 @@ fn main() {
 
     let results = predictor.predict("ffr-difficulty-model/test.sm");
 
+
     for (i, result) in results.iter().enumerate() {
         println!("Chart {} Extracted Features:", i + 1);
         for (feature, value) in result {

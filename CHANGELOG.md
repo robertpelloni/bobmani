@@ -44,3 +44,7 @@
 ## [0.1.9] - 2024-06-22
 ### Added
 - Ported `util.py` logic from `ddc` into native Rust string sanitizers (`ezname`) in `src/ddc/util.rs`.
+
+## [0.1.10] - 2024-06-22
+### Added
+- Initialized base `frontend-vite` directory using React + Vite to satisfy structural SPA requirements for the project UI.

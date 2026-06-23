@@ -47,6 +47,7 @@ impl SMChartPreprocessor {
             .unwrap_or(120.0);
 
         // A beat in stepmania is a quarter note.
+        // A beat in stepmania is a quarter note.
         let seconds_per_beat = 60.0 / base_bpm;
 
         // Split into chunks by `#NOTES:`
@@ -54,6 +55,7 @@ impl SMChartPreprocessor {
 
         for block in notes_blocks {
             let mut chart_dict = BTreeMap::new();
+
 
             // The block is split into meta lines and then the actual notes
             let mut parts: Vec<&str> = block.split(':').map(|s| s.trim()).collect();
@@ -69,6 +71,11 @@ impl SMChartPreprocessor {
 
             let mut current_beat = 0.0;
 
+
+            let note_data = parts[5].trim_end_matches(';').trim();
+
+            let mut current_beat = 0.0;
+
             let measures: Vec<&str> = note_data.split(',').collect();
             for measure in measures {
                 let lines: Vec<&str> = measure.lines().map(|l| l.trim()).filter(|l| !l.is_empty()).collect();
@@ -76,6 +83,7 @@ impl SMChartPreprocessor {
                 if rows_in_measure == 0 {
                     continue;
                 }
+
 
                 // 4 beats per measure in StepMania default (4/4 time)
                 let beats_per_row = 4.0 / (rows_in_measure as f64);

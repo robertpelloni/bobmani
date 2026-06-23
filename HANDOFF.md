@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- Scaffolded the frontend structural requirements under `frontend-vite/` using Vite + React matching the overarching SPA instruction sets. Configured a `pnpm-workspace.yaml`.
 - Ported the `util.py` logic from `ddc`, creating string-cleaning utilities in `src/ddc/util.rs`.
 - Explicitly refined the `cnn.py` bounds from `ddc_onset`, creating structural Rust equivalents (`Conv2dDef`, `LinearDef`) to trace the network's layers safely before binding to ONNX or PyTorch integrations.
 - Ported the `constants.py` file from `ddc_onset`, ensuring DDR difficulties and algorithmic thresholds are mapped natively to `constants.rs`.
@@ -15,7 +16,7 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 - Ported `arrowvortex` Note tracking structures: `NoteList` and `NoteSet` into `note_list.rs` and `note_set.rs`.
 - Fixed the `load_sm.rs` parser to utilize the custom `NoteList` append methods instead of vector pushing.
 - Ported the `TimingData` core structure representing `Event` and `Signature` logic from `arrowvortex` into `timing_data.rs`.
-- Continually tracked progress in `TODO.md` and compiled the system securely with `cargo check` & `cargo test`.
+- Continually tracked progress in `TODO.md` and compiled the system securely with `cargo check`, `cargo test`, and `npm run build`.
 - Committed all individual logical chunks step-by-step.
 
 ## Submodules
@@ -26,7 +27,7 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 
 ## Next Immediate Steps for the Next Session
 1. Execute the Git sanitization protocol (fetch, pull, update submodules).
-2. The remaining `ddc` functionality revolves around large-scale dataset ingestion and inference running. Since the math components and parsing logic are mostly translated, the next major frontier is either testing these modules deeply or bootstrapping the web UI (WASM or API based) as per the governance directives.
+2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features, or complete the remaining inference porting for the datasets.
 3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
-**Last Verified Build Status:** Clean `cargo check` and `cargo test` passing.
+**Last Verified Build Status:** Clean `cargo check` and `npm run build` passing.
