@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- Ported the `autochart.py` and `autochart_lib.py` logic natively into `src/ddc/autochart.rs`, establishing the bounds for parsing logic and orchestrating the CNN mapping sequence across all difficulties.
 - Scaffolded the frontend structural requirements under `frontend-vite/` using Vite + React matching the overarching SPA instruction sets. Configured a `pnpm-workspace.yaml`.
 - Ported the `util.py` logic from `ddc`, creating string-cleaning utilities in `src/ddc/util.rs`.
 - Explicitly refined the `cnn.py` bounds from `ddc_onset`, creating structural Rust equivalents (`Conv2dDef`, `LinearDef`) to trace the network's layers safely before binding to ONNX or PyTorch integrations.
@@ -21,13 +22,13 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 
 ## Submodules
 1. `ffr-difficulty-model`: Extractor functions and SM preprocessor ported. ML prediction logic is stubbed out.
-2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added. `dataset_json.rs`, `create_splits.rs`, and `util.rs` logic ported for splits and parsing.
+2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added. `dataset_json.rs`, `create_splits.rs`, and `util.rs` logic ported for splits and parsing. `autochart.rs` orchestrator ported.
 3. `ddc_onset`: Neural network structs mapped (`PlacementCNN` layer bounds), PyTorch inferences stubbed. `util.rs` port eliminates SciPy dependencies for peak finding. `constants.rs` fully mapped.
 4. `arrowvortex`: Core `Chart`, `Simfile`, `Tempo`, `GameMode`, `NoteType`, `ExpandedNote`, and `.sm` parser logic natively ported to safe Rust. Added `Segments` and `TimingData` logic.
 
 ## Next Immediate Steps for the Next Session
 1. Execute the Git sanitization protocol (fetch, pull, update submodules).
-2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features, or complete the remaining inference porting for the datasets.
+2. Look at connecting `tch-rs` to begin implementing proper neural inference within our `autochart.rs` bounds. Alternatively, complete the remaining integration tests.
 3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
 **Last Verified Build Status:** Clean `cargo check` and `npm run build` passing.

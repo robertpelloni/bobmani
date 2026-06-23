@@ -48,3 +48,7 @@
 ## [0.1.10] - 2024-06-22
 ### Added
 - Initialized base `frontend-vite` directory using React + Vite to satisfy structural SPA requirements for the project UI.
+
+## [0.1.11] - 2024-06-22
+### Added
+- Completed `autochart.rs` module boundaries, matching the legacy `ddc` Python implementation natively in Rust.

@@ -14,5 +14,5 @@
 - [x] Refine `ddc_onset` CNN logic bounds into explicit safe Rust struct parameters
 - [x] Port `ddc` utilities (`ezname` formatters)
 - [x] Scaffold Vite + React Frontend
-- [ ] Complete port of `ddc` and `ddc_onset` remaining logic (autochart)
+- [x] Complete port of `ddc` and `ddc_onset` remaining logic (autochart)
 - [ ] Write integration tests for the unified architecture
