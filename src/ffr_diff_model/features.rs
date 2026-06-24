@@ -62,7 +62,6 @@ impl HorizontalDensity {
         let squared_nps: Vec<f64> = nps_values.iter().map(|&x| x * x).collect();
         let weighted_avg = self.weighted_average(&squared_nps);
 
-
         horizontal_density.insert("nps".to_string(), weighted_avg.sqrt());
         horizontal_density.insert("length".to_string(), if max_length > 0.0 { max_length.ln() } else { 0.0 });
 
@@ -136,14 +135,12 @@ impl VerticalDensity {
             let mut left_timestamps = Vec::new();
             let mut right_timestamps = Vec::new();
 
-
             let half = num_panels / 2;
 
             for (k, v) in chart {
                 let chars: Vec<char> = v.chars().collect();
                 let left_has_note = chars.iter().take(half).any(|&c| c == '1');
                 let right_has_note = chars.iter().skip(half).any(|&c| c == '1');
-
 
                 if left_has_note { left_timestamps.push(k.0); }
                 if right_has_note { right_timestamps.push(k.0); }
@@ -215,7 +212,6 @@ impl StreamDetector {
 
     pub fn compute(&self, chart: &BTreeMap<OrderedFloat, String>) -> HashMap<String, f64> {
         let mut stream_features = HashMap::new();
-
 
         let timestamps: Vec<f64> = chart.keys().map(|k| k.0).collect();
         if timestamps.len() < 2 {

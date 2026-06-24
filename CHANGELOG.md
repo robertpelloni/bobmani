@@ -45,32 +45,6 @@
 ### Added
 - Ported `util.py` logic from `ddc` into native Rust string sanitizers (`ezname`) in `src/ddc/util.rs`.
 
-## [0.1.10] - 2024-06-22
-### Added
-- Initialized base `frontend-vite` directory using React + Vite to satisfy structural SPA requirements for the project UI.
-
-## [0.1.11] - 2024-06-22
-### Added
-- Completed `autochart.rs` module boundaries, matching the legacy `ddc` Python implementation natively in Rust.
-
-## [0.1.12] - 2024-06-22
-### Added
-- Completed primary architecture integration tests verifying cross-module loading and struct boundary validation natively in Rust.
-
-## [0.1.13] - 2024-06-22
-### Added
-- Completed the `arrowvortex` core parsing architecture by translating `NoteCol` and `NoteUtils` into `src/arrowvortex/`.
-
-## [0.1.14] - 2024-06-22
-### Added
-- Integrated `axum` and `tokio` to establish the backend API routing structure.
-- Created `POST /api/generate` to explicitly bind the `AutoChart` struct processes to frontend-accessible endpoints.
-
-## [0.1.15] - 2024-06-22
-### Added
-- Completed scaffolding logic to successfully compile and proxy frontend Vite application requests directly to the native `axum` JSON Web API endpoints on the backend!
-
-## [0.1.16] - 2024-06-22
-### Added
-- Integrated `tract-onnx` inference engine directly into `src/ddc_onset/cnn.rs`.
-- `PlacementCNN` now initializes dynamic tensor bounds and processes explicit `.onnx` models entirely within Rust's safe memory boundaries, removing heavy C++ libtorch dependencies.
+## [0.1.17] - 2024-06-22
+### Fixed
+- Reconciled and sanitized the `git` submodule pointers across branches to ensure safe merging of `main` without destroying detached heads (`beatoraja`, `bobmania`, `hymnmania`).
