@@ -17,4 +17,4 @@
 - [x] Complete port of `ddc` and `ddc_onset` remaining logic (autochart)
 - [x] Write integration tests for the unified architecture
 - [x] Link backend engine to frontend API (via lightweight web server like axum)
-- [ ] Implement full Rust ML inference bindings via `tch` or `tract`
+- [x] Implement full Rust ML inference bindings via `tract`

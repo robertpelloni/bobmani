@@ -69,3 +69,8 @@
 ## [0.1.15] - 2024-06-22
 ### Added
 - Completed scaffolding logic to successfully compile and proxy frontend Vite application requests directly to the native `axum` JSON Web API endpoints on the backend!
+
+## [0.1.16] - 2024-06-22
+### Added
+- Integrated `tract-onnx` inference engine directly into `src/ddc_onset/cnn.rs`.
+- `PlacementCNN` now initializes dynamic tensor bounds and processes explicit `.onnx` models entirely within Rust's safe memory boundaries, removing heavy C++ libtorch dependencies.
