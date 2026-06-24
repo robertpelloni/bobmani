@@ -56,3 +56,7 @@
 ## [0.1.12] - 2024-06-22
 ### Added
 - Completed primary architecture integration tests verifying cross-module loading and struct boundary validation natively in Rust.
+
+## [0.1.13] - 2024-06-22
+### Added
+- Completed the `arrowvortex` core parsing architecture by translating `NoteCol` and `NoteUtils` into `src/arrowvortex/`.

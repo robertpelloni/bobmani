@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- Ported the remaining components of the `arrowvortex` core parsing engine (`NoteCol.cpp` logic and `NoteUtils.h` helper loops) to `src/arrowvortex/`.
 - Wrote full `integration_test.rs` to verify that `arrowvortex`, `ddc`, `ddc_onset`, and `ffr_diff_model` can be instantiated within the same memory boundaries successfully without breaking constraints.
 - Ported the `autochart.py` and `autochart_lib.py` logic natively into `src/ddc/autochart.rs`, establishing the bounds for parsing logic and orchestrating the CNN mapping sequence across all difficulties.
 - Scaffolded the frontend structural requirements under `frontend-vite/` using Vite + React matching the overarching SPA instruction sets. Configured a `pnpm-workspace.yaml`.
@@ -14,10 +15,6 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 - Ported the `create_splits.py` logic from the `ddc` dataset pipeline into `DatasetSplitter` in `ddc/create_splits.rs`. Added the `rand` crate to support it safely and ensure deterministic paths.
 - Ported the `dataset_json.py` dataset generator logic from the `ddc/ddc_stepmania` pipeline into `DatasetJsonGenerator` in `ddc/dataset_json.rs`.
 - Re-established `PROJECT_MEMORY`.
-- Ported the `arrowvortex` Segment structures: `BpmChange`, `Stop`, `SegmentGroup`, etc., into `src/arrowvortex/segments.rs`.
-- Ported `arrowvortex` Note tracking structures: `NoteList` and `NoteSet` into `note_list.rs` and `note_set.rs`.
-- Fixed the `load_sm.rs` parser to utilize the custom `NoteList` append methods instead of vector pushing.
-- Ported the `TimingData` core structure representing `Event` and `Signature` logic from `arrowvortex` into `timing_data.rs`.
 - Continually tracked progress in `TODO.md` and compiled the system securely with `cargo check`, `cargo test`, and `npm run build`.
 - Committed all individual logical chunks step-by-step.
 
@@ -25,11 +22,11 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 1. `ffr-difficulty-model`: Extractor functions and SM preprocessor ported. ML prediction logic is stubbed out.
 2. `ddc` (Dance Dance Convolution): Base ML structs mapped, timing `beatcalc.rs` logic translated. `Chart`, `OnsetChart`, `SymbolicChart` boundaries added. `dataset_json.rs`, `create_splits.rs`, and `util.rs` logic ported for splits and parsing. `autochart.rs` orchestrator ported.
 3. `ddc_onset`: Neural network structs mapped (`PlacementCNN` layer bounds), PyTorch inferences stubbed. `util.rs` port eliminates SciPy dependencies for peak finding. `constants.rs` fully mapped.
-4. `arrowvortex`: Core `Chart`, `Simfile`, `Tempo`, `GameMode`, `NoteType`, `ExpandedNote`, and `.sm` parser logic natively ported to safe Rust. Added `Segments` and `TimingData` logic.
+4. `arrowvortex`: Core `Chart`, `Simfile`, `Tempo`, `GameMode`, `NoteType`, `ExpandedNote`, and `.sm` parser logic natively ported to safe Rust. Added `Segments`, `TimingData`, `NoteCol`, and `NoteUtils` completing the core structural map.
 
 ## Next Immediate Steps for the Next Session
 1. Execute the Git sanitization protocol (fetch, pull, update submodules).
-2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features. Establish API endpoints (likely using a lightweight web framework like Axum or Axum equivalent) so the SPA can send parameters to the `autochart` routines.
+2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features. Establish API endpoints (likely using a lightweight web framework like Axum or Actix) so the SPA can send parameters to the `autochart` routines.
 3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
 **Last Verified Build Status:** Clean `cargo check` and `npm run build` passing.
