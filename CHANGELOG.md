@@ -65,3 +65,7 @@
 ### Added
 - Integrated `axum` and `tokio` to establish the backend API routing structure.
 - Created `POST /api/generate` to explicitly bind the `AutoChart` struct processes to frontend-accessible endpoints.
+
+## [0.1.15] - 2024-06-22
+### Added
+- Completed scaffolding logic to successfully compile and proxy frontend Vite application requests directly to the native `axum` JSON Web API endpoints on the backend!
