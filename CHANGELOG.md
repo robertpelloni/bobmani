@@ -52,3 +52,7 @@
 ## [0.1.11] - 2024-06-22
 ### Added
 - Completed `autochart.rs` module boundaries, matching the legacy `ddc` Python implementation natively in Rust.
+
+## [0.1.12] - 2024-06-22
+### Added
+- Completed primary architecture integration tests verifying cross-module loading and struct boundary validation natively in Rust.

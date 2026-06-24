@@ -15,4 +15,4 @@
 - [x] Port `ddc` utilities (`ezname` formatters)
 - [x] Scaffold Vite + React Frontend
 - [x] Complete port of `ddc` and `ddc_onset` remaining logic (autochart)
-- [ ] Write integration tests for the unified architecture
+- [x] Write integration tests for the unified architecture

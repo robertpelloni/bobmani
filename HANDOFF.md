@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- Wrote full `integration_test.rs` to verify that `arrowvortex`, `ddc`, `ddc_onset`, and `ffr_diff_model` can be instantiated within the same memory boundaries successfully without breaking constraints.
 - Ported the `autochart.py` and `autochart_lib.py` logic natively into `src/ddc/autochart.rs`, establishing the bounds for parsing logic and orchestrating the CNN mapping sequence across all difficulties.
 - Scaffolded the frontend structural requirements under `frontend-vite/` using Vite + React matching the overarching SPA instruction sets. Configured a `pnpm-workspace.yaml`.
 - Ported the `util.py` logic from `ddc`, creating string-cleaning utilities in `src/ddc/util.rs`.
@@ -28,7 +29,7 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 
 ## Next Immediate Steps for the Next Session
 1. Execute the Git sanitization protocol (fetch, pull, update submodules).
-2. Look at connecting `tch-rs` to begin implementing proper neural inference within our `autochart.rs` bounds. Alternatively, complete the remaining integration tests.
+2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features. Establish API endpoints (likely using a lightweight web framework like Axum or Axum equivalent) so the SPA can send parameters to the `autochart` routines.
 3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
 **Last Verified Build Status:** Clean `cargo check` and `npm run build` passing.
