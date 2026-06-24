@@ -60,3 +60,8 @@
 ## [0.1.13] - 2024-06-22
 ### Added
 - Completed the `arrowvortex` core parsing architecture by translating `NoteCol` and `NoteUtils` into `src/arrowvortex/`.
+
+## [0.1.14] - 2024-06-22
+### Added
+- Integrated `axum` and `tokio` to establish the backend API routing structure.
+- Created `POST /api/generate` to explicitly bind the `AutoChart` struct processes to frontend-accessible endpoints.

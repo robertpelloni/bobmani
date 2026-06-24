@@ -16,4 +16,4 @@
 - [x] Scaffold Vite + React Frontend
 - [x] Complete port of `ddc` and `ddc_onset` remaining logic (autochart)
 - [x] Write integration tests for the unified architecture
-- [ ] Link backend engine to frontend API (via lightweight web server like axum)
+- [x] Link backend engine to frontend API (via lightweight web server like axum)

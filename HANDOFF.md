@@ -4,6 +4,7 @@
 We are actively porting the massive `bobmani` submodules into a unified `Rust` monolith. The architecture relies on translating math, boundaries, struct outlines, and parsers from legacy Python/C++ code into memory-safe Rust primitives.
 
 ## Completed Work in This Session
+- **Web API Bootstrapping:** Imported `axum` and `tokio` (along with `serde` for serialization). Bound `src/main.rs` to serve a `POST /api/generate` endpoint, successfully exposing our `AutoChart` machine learning struct processes to external frontend queries.
 - Ported the remaining components of the `arrowvortex` core parsing engine (`NoteCol.cpp` logic and `NoteUtils.h` helper loops) to `src/arrowvortex/`.
 - Wrote full `integration_test.rs` to verify that `arrowvortex`, `ddc`, `ddc_onset`, and `ffr_diff_model` can be instantiated within the same memory boundaries successfully without breaking constraints.
 - Ported the `autochart.py` and `autochart_lib.py` logic natively into `src/ddc/autochart.rs`, establishing the bounds for parsing logic and orchestrating the CNN mapping sequence across all difficulties.
@@ -26,7 +27,7 @@ We are actively porting the massive `bobmani` submodules into a unified `Rust` m
 
 ## Next Immediate Steps for the Next Session
 1. Execute the Git sanitization protocol (fetch, pull, update submodules).
-2. Wire the Rust backend APIs to the React/Vite dashboard to visualize the features. Establish API endpoints (likely using a lightweight web framework like Axum or Actix) so the SPA can send parameters to the `autochart` routines.
+2. Wire the `React/Vite` frontend to physically call the `POST /api/generate` endpoint, mapping state management to display returned JSON generation.
 3. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
 **Last Verified Build Status:** Clean `cargo check` and `npm run build` passing.
