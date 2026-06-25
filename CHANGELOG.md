@@ -53,3 +53,8 @@
 ### Changed
 - Major architectural pivot: Transitioned core orchestration structure to a **Go-first architecture** representing "Jules Autopilot".
 - Overrode legacy monolithic tracking; established `backend-go` entry point serving API/JSON manifest parameters.
+
+## [1.0.1] - 2024-06-25
+### Added
+- Linked the `backend-go` runtime directly to a local `SQLite` driver instance utilizing `gorm.io/gorm`.
+- Auto-migrated `MemoryChunk` and `Session` database struct bounds per the dual-layer RAG indexing roadmap requirements.
