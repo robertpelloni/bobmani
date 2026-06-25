@@ -48,3 +48,8 @@
 ## [0.1.17] - 2024-06-22
 ### Fixed
 - Reconciled and sanitized the `git` submodule pointers across branches to ensure safe merging of `main` without destroying detached heads (`beatoraja`, `bobmania`, `hymnmania`).
+
+## [1.0.0] - 2024-06-24
+### Changed
+- Major architectural pivot: Transitioned core orchestration structure to a **Go-first architecture** representing "Jules Autopilot".
+- Overrode legacy monolithic tracking; established `backend-go` entry point serving API/JSON manifest parameters.
