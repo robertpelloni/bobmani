@@ -1,3 +1,1 @@
-# Roadmap
-
-Currently undefined.
+# ROADMAP: Connect WebSocket backend, expand Vite UI.

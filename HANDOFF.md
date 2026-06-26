@@ -1,28 +1,20 @@
-# Handoff
+# Session Handoff Document
 
-## Initial State Analysis
-I began the project audit, documentation, and implementation cycle. Upon inspecting the repository, I discovered that it is **completely empty**. There were no files, no `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `GPT.md`, `copilot-instructions.md`, `VISION.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `DEPLOY.md`, `CHANGELOG.md`, `VERSION.md`, or archived documentation available. Additionally, no conversation logs were accessible.
+## Current Status
+We have transitioned from our `bobmani` rhythm game port logic directly into the **Jules Autopilot (Go Primary Runtime)** infrastructure. The main supervisor directives instructed a shift to building out a high-performance orchestration layer utilizing a `backend-go` server and our previously scaffolded Vite/React SPA.
 
-### State Breakdown
-1. **Completed features:** None.
-2. **Partially implemented features:** None.
-3. **Backend features not wired to the frontend:** None.
-4. **UI features that are missing, hidden, underrepresented, or unpolished:** None.
-5. **Bugs or fragile areas:** None.
-6. **Refactor opportunities:** None.
-7. **Documentation gaps:** Complete absence of documentation. I have generated initial scaffolding for standard project documents.
-8. **Dependency/library/submodule gaps:** No libraries or packages exist.
-9. **Deployment/versioning gaps:** No deployment mechanisms or versioning system in place.
-10. **Next highest-impact implementation tasks:** Define project goals, architecture, and technology stack.
+## Completed Work in This Session
+- **SQLite Persistence layer:** Initialized the `gorm.io/gorm` and `gorm.io/driver/sqlite` drivers inside `backend-go`. Added the models for `MemoryChunk` and `Session` and ran auto-migrations. (Downgraded gorm package slightly to bypass Go 1.25.0 bounds).
+- **Architectural Pivot:** Detected the shift in root documentation (`README.md`, `DEPLOY.md`, `VISION.md`, `ROADMAP.md`).
+- **Go Initialization:** Spun up the `backend-go` directory, ran `go mod init`, and wrote the primary `main.go` entry point.
+- **Borg API Routes:** Implemented the `GET /api/manifest` and `GET /api/fleet/summary` routes explicitly instructed by the roadmap to handle discovery and fleet state payloads.
+- **Verification:** Built `jules-backend` and queried the ports locally, verifying 200 OK responses with the proper capability payloads.
+- **Documentation Reset:** Updated `TODO.md` and `VERSION.md` (to `1.0.1`) to reflect the new state of the repository, setting up the foundation for continuous deployment on Render.
 
-## Actions Taken
-- Created documentation scaffolding (`VISION.md`, `ROADMAP.md`, `TODO.md`, `HANDOFF.md`, `DEPLOY.md`, `CHANGELOG.md`, `VERSION.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `GPT.md`, and `copilot-instructions.md`).
+## Next Immediate Steps for the Next Session
+1. Execute the Git sanitization protocol (fetch, pull).
+2. Wire the real-time WebSockets to the `frontend-vite` system so it can receive session state pushes.
+3. Transition the actual "RAG Indexer" embeddings chunks to use `backend-go` logic to hydrate the `MemoryChunk` database model.
+4. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
 
-## Current Status and Next Steps
-The cycle is being stopped because the repository is entirely empty, meaning the next task is fundamentally ambiguous and moving forward would require a major architectural decision (choosing a tech stack, language, framework, etc.) without context.
-
-**Recommendations:**
-- The project owner needs to define the project's purpose and initialize the technical stack.
-
-## Testing and Verification
-- No tests, linting, or builds could be run because there is no source code or configuration in the project.
+**Last Verified Build Status:** Clean `go build` passing.
