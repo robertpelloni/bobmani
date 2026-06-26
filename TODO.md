@@ -1,1 +1,1 @@
-# TODO: Implement WebSocket server in axum or actix.
+# TODO: Implement ONNX inference pipeline.
