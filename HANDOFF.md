@@ -1,9 +1,13 @@
 # Session Handoff Document
 
 ## Current Status
-We have integrated bidirectional WebSocket message parsing and formatting in the TypeScript frontend harness (`pianogame/typescript/src/ws_bridge.ts`), aligning with all Rust Axum `WsRequest` actions (`ping`, `status`, `parse_sm`, `analyze_density`, `extract_audio_features`) at version **0.2.6**.
+We have implemented real-time audio onset peak detection and threshold filtering over the Axum WebSocket server, integrating `find_peaks` and `threshold_peaks` from `src/ddc_onset/util.rs` directly into `src/server.rs` at version **0.2.7**.
 
 ## Completed Work in This Session
+- **Axum WebSocket Real-Time Onset Detection Pipeline (v0.2.7)**:
+  - Extended `src/server.rs` with `DetectOnsets` request command and `OnsetDetections` response telemetry.
+  - Integrated `find_peaks` and `threshold_peaks` from `crate::ddc_onset::util` to detect local note onset maxima and filter by threshold dynamically.
+  - Added unit test `test_process_detect_onsets` verifying peak finding and filtering.
 - **TypeScript WsBridge Protocol Alignment (v0.2.6)**:
   - Implemented `formatRustRequest` and `parseRustResponse` in `pianogame/typescript/src/ws_bridge.ts`.
   - Implemented `broadcastMessage` across active WebSocket clients.
@@ -14,15 +18,15 @@ We have integrated bidirectional WebSocket message parsing and formatting in the
   - Extended Axum WebSocket server (`src/server.rs`) with `ExtractAudioFeatures` request and `AudioFeatures` response.
 - **Axum WebSocket Real-Time Difficulty Pipeline (v0.2.4)**:
   - Extended `src/server.rs` with `AnalyzeDensity` command and `DensityAnalysis` response payload.
-  - Integrated `HorizontalDensity`, `StreamDetector`, and `PatternDetector` from `crate::ffr_diff_model::features` to calculate real-time NPS, song length, stream percentage, and jack percentages over WebSocket.
+  - Integrated `HorizontalDensity`, `StreamDetector`, and `PatternDetector` from `crate::ffr_diff_model::features`.
 - **Verification**:
   - `cargo check`: Clean (0 warnings).
-  - `cargo test`: Clean (20 passing tests across lib and bin).
+  - `cargo test`: Clean (22 passing tests across lib and bin).
   - `tsc`: Clean (0 errors).
   - `node dist/test_ws_bridge.js`: PASS.
   - `bobmania/scripts/audit_dashboard.py`: 13/13 modules verified.
 - **Documentation Governance**:
-  - Bumped version to `0.2.6` in `VERSION.md`.
+  - Bumped version to `0.2.7` in `VERSION.md`.
   - Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
 
 ## Next Immediate Steps for the Next Session
@@ -32,6 +36,6 @@ We have integrated bidirectional WebSocket message parsing and formatting in the
 
 **Last Verified Build Status:**
 - `cargo check`: Clean (0 warnings).
-- `cargo test`: Clean passing (20 tests passing).
+- `cargo test`: Clean passing (22 tests passing).
 - `typescript test`: Clean passing (`node dist/test_ws_bridge.js`).
 - `bobmania/scripts/audit_dashboard.py`: SUCCESS.

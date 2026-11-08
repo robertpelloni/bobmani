@@ -1,1 +1,1 @@
-0.2.6 - TypeScript WsBridge Integration & Full Telemetry Protocol
+0.2.7 - Real-Time Peak Salience & Audio Onset Detection via WebSocket

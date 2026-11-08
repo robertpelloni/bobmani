@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use crate::arrowvortex::simfile::{Simfile, SimFormat};
 use crate::ddc::extract_feats::MelExtractor;
+use crate::ddc_onset::util::{find_peaks, threshold_peaks};
 use crate::ffr_diff_model::features::{HorizontalDensity, OrderedFloat, PatternDetector, StreamDetector};
 
 /// Supported incoming WebSocket requests from the frontend or test clients
@@ -25,6 +26,11 @@ pub enum WsRequest {
     AnalyzeDensity { chart_notes: Vec<(f64, String)> },
     #[serde(rename = "extract_audio_features")]
     ExtractAudioFeatures { samples: Vec<f32> },
+    #[serde(rename = "detect_onsets")]
+    DetectOnsets {
+        onset_salience: Vec<f32>,
+        threshold: f32,
+    },
 }
 
 /// Outgoing responses sent over WebSocket to clients
@@ -57,6 +63,12 @@ pub enum WsResponse {
         frames_count: usize,
         bands: usize,
         channels: usize,
+    },
+    #[serde(rename = "onset_detections")]
+    OnsetDetections {
+        peaks: Vec<usize>,
+        filtered_peaks: Vec<usize>,
+        total_frames: usize,
     },
     #[serde(rename = "error")]
     Error { message: String },
@@ -145,6 +157,18 @@ pub fn process_message(text: &str) -> String {
                 frames_count,
                 bands,
                 channels,
+            };
+            serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
+        }
+        Ok(WsRequest::DetectOnsets { onset_salience, threshold }) => {
+            let total_frames = onset_salience.len();
+            let peaks = find_peaks(&onset_salience);
+            let filtered_peaks = threshold_peaks(&onset_salience, &peaks, threshold);
+
+            let res = WsResponse::OnsetDetections {
+                peaks,
+                filtered_peaks,
+                total_frames,
             };
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
@@ -259,6 +283,24 @@ mod tests {
         assert!(res_str.contains(r#""frames_count":2"#));
         assert!(res_str.contains(r#""bands":80"#));
         assert!(res_str.contains(r#""channels":3"#));
+    }
+
+    #[test]
+    fn test_process_detect_onsets() {
+        let salience = vec![0.0, 0.1, 0.9, 0.2, 0.0, 0.8, 0.1, 0.0];
+        let req = serde_json::json!({
+            "action": "detect_onsets",
+            "payload": {
+                "onset_salience": salience,
+                "threshold": 0.5
+            }
+        }).to_string();
+
+        let res_str = process_message(&req);
+        assert!(res_str.contains(r#""type":"onset_detections""#));
+        assert!(res_str.contains(r#""total_frames":8"#));
+        assert!(res_str.contains(r#""peaks""#));
+        assert!(res_str.contains(r#""filtered_peaks""#));
     }
 
     #[test]

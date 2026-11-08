@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.7] - 2026-11-08
+### Added
+- Extended Axum WebSocket command pipeline with `DetectOnsets` request action and `OnsetDetections` response telemetry (`src/server.rs`).
+- Integrated `find_peaks` and `threshold_peaks` from `crate::ddc_onset::util` to detect local note onset maxima and filter by threshold dynamically.
+- Added comprehensive unit testing for real-time onset peak detection (`test_process_detect_onsets`).
+
+### Changed
+- Bumped version to `0.2.7` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.6] - 2026-11-08
 ### Added
 - Extended `WsBridge` in `pianogame/typescript/src/ws_bridge.ts` with `formatRustRequest`, `parseRustResponse`, and `broadcastMessage`.
