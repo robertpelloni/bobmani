@@ -5,8 +5,10 @@ use axum::{
     Router,
 };
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use crate::arrowvortex::simfile::{Simfile, SimFormat};
+use crate::ffr_diff_model::features::{HorizontalDensity, OrderedFloat, PatternDetector, StreamDetector};
 
 /// Supported incoming WebSocket requests from the frontend or test clients
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -18,6 +20,8 @@ pub enum WsRequest {
     GetStatus,
     #[serde(rename = "parse_sm")]
     ParseSm { content: String },
+    #[serde(rename = "analyze_density")]
+    AnalyzeDensity { chart_notes: Vec<(f64, String)> },
 }
 
 /// Outgoing responses sent over WebSocket to clients
@@ -37,6 +41,13 @@ pub enum WsResponse {
         title: String,
         artist: String,
         charts_count: usize,
+    },
+    #[serde(rename = "density_analysis")]
+    DensityAnalysis {
+        nps: f64,
+        length: f64,
+        stream_percentage: f64,
+        jack_percentage: f64,
     },
     #[serde(rename = "error")]
     Error { message: String },
@@ -89,6 +100,24 @@ pub fn process_message(text: &str) -> String {
                 title: sim.title,
                 artist: sim.artist,
                 charts_count,
+            };
+            serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
+        }
+        Ok(WsRequest::AnalyzeDensity { chart_notes }) => {
+            let mut chart = BTreeMap::new();
+            for (time, row) in chart_notes {
+                chart.insert(OrderedFloat(time), row);
+            }
+
+            let hd = HorizontalDensity::new(1.0).compute(&chart);
+            let sd = StreamDetector::new(0.3).compute(&chart);
+            let pd = PatternDetector::new(0.2).compute(&chart);
+
+            let res = WsResponse::DensityAnalysis {
+                nps: hd.get("nps").copied().unwrap_or(0.0),
+                length: hd.get("length").copied().unwrap_or(0.0),
+                stream_percentage: sd.get("stream_percentage").copied().unwrap_or(0.0),
+                jack_percentage: pd.get("jack_percentage").copied().unwrap_or(0.0),
             };
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
@@ -165,6 +194,27 @@ mod tests {
         assert!(res_str.contains(r#""title":"Test Track""#));
         assert!(res_str.contains(r#""artist":"Jules""#));
         assert!(res_str.contains(r#""charts_count":1"#));
+    }
+
+    #[test]
+    fn test_process_analyze_density() {
+        let req = serde_json::json!({
+            "action": "analyze_density",
+            "payload": {
+                "chart_notes": [
+                    [0.0, "1000"],
+                    [0.2, "0100"],
+                    [0.4, "0010"],
+                    [0.6, "0001"],
+                    [0.8, "1000"]
+                ]
+            }
+        }).to_string();
+
+        let res_str = process_message(&req);
+        assert!(res_str.contains(r#""type":"density_analysis""#));
+        assert!(res_str.contains(r#""stream_percentage""#));
+        assert!(res_str.contains(r#""jack_percentage""#));
     }
 
     #[test]

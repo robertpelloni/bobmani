@@ -1,22 +1,25 @@
 # Session Handoff Document
 
 ## Current Status
-We have completed exposing the full submodule tree across `lib.rs`, `main.rs`, and `ddc_onset/mod.rs`, aligned the `tract-onnx` inference model structure with `Arc<TypedRunnableModel>`, and eliminated all compiler warnings in `src/ddc/` at version **0.2.3**.
+We have implemented real-time chart density and difficulty feature analysis over the Axum WebSocket server, integrating `HorizontalDensity`, `StreamDetector`, and `PatternDetector` directly into `src/server.rs` at version **0.2.4**.
 
 ## Completed Work in This Session
-- **Rust Architecture Tree Alignment**:
+- **Axum WebSocket Real-Time Difficulty Pipeline (v0.2.4)**:
+  - Extended `src/server.rs` with `AnalyzeDensity` command and `DensityAnalysis` response payload.
+  - Integrated `HorizontalDensity`, `StreamDetector`, and `PatternDetector` from `crate::ffr_diff_model::features` to calculate real-time NPS, song length, stream percentage, and jack percentages over WebSocket.
+  - Added comprehensive unit testing (`test_process_analyze_density`) asserting density feature computation.
+  - Dynamic version extraction in WebSocket status handler using `env!("CARGO_PKG_VERSION")`.
+- **Rust Architecture Tree Alignment (v0.2.3)**:
   - Declared `arrowvortex`, `beatoraja`, `ddc`, `ddc_onset`, `ffr_diff_model`, and `server` in `src/lib.rs` and `src/main.rs`.
   - Declared `cnn`, `constants`, `spectral`, and `util` in `src/ddc_onset/mod.rs`.
   - Refactored `PlacementCNN` in `src/ddc_onset/cnn.rs` to store `Arc<TypedRunnableModel>` seamlessly compatible with tract 0.23 `.into_runnable()?`.
   - Resolved unused imports and unnecessary mutability in `src/ddc/` (`beatcalc.rs`, `chart.rs`, `dataset_json.rs`, `extract_feats.rs`).
-- **Axum WebSocket Engine (`src/server.rs`)**:
-  - Strongly typed JSON command dispatching (`ping`, `status`, `parse_sm`) passing unit tests and browser integration tests.
 - **Verification**:
   - `cargo check`: Clean (0 warnings).
-  - `cargo test`: Clean (8 passing tests across lib and bin).
+  - `cargo test`: Clean (10 passing tests across lib and bin).
   - `bobmania/scripts/audit_dashboard.py`: 13/13 modules verified.
 - **Documentation Governance**:
-  - Bumped version to `0.2.3` in `VERSION.md`.
+  - Bumped version to `0.2.4` in `VERSION.md`.
   - Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
 
 ## Next Immediate Steps for the Next Session
@@ -27,5 +30,5 @@ We have completed exposing the full submodule tree across `lib.rs`, `main.rs`, a
 
 **Last Verified Build Status:**
 - `cargo check`: Clean (0 warnings).
-- `cargo test`: Clean passing (8 tests passing).
+- `cargo test`: Clean passing (10 tests passing).
 - `bobmania/scripts/audit_dashboard.py`: SUCCESS.

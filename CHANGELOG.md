@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.4] - 2026-11-08
+### Added
+- Extended Axum WebSocket command pipeline with `AnalyzeDensity` request action and `DensityAnalysis` response telemetry.
+- Integrated `HorizontalDensity`, `StreamDetector`, and `PatternDetector` difficulty features directly into `src/server.rs` message routing.
+- Added comprehensive unit testing for real-time density and pattern analysis over WebSocket (`test_process_analyze_density`).
+- Dynamic version extraction in WebSocket status handler using `env!("CARGO_PKG_VERSION")`.
+
+### Changed
+- Bumped version to `0.2.4` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.3] - 2026-11-08
 ### Added
 - Exposed complete module hierarchy (`arrowvortex`, `beatoraja`, `ddc`, `ddc_onset`, `ffr_diff_model`, `server`) across library root `src/lib.rs` and application root `src/main.rs`.

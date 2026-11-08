@@ -1,1 +1,1 @@
-0.2.3 - Submodule Module Tree Exposure & ONNX Pipeline Alignment
+0.2.4 - Real-Time Chart Density & Pattern Analysis via WebSocket
