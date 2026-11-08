@@ -44,7 +44,7 @@ impl MelExtractor {
         let _bands = self.config.n_mels;
         let _channels = self.config.n_ffts.len();
 
-        let mut features: Vec<Vec<Vec<f32>>> = Vec::with_capacity(frames);
+        let features: Vec<Vec<Vec<f32>>> = Vec::with_capacity(frames);
 
         // Placeholder boundary
         if self.config.log_scale {

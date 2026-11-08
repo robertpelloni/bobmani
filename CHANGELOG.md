@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.3] - 2026-11-08
+### Added
+- Exposed complete module hierarchy (`arrowvortex`, `beatoraja`, `ddc`, `ddc_onset`, `ffr_diff_model`, `server`) across library root `src/lib.rs` and application root `src/main.rs`.
+- Exposed internal onset components (`cnn`, `constants`, `spectral`, `util`) in `src/ddc_onset/mod.rs`.
+- Standardized `tract-onnx` neural model representation using `Arc<TypedRunnableModel>` in `src/ddc_onset/cnn.rs`.
+
+### Fixed
+- Cleaned compiler warnings in `src/ddc/` (`beatcalc.rs`, `chart.rs`, `dataset_json.rs`, `extract_feats.rs`), achieving zero-warning clean compilation with `cargo check` and `cargo test`.
+
+### Changed
+- Bumped version to `0.2.3` in `VERSION.md`.
+- Updated `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.2] - 2026-11-08
 ### Added
 - Implemented strongly typed Axum WebSocket command dispatch in `src/server.rs` with `serde` and `serde_json`.

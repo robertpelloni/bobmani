@@ -56,7 +56,7 @@ pub fn process_message(text: &str) -> String {
         }
         Ok(WsRequest::GetStatus) => {
             let res = WsResponse::Status {
-                version: "0.2.2".to_string(),
+                version: env!("CARGO_PKG_VERSION").to_string(),
                 healthy: true,
                 submodules: vec![
                     "arrowvortex".to_string(),
@@ -152,7 +152,8 @@ mod tests {
     fn test_process_status() {
         let req = r#"{"action":"status"}"#;
         let res_str = process_message(req);
-        assert!(res_str.contains(r#""version":"0.2.2""#));
+        let expected_ver = format!(r#""version":"{}""#, env!("CARGO_PKG_VERSION"));
+        assert!(res_str.contains(&expected_ver));
         assert!(res_str.contains(r#""healthy":true"#));
         assert!(res_str.contains("arrowvortex"));
     }

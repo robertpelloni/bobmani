@@ -1,1 +1,1 @@
-0.2.2 - Axum WebSocket Real-Time Command Pipeline
+0.2.3 - Submodule Module Tree Exposure & ONNX Pipeline Alignment

@@ -1,29 +1,31 @@
 # Session Handoff Document
 
 ## Current Status
-We have successfully expanded the monolithic Rust WebSocket infrastructure to support strongly-typed JSON command dispatch at version **0.2.2**.
+We have completed exposing the full submodule tree across `lib.rs`, `main.rs`, and `ddc_onset/mod.rs`, aligned the `tract-onnx` inference model structure with `Arc<TypedRunnableModel>`, and eliminated all compiler warnings in `src/ddc/` at version **0.2.3**.
 
 ## Completed Work in This Session
+- **Rust Architecture Tree Alignment**:
+  - Declared `arrowvortex`, `beatoraja`, `ddc`, `ddc_onset`, `ffr_diff_model`, and `server` in `src/lib.rs` and `src/main.rs`.
+  - Declared `cnn`, `constants`, `spectral`, and `util` in `src/ddc_onset/mod.rs`.
+  - Refactored `PlacementCNN` in `src/ddc_onset/cnn.rs` to store `Arc<TypedRunnableModel>` seamlessly compatible with tract 0.23 `.into_runnable()?`.
+  - Resolved unused imports and unnecessary mutability in `src/ddc/` (`beatcalc.rs`, `chart.rs`, `dataset_json.rs`, `extract_feats.rs`).
 - **Axum WebSocket Engine (`src/server.rs`)**:
-  - Integrated `serde` and `serde_json` into `Cargo.toml`.
-  - Defined `WsRequest` enum (`ping`, `status`, `parse_sm`) and `WsResponse` enum (`pong`, `status`, `sm_metadata`, `error`).
-  - Added message dispatch function `process_message` handling live requests.
-  - Implemented unit tests for all actions and malformed JSON payloads.
-  - Verified browser WebSocket client integration via Playwright (`/home/jules/self_created_tools/ws_tester.py`), testing live WebSocket round-trips against the running Rust server on `ws://127.0.0.1:3000/ws`.
-- **Rust Monolith Hygiene**:
-  - Maintained zero compiler warnings with `cargo check` and passing tests with `cargo test`.
+  - Strongly typed JSON command dispatching (`ping`, `status`, `parse_sm`) passing unit tests and browser integration tests.
+- **Verification**:
+  - `cargo check`: Clean (0 warnings).
+  - `cargo test`: Clean (8 passing tests across lib and bin).
+  - `bobmania/scripts/audit_dashboard.py`: 13/13 modules verified.
 - **Documentation Governance**:
-  - Bumped version to `0.2.2` in `VERSION.md`.
-  - Updated `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
+  - Bumped version to `0.2.3` in `VERSION.md`.
+  - Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
 
 ## Next Immediate Steps for the Next Session
-1. Stream chart waveform and audio onset events from the Rust backend over the WebSocket connection.
-2. Connect the unified dashboard to the Rust WebSocket endpoint for real-time telemetry.
-3. Integrate ONNX model prediction triggers through the WebSocket command pipeline.
+1. Wire `ddc::extract_feats::MelExtractor` to real audio sample buffers.
+2. Connect WebSocket streams to live frontend chart visualizer.
+3. Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.
 4. Continue continuous autonomous development following the established documentation and git protocols.
 
 **Last Verified Build Status:**
 - `cargo check`: Clean (0 warnings).
-- `cargo test`: Clean passing (4/4 unittests passing).
-- `Playwright WebSocket test`: PASS (Pong, Status, SmMetadata verified).
+- `cargo test`: Clean passing (8 tests passing).
 - `bobmania/scripts/audit_dashboard.py`: SUCCESS.

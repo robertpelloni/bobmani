@@ -41,7 +41,7 @@ impl BeatCalc {
             *stops_map.entry(key).or_insert(0.0) += *stop;
         }
 
-        let mut stops: Vec<(f64, f64)> = stops_map.into_iter()
+        let stops: Vec<(f64, f64)> = stops_map.into_iter()
             .map(|(k, v)| (k.0, v))
             .filter(|&(_, v)| v != 0.0)
             .collect();
