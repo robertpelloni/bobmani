@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use crate::arrowvortex::simfile::{Simfile, SimFormat};
+use crate::ddc::extract_feats::MelExtractor;
 use crate::ffr_diff_model::features::{HorizontalDensity, OrderedFloat, PatternDetector, StreamDetector};
 
 /// Supported incoming WebSocket requests from the frontend or test clients
@@ -22,6 +23,8 @@ pub enum WsRequest {
     ParseSm { content: String },
     #[serde(rename = "analyze_density")]
     AnalyzeDensity { chart_notes: Vec<(f64, String)> },
+    #[serde(rename = "extract_audio_features")]
+    ExtractAudioFeatures { samples: Vec<f32> },
 }
 
 /// Outgoing responses sent over WebSocket to clients
@@ -48,6 +51,12 @@ pub enum WsResponse {
         length: f64,
         stream_percentage: f64,
         jack_percentage: f64,
+    },
+    #[serde(rename = "audio_features")]
+    AudioFeatures {
+        frames_count: usize,
+        bands: usize,
+        channels: usize,
     },
     #[serde(rename = "error")]
     Error { message: String },
@@ -118,6 +127,24 @@ pub fn process_message(text: &str) -> String {
                 length: hd.get("length").copied().unwrap_or(0.0),
                 stream_percentage: sd.get("stream_percentage").copied().unwrap_or(0.0),
                 jack_percentage: pd.get("jack_percentage").copied().unwrap_or(0.0),
+            };
+            serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
+        }
+        Ok(WsRequest::ExtractAudioFeatures { samples }) => {
+            let extractor = MelExtractor::new(None);
+            let features = extractor.extract(&samples);
+            let frames_count = features.len();
+            let bands = if !features.is_empty() { features[0].len() } else { 0 };
+            let channels = if !features.is_empty() && !features[0].is_empty() {
+                features[0][0].len()
+            } else {
+                0
+            };
+
+            let res = WsResponse::AudioFeatures {
+                frames_count,
+                bands,
+                channels,
             };
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
@@ -215,6 +242,23 @@ mod tests {
         assert!(res_str.contains(r#""type":"density_analysis""#));
         assert!(res_str.contains(r#""stream_percentage""#));
         assert!(res_str.contains(r#""jack_percentage""#));
+    }
+
+    #[test]
+    fn test_process_extract_audio_features() {
+        let samples = vec![0.1f32; 1024];
+        let req = serde_json::json!({
+            "action": "extract_audio_features",
+            "payload": {
+                "samples": samples
+            }
+        }).to_string();
+
+        let res_str = process_message(&req);
+        assert!(res_str.contains(r#""type":"audio_features""#));
+        assert!(res_str.contains(r#""frames_count":2"#));
+        assert!(res_str.contains(r#""bands":80"#));
+        assert!(res_str.contains(r#""channels":3"#));
     }
 
     #[test]

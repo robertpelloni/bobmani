@@ -1,1 +1,1 @@
-0.2.4 - Real-Time Chart Density & Pattern Analysis via WebSocket
+0.2.5 - Audio Mel Feature Framing & Real-Time Spectral Telemetry

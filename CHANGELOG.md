@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.5] - 2026-11-08
+### Added
+- Implemented audio sample framing, root-mean-square energy calculation, and log-Mel feature generation in `MelExtractor::extract` (`src/ddc/extract_feats.rs`).
+- Implemented multi-channel log-Mel spectrogram generation with 3 FFT frame lengths in `SpectrogramExtractor::forward` (`src/ddc_onset/spectral.rs`).
+- Added `ExtractAudioFeatures` request action and `AudioFeatures` response telemetry to Axum WebSocket command pipeline (`src/server.rs`).
+- Unit tests for audio feature generation and WebSocket command routing (`test_mel_extractor_dimensions`, `test_spectrogram_extractor_forward_batch_shape`, `test_process_extract_audio_features`).
+
+### Changed
+- Bumped version to `0.2.5` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.4] - 2026-11-08
 ### Added
 - Extended Axum WebSocket command pipeline with `AnalyzeDensity` request action and `DensityAnalysis` response telemetry.
