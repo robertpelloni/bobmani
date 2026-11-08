@@ -1,7 +1,8 @@
 # MEMORY: Architectural Insights & System Observations
 
 - **Rust Consolidation**: Ported `arrowvortex` Simfile/NoteList/TimingData structures and `.sm` parsing logic into native Rust. Ported `ffr-difficulty-model` density calculation and `ddc_onset` peak-finding/tract-onnx inference pipeline.
-- **Compiler Hygiene**: All warnings eliminated across `src/arrowvortex/` (`chart.rs`, `load_sm.rs`, `note_list.rs`, `timing_data.rs`) and `src/ffr_diff_model/` (`preprocessor.rs`), maintaining clean zero-warning builds with `cargo check` and `cargo test`.
+- **WebSocket Protocol**: The monolithic Rust backend implements an Axum (0.8.x) WebSocket server on `127.0.0.1:3000/ws` parsing strongly typed `WsRequest` (Ping, Status, ParseSm) and responding with `WsResponse` (Pong, Status, SmMetadata, Error) via `serde` and `serde_json`.
+- **Compiler Hygiene**: All warnings eliminated across `src/arrowvortex/` (`chart.rs`, `load_sm.rs`, `note_list.rs`, `timing_data.rs`), `src/ffr_diff_model/` (`preprocessor.rs`), and `src/server.rs`.
 - **Unified Single-Page Dashboard**: Dashboard interfaces are structured around high-value prioritization tiers:
   - Tier 1: Core Autonomous Orchestration & Autopilot (Routers, Orchestrator, Adaptive Routing, Worktree Racing).
   - Tier 2: Cognitive Intelligence, RAG & Vector Knowledge (AST Parser, RAG Search, Memory Store, Prompt Templates).

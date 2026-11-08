@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.2] - 2026-11-08
+### Added
+- Implemented strongly typed Axum WebSocket command dispatch in `src/server.rs` with `serde` and `serde_json`.
+- Added request parsing for `ping` (Pong response with UNIX timestamp), `status` (reporting active submodules and healthy state), and `parse_sm` (extracting StepMania Simfile title, artist, and chart count).
+- Added comprehensive unit tests in `src/server.rs` covering all command types and error handling.
+- Added automated browser-based end-to-end WebSocket integration test suite using Playwright.
+
+### Changed
+- Bumped version to `0.2.2` in `VERSION.md`.
+- Updated `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.1] - 2026-11-08
 ### Added
 - Redesigned and consolidated `pianogame` control surface into a unified single-page mission control dashboard organized into 4 high-value prioritized tiers (Autonomous Orchestration, Cognitive Intelligence, Supervisor & System Tray, Multi-Modal I/O) plus streaming telemetry.

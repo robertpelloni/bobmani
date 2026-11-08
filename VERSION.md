@@ -1,1 +1,1 @@
-0.2.1 - Unified Dashboard Consolidation & Engine Warning Cleanup
+0.2.2 - Axum WebSocket Real-Time Command Pipeline
