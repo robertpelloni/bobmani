@@ -1,1 +1,1 @@
-0.2.0 - Consolidation Phase 2 Initialized
+0.2.1 - Unified Dashboard Consolidation & Engine Warning Cleanup

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.1] - 2026-11-08
+### Added
+- Redesigned and consolidated `pianogame` control surface into a unified single-page mission control dashboard organized into 4 high-value prioritized tiers (Autonomous Orchestration, Cognitive Intelligence, Supervisor & System Tray, Multi-Modal I/O) plus streaming telemetry.
+- Comprehensive tooltips, labels, and interactive forms across all 17 interactive cards with version badge synchronized to v5.91.0.
+- Verified and audited `bobmania` unified StepMania dashboard overlay (`ScreenUnifiedDashboard overlay.lua`) covering all 13 core modules.
+
+### Fixed
+- Fixed 5 compiler warnings in the root Rust workspace (`load_sm.rs`, `note_list.rs`, `timing_data.rs`, `chart.rs`, `preprocessor.rs`), restoring zero-warning clean compilation with `cargo check` and `cargo test`.
+- Verified Go test suite and desktop system tray supervisor lifecycle with clean health polling and graceful server termination.
+
+### Changed
+- Updated system documentation: `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `VERSION.md` (bumped to 0.2.1), and `HANDOFF.md`.
+
 ## [0.1.1] - Massive Rust Port Initialization
 - Resolved missing `Cargo.toml` error by officially initializing the central Cargo workspace.
 - Updated core project directives (ROADMAP, TODO, VISION) to mandate the translation and consolidation of all previous submodules into this massive Rust app.

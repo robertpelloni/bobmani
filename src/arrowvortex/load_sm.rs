@@ -97,7 +97,7 @@ fn parse_notes(data: &mut ParseData, value_str: &str) {
     let mut chart = Chart::new();
 
     // Split chart info "a:b:c:d:..." into parameters.
-    let mut params: Vec<&str> = value_str.split(':').map(|s| s.trim()).collect();
+    let params: Vec<&str> = value_str.split(':').map(|s| s.trim()).collect();
 
     if params.len() >= 6 {
         chart.difficulty = match params[1].to_uppercase().as_str() {

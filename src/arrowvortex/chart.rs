@@ -1,4 +1,3 @@
-use crate::arrowvortex::notes::{ExpandedNote, NoteType};
 use crate::arrowvortex::note_list::NoteList;
 use crate::arrowvortex::tempo::Tempo;
 
