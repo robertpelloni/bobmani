@@ -11,5 +11,6 @@
 - [x] Add real-time density, stream, and pattern analysis (`analyze_density`) to the Axum WebSocket server in `src/server.rs`.
 - [x] Implement audio framing and multi-channel log-Mel feature generation in `src/ddc/extract_feats.rs` and `src/ddc_onset/spectral.rs`.
 - [x] Wire `extract_audio_features` action into Axum WebSocket server (`src/server.rs`).
+- [x] Implement bidirectional Rust-to-TypeScript WebSocket protocol formatting and parsing in `pianogame/typescript/src/ws_bridge.ts`.
 - [ ] Connect WebSocket streams to live frontend chart visualizer.
 - [ ] Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.

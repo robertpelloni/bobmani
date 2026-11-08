@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.6] - 2026-11-08
+### Added
+- Extended `WsBridge` in `pianogame/typescript/src/ws_bridge.ts` with `formatRustRequest`, `parseRustResponse`, and `broadcastMessage`.
+- Aligned TypeScript frontend bridge protocol with all Rust Axum `WsRequest` actions (`ping`, `status`, `parse_sm`, `analyze_density`, `extract_audio_features`).
+- Added unit test suite `pianogame/typescript/src/test_ws_bridge.ts` compiled via `tsc` and executed via `node dist/test_ws_bridge.js`.
+
+### Changed
+- Bumped version to `0.2.6` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.5] - 2026-11-08
 ### Added
 - Implemented audio sample framing, root-mean-square energy calculation, and log-Mel feature generation in `MelExtractor::extract` (`src/ddc/extract_feats.rs`).

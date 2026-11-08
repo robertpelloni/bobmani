@@ -5,6 +5,7 @@
 - **Module Exposure**: All submodules (`arrowvortex`, `beatoraja`, `ddc`, `ddc_onset`, `ffr_diff_model`, `server`) are exposed publicly through both `src/lib.rs` and `src/main.rs`. Internal onset features (`cnn`, `constants`, `spectral`, `util`) are exposed via `src/ddc_onset/mod.rs`.
 - **WebSocket Protocol**: The monolithic Rust backend implements an Axum (0.8.x) WebSocket server on `127.0.0.1:3000/ws` parsing strongly typed `WsRequest` (Ping, Status, ParseSm, AnalyzeDensity, ExtractAudioFeatures) and responding with `WsResponse` (Pong, Status, SmMetadata, DensityAnalysis, AudioFeatures, Error) via `serde` and `serde_json`.
 - **Real-Time Difficulty & Spectral Telemetry**: `AnalyzeDensity` converts notes into `BTreeMap<OrderedFloat, String>` and calculates NPS/Length, stream, and jack metrics. `ExtractAudioFeatures` runs `MelExtractor::extract` to calculate multi-channel log-Mel spectrogram dimensions `[frames, bands, channels]` dynamically over WebSocket.
+- **TypeScript WsBridge Protocol Support**: `pianogame/typescript/src/ws_bridge.ts` contains static formatters (`formatRustRequest`) and parsers (`parseRustResponse`) mirroring Rust's `WsRequest` and `WsResponse` schemas.
 - **Compiler Hygiene**: All warnings eliminated across `src/arrowvortex/`, `src/ffr_diff_model/`, `src/ddc/`, and `src/server.rs`.
 - **Unified Single-Page Dashboard**: Dashboard interfaces are structured around high-value prioritization tiers:
   - Tier 1: Core Autonomous Orchestration & Autopilot (Routers, Orchestrator, Adaptive Routing, Worktree Racing).

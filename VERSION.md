@@ -1,1 +1,1 @@
-0.2.5 - Audio Mel Feature Framing & Real-Time Spectral Telemetry
+0.2.6 - TypeScript WsBridge Integration & Full Telemetry Protocol
