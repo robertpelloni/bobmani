@@ -23,7 +23,10 @@ impl ParseData {
 pub fn load_sm_file(filepath: &str) -> Result<Simfile, String> {
     let content = fs::read_to_string(filepath)
         .map_err(|e| format!("Failed to read file: {}", e))?;
+    Ok(parse_sm_content(&content))
+}
 
+pub fn parse_sm_content(content: &str) -> Simfile {
     let mut data = ParseData::new();
     data.sim.format = SimFormat::Sm;
 
@@ -37,7 +40,7 @@ pub fn load_sm_file(filepath: &str) -> Result<Simfile, String> {
         };
 
         let tag = block[..colon_idx].trim().to_uppercase();
-        let value = block[colon_idx + 1..].trim_end_matches(';').trim();
+        let value = block[colon_idx + 1..].trim().trim_end_matches(';').trim();
 
         match tag.as_str() {
             "TITLE" => data.sim.title = value.to_string(),
@@ -62,7 +65,24 @@ pub fn load_sm_file(filepath: &str) -> Result<Simfile, String> {
         }
     }
 
-    Ok(data.sim)
+    data.sim
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_sm_content_basic() {
+        let sm = "#TITLE:Vortex Anthem;\n#ARTIST:Arrow Master;\n#OFFSET:-0.015;\n#BPMS:0.000=140.000,32.000=175.000;";
+        let sim = parse_sm_content(sm);
+        assert_eq!(sim.title, "Vortex Anthem");
+        assert_eq!(sim.artist, "Arrow Master");
+        assert_eq!(sim.tempo.offset, -0.015);
+        assert_eq!(sim.tempo.segments.bpm_changes.len(), 2);
+        assert_eq!(sim.tempo.segments.bpm_changes[0].bpm, 140.0);
+        assert_eq!(sim.tempo.segments.bpm_changes[1].bpm, 175.0);
+    }
 }
 
 use crate::arrowvortex::segments::{BpmChange, Stop};

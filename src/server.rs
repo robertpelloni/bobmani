@@ -7,7 +7,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
-use crate::arrowvortex::simfile::{Simfile, SimFormat};
+use crate::arrowvortex::load_sm::parse_sm_content;
 use crate::beatoraja::score_data::ScoreData;
 use crate::ddc::extract_feats::MelExtractor;
 use crate::ddc_onset::util::{find_peaks, threshold_peaks};
@@ -119,20 +119,12 @@ pub fn process_message(text: &str) -> String {
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
         Ok(WsRequest::ParseSm { content }) => {
-            let mut sim = Simfile::new();
-            sim.format = SimFormat::Sm;
-            for block in content.split('#').skip(1) {
-                if let Some(colon_idx) = block.find(':') {
-                    let tag = block[..colon_idx].trim().to_uppercase();
-                    let val = block[colon_idx + 1..].trim_end_matches(';').trim();
-                    match tag.as_str() {
-                        "TITLE" => sim.title = val.to_string(),
-                        "ARTIST" => sim.artist = val.to_string(),
-                        _ => {}
-                    }
-                }
-            }
-            let charts_count = content.split("#NOTES:").count().saturating_sub(1);
+            let sim = parse_sm_content(&content);
+            let charts_count = if !sim.charts.is_empty() {
+                sim.charts.len()
+            } else {
+                content.split("#NOTES:").count().saturating_sub(1)
+            };
             let res = WsResponse::SmMetadata {
                 title: sim.title,
                 artist: sim.artist,

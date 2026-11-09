@@ -1,1 +1,1 @@
-0.2.9 - Beatoraja Score Data Integration & Real-Time EX-Score Engine
+0.2.10 - Native ArrowVortex In-Memory Simfile Parser & Engine Integration

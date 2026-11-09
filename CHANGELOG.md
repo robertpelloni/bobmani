@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.10] - 2026-11-08
+### Added
+- Implemented `parse_sm_content` in `src/arrowvortex/load_sm.rs` to parse in-memory StepMania Simfiles without disk I/O bottlenecks.
+- Wired native `arrowvortex` simfile and chart parsing directly into `WsRequest::ParseSm` in `src/server.rs`.
+- Added unit testing for in-memory StepMania simfile parsing (`test_parse_sm_content_basic`).
+
+### Changed
+- Bumped version to `0.2.10` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.9] - 2026-11-08
 ### Added
 - Integrated `beatoraja::score_data::ScoreData` into Axum WebSocket server via `CalculateExScore` command (`src/server.rs`).

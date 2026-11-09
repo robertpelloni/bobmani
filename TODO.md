@@ -15,5 +15,6 @@
 - [x] Implement `detect_onsets` action in Axum WebSocket server using `find_peaks` and `threshold_peaks` from `ddc_onset::util`.
 - [x] Create `scripts/sync_submodules.py` automated synchronization and health audit tool.
 - [x] Wire `calculate_ex_score` action into Axum WebSocket server using `ScoreData` from `beatoraja::score_data`.
+- [x] Implement in-memory `parse_sm_content` in `src/arrowvortex/load_sm.rs` and connect to Axum WebSocket server.
 - [ ] Connect WebSocket streams to live frontend chart visualizer.
 - [ ] Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.
