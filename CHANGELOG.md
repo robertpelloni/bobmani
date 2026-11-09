@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.8] - 2026-11-08
+### Added
+- Created `scripts/sync_submodules.py` providing automated verification and synchronization checks across all 13 project submodules.
+- Validated clean working trees, published commit pins, and remote branch tracking across all submodules.
+
+### Changed
+- Bumped version to `0.2.8` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.7] - 2026-11-08
 ### Added
 - Extended Axum WebSocket command pipeline with `DetectOnsets` request action and `OnsetDetections` response telemetry (`src/server.rs`).

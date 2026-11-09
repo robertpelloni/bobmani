@@ -13,5 +13,6 @@
 - [x] Wire `extract_audio_features` action into Axum WebSocket server (`src/server.rs`).
 - [x] Implement bidirectional Rust-to-TypeScript WebSocket protocol formatting and parsing in `pianogame/typescript/src/ws_bridge.ts`.
 - [x] Implement `detect_onsets` action in Axum WebSocket server using `find_peaks` and `threshold_peaks` from `ddc_onset::util`.
+- [x] Create `scripts/sync_submodules.py` automated synchronization and health audit tool.
 - [ ] Connect WebSocket streams to live frontend chart visualizer.
 - [ ] Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.

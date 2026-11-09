@@ -1,9 +1,12 @@
 # Session Handoff Document
 
 ## Current Status
-We have implemented real-time audio onset peak detection and threshold filtering over the Axum WebSocket server, integrating `find_peaks` and `threshold_peaks` from `src/ddc_onset/util.rs` directly into `src/server.rs` at version **0.2.7**.
+We have implemented automated submodule synchronization and audit tooling (`scripts/sync_submodules.py`), verifying recursive submodule initialization, clean working tree status, and published commit pins across all 13 project submodules at version **0.2.8**.
 
 ## Completed Work in This Session
+- **Automated Submodule Audit & Synchronization Tooling (v0.2.8)**:
+  - Implemented `scripts/sync_submodules.py` to audit and enforce cleanliness, published commit tracking, and recursive submodule initialization across all 13 submodules.
+  - Verified 13/13 submodules clean and aligned.
 - **Axum WebSocket Real-Time Onset Detection Pipeline (v0.2.7)**:
   - Extended `src/server.rs` with `DetectOnsets` request command and `OnsetDetections` response telemetry.
   - Integrated `find_peaks` and `threshold_peaks` from `crate::ddc_onset::util` to detect local note onset maxima and filter by threshold dynamically.
@@ -24,9 +27,10 @@ We have implemented real-time audio onset peak detection and threshold filtering
   - `cargo test`: Clean (22 passing tests across lib and bin).
   - `tsc`: Clean (0 errors).
   - `node dist/test_ws_bridge.js`: PASS.
+  - `python3 scripts/sync_submodules.py`: 13/13 clean and synchronized.
   - `bobmania/scripts/audit_dashboard.py`: 13/13 modules verified.
 - **Documentation Governance**:
-  - Bumped version to `0.2.7` in `VERSION.md`.
+  - Bumped version to `0.2.8` in `VERSION.md`.
   - Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
 
 ## Next Immediate Steps for the Next Session
@@ -38,4 +42,5 @@ We have implemented real-time audio onset peak detection and threshold filtering
 - `cargo check`: Clean (0 warnings).
 - `cargo test`: Clean passing (22 tests passing).
 - `typescript test`: Clean passing (`node dist/test_ws_bridge.js`).
+- `scripts/sync_submodules.py`: SUCCESS.
 - `bobmania/scripts/audit_dashboard.py`: SUCCESS.

@@ -1,1 +1,1 @@
-0.2.7 - Real-Time Peak Salience & Audio Onset Detection via WebSocket
+0.2.8 - Automated Submodule Synchronization & Audit Tooling
