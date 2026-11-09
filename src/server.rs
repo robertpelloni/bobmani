@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use crate::arrowvortex::simfile::{Simfile, SimFormat};
+use crate::beatoraja::score_data::ScoreData;
 use crate::ddc::extract_feats::MelExtractor;
 use crate::ddc_onset::util::{find_peaks, threshold_peaks};
 use crate::ffr_diff_model::features::{HorizontalDensity, OrderedFloat, PatternDetector, StreamDetector};
@@ -30,6 +31,14 @@ pub enum WsRequest {
     DetectOnsets {
         onset_salience: Vec<f32>,
         threshold: f32,
+    },
+    #[serde(rename = "calculate_ex_score")]
+    CalculateExScore {
+        epg: i32,
+        lpg: i32,
+        egr: i32,
+        lgr: i32,
+        notes: i32,
     },
 }
 
@@ -69,6 +78,13 @@ pub enum WsResponse {
         peaks: Vec<usize>,
         filtered_peaks: Vec<usize>,
         total_frames: usize,
+    },
+    #[serde(rename = "score_analysis")]
+    ScoreAnalysis {
+        ex_score: i32,
+        max_ex_score: i32,
+        accuracy_rate: f64,
+        is_valid: bool,
     },
     #[serde(rename = "error")]
     Error { message: String },
@@ -169,6 +185,32 @@ pub fn process_message(text: &str) -> String {
                 peaks,
                 filtered_peaks,
                 total_frames,
+            };
+            serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
+        }
+        Ok(WsRequest::CalculateExScore { epg, lpg, egr, lgr, notes }) => {
+            let mut score = ScoreData::new();
+            score.epg = epg;
+            score.lpg = lpg;
+            score.egr = egr;
+            score.lgr = lgr;
+            score.notes = notes;
+            score.passnotes = (epg + lpg + egr + lgr).min(notes);
+
+            let ex_score = score.get_exscore();
+            let max_ex_score = notes.max(0) * 2;
+            let accuracy_rate = if max_ex_score > 0 {
+                (ex_score as f64) / (max_ex_score as f64)
+            } else {
+                0.0
+            };
+            let is_valid = score.validate();
+
+            let res = WsResponse::ScoreAnalysis {
+                ex_score,
+                max_ex_score,
+                accuracy_rate,
+                is_valid,
             };
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
@@ -301,6 +343,26 @@ mod tests {
         assert!(res_str.contains(r#""total_frames":8"#));
         assert!(res_str.contains(r#""peaks""#));
         assert!(res_str.contains(r#""filtered_peaks""#));
+    }
+
+    #[test]
+    fn test_process_calculate_exscore() {
+        let req = serde_json::json!({
+            "action": "calculate_ex_score",
+            "payload": {
+                "epg": 50,
+                "lpg": 50,
+                "egr": 10,
+                "lgr": 10,
+                "notes": 120
+            }
+        }).to_string();
+
+        let res_str = process_message(&req);
+        assert!(res_str.contains(r#""type":"score_analysis""#));
+        assert!(res_str.contains(r#""ex_score":220"#)); // (50+50)*2 + 10 + 10 = 220
+        assert!(res_str.contains(r#""max_ex_score":240"#)); // 120 * 2 = 240
+        assert!(res_str.contains(r#""is_valid":true"#));
     }
 
     #[test]

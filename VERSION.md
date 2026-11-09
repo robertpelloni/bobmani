@@ -1,1 +1,1 @@
-0.2.8 - Automated Submodule Synchronization & Audit Tooling
+0.2.9 - Beatoraja Score Data Integration & Real-Time EX-Score Engine

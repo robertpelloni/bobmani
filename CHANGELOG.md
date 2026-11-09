@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.9] - 2026-11-08
+### Added
+- Integrated `beatoraja::score_data::ScoreData` into Axum WebSocket server via `CalculateExScore` command (`src/server.rs`).
+- Added `ScoreAnalysis` response returning calculated EX score, maximum achievable score, accuracy percentage, and integrity validation state.
+- Added comprehensive unit testing for real-time EX score calculation (`test_process_calculate_exscore`).
+
+### Changed
+- Bumped version to `0.2.9` in `VERSION.md`.
+- Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, and `HANDOFF.md`.
+
 ## [0.2.8] - 2026-11-08
 ### Added
 - Created `scripts/sync_submodules.py` providing automated verification and synchronization checks across all 13 project submodules.
