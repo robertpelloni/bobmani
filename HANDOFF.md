@@ -1,20 +1,38 @@
 # Session Handoff Document
 
 ## Current Status
-We have transitioned from our `bobmani` rhythm game port logic directly into the **Jules Autopilot (Go Primary Runtime)** infrastructure. The main supervisor directives instructed a shift to building out a high-performance orchestration layer utilizing a `backend-go` server and our previously scaffolded Vite/React SPA.
+We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) within `src/arrowvortex/load_sm.rs` and wired it into the Axum WebSocket server at version **0.2.10**.
 
 ## Completed Work in This Session
-- **SQLite Persistence layer:** Initialized the `gorm.io/gorm` and `gorm.io/driver/sqlite` drivers inside `backend-go`. Added the models for `MemoryChunk` and `Session` and ran auto-migrations. (Downgraded gorm package slightly to bypass Go 1.25.0 bounds).
-- **Architectural Pivot:** Detected the shift in root documentation (`README.md`, `DEPLOY.md`, `VISION.md`, `ROADMAP.md`).
-- **Go Initialization:** Spun up the `backend-go` directory, ran `go mod init`, and wrote the primary `main.go` entry point.
-- **Borg API Routes:** Implemented the `GET /api/manifest` and `GET /api/fleet/summary` routes explicitly instructed by the roadmap to handle discovery and fleet state payloads.
-- **Verification:** Built `jules-backend` and queried the ports locally, verifying 200 OK responses with the proper capability payloads.
-- **Documentation Reset:** Updated `TODO.md` and `VERSION.md` (to `1.0.1`) to reflect the new state of the repository, setting up the foundation for continuous deployment on Render.
+- **Native ArrowVortex In-Memory Simfile Parser (v0.2.10)**:
+  - Implemented `parse_sm_content` in `src/arrowvortex/load_sm.rs` to parse tag metadata, BPM changes, and notes directly from string slices without disk I/O.
+  - Refactored `load_sm_file` to delegate to `parse_sm_content`.
+  - Wired `parse_sm_content` directly into `WsRequest::ParseSm` in `src/server.rs`.
+  - Added unit test `test_parse_sm_content_basic` validating parsing of titles, artists, negative offsets, and multiple BPM changes.
+- **Beatoraja Score Integration & Real-Time EX-Score Engine (v0.2.9)**:
+  - Extended `src/server.rs` with `CalculateExScore` request command and `ScoreAnalysis` response payload.
+  - Wired judgment counters (`epg`, `lpg`, `egr`, `lgr`, `notes`) into `ScoreData::get_exscore()` and `ScoreData::validate()`.
+- **Automated Submodule Audit & Synchronization Tooling (v0.2.8)**:
+  - Implemented `scripts/sync_submodules.py` to audit and enforce cleanliness, published commit tracking, and recursive submodule initialization across all 13 submodules.
+- **Verification**:
+  - `cargo check`: Clean (0 warnings).
+  - `cargo test`: Clean (26 passing tests across lib and bin).
+  - `tsc`: Clean (0 errors).
+  - `node dist/test_ws_bridge.js`: PASS.
+  - `python3 scripts/sync_submodules.py`: 13/13 clean and synchronized.
+  - `bobmania/scripts/audit_dashboard.py`: 13/13 modules verified.
+- **Documentation Governance**:
+  - Bumped version to `0.2.10` in `VERSION.md`.
+  - Synchronized `ROADMAP.md`, `TODO.md`, `MEMORY.md`, `CHANGELOG.md`, and `HANDOFF.md`.
 
 ## Next Immediate Steps for the Next Session
-1. Execute the Git sanitization protocol (fetch, pull).
-2. Wire the real-time WebSockets to the `frontend-vite` system so it can receive session state pushes.
-3. Transition the actual "RAG Indexer" embeddings chunks to use `backend-go` logic to hydrate the `MemoryChunk` database model.
-4. Keep adhering strictly to the documented workflow rules! DON'T EVER STOP THE PARTY!
+1. Connect WebSocket streams to live frontend chart visualizer.
+2. Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.
+3. Continue continuous autonomous development following the established documentation and git protocols.
 
-**Last Verified Build Status:** Clean `go build` passing.
+**Last Verified Build Status:**
+- `cargo check`: Clean (0 warnings).
+- `cargo test`: Clean passing (26 tests passing).
+- `typescript test`: Clean passing (`node dist/test_ws_bridge.js`).
+- `scripts/sync_submodules.py`: SUCCESS.
+- `bobmania/scripts/audit_dashboard.py`: SUCCESS.

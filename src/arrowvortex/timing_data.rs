@@ -49,7 +49,7 @@ impl TimingData {
         }
     }
 
-    pub fn update(&mut self, offset: f64, tempo: &Tempo) {
+    pub fn update(&mut self, offset: f64, _tempo: &Tempo) {
         // Placeholder for C++ update logic
         self.events.clear();
         self.signatures.clear();

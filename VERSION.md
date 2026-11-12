@@ -1,1 +1,1 @@
-0.2.0 - Consolidation Phase 2 Initialized
+0.2.10 - Native ArrowVortex In-Memory Simfile Parser & Engine Integration

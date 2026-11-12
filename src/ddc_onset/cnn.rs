@@ -2,7 +2,7 @@ use tract_onnx::prelude::*;
 use std::sync::Arc;
 
 pub struct PlacementCNN {
-    model: Arc<SimplePlan<TypedFact, Box<dyn TypedOp>, Graph<TypedFact, Box<dyn TypedOp>>>>,
+    model: Arc<TypedRunnableModel>,
 }
 
 impl PlacementCNN {
@@ -11,7 +11,7 @@ impl PlacementCNN {
             .model_for_path(model_path)?
             .into_optimized()?
             .into_runnable()?;
-        Ok(Self { model: Arc::new(model) })
+        Ok(Self { model })
     }
 
     pub fn predict(&self, input: Tensor) -> TractResult<Tensor> {

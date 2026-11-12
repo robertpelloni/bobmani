@@ -1,4 +1,4 @@
-use crate::arrowvortex::notes::{ExpandedNote, NoteType};
+use crate::arrowvortex::notes::ExpandedNote;
 
 /// Holds a list of ExpandedNotes
 #[derive(Debug, Clone, Default)]

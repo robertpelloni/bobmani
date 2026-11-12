@@ -56,7 +56,7 @@ impl SMChartPreprocessor {
             let mut chart_dict = BTreeMap::new();
 
             // The block is split into meta lines and then the actual notes
-            let mut parts: Vec<&str> = block.split(':').map(|s| s.trim()).collect();
+            let parts: Vec<&str> = block.split(':').map(|s| s.trim()).collect();
             if parts.len() < 6 {
                 continue;
             }
