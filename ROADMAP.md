@@ -33,3 +33,4 @@
 - [x] 0.2.14 End-to-end ONNX placement test with real model fixture.
 - [x] 0.2.15 Graceful shutdown (Ctrl-C, /shutdown, dashboard Quit).
 - [x] 0.2.16 Live fleet audit endpoint + dashboard.
+- [x] 0.2.17 Native OS tray icon with graceful server quit.

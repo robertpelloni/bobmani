@@ -39,3 +39,5 @@ cargo run            # or .\target\debug\app.exe
 Unified build/test: `pwsh scripts/build.ps1`. Tray supervisor: `cd pianogame\go; go run .` (console only, Ctrl-C quits; no OS tray icon yet).
 
 Stop the Rust hub: Ctrl-C, `POST /shutdown`, or the dashboard Quit button (all graceful).
+
+Tray: `cd pianogame\go; go run . tray` (native icon; Quit servers stops the Rust hub gracefully).

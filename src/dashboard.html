@@ -110,8 +110,8 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <div class="kv" id="fleet"><span>Loading from status…</span></div></section>
 
     <section class="card"><h2>System tray &amp; supervisor <span class="tip" title="The tray lives in the Go harness (pianogame/go), not in this Rust server. It supervises rust/go/csharp/java/typescript engines.">ⓘ</span></h2>
-      <p class="desc"><b>Where is it?</b> <code>pianogame/go/supervisor/</code> — <code>TraySupervisor</code> tracks 5 engines, handles Ctrl-C/SIGTERM, and <code>QuitAll()</code> gracefully stops all engines and dismisses the tray. It is a console supervisor today: no native OS tray icon library is linked yet, so no icon appears in the Windows tray when run.</p>
-      <p class="desc">Run it: <code>cd pianogame\go; go run .</code> · Quit: Ctrl-C, or call <code>QuitAll()</code>. To quit <i>this</i> Rust server: Ctrl-C in its terminal, or:</p>
+      <p class="desc"><b>Where is it?</b> <code>pianogame/go/supervisor/</code> — native Windows tray icon via fyne/systray (<code>RunNativeTray</code>): Open dashboard, Check health, and Quit servers (POSTs this server's /shutdown, then <code>QuitAll()</code>). The plain <code>TraySupervisor</code> also tracks 5 engines and handles Ctrl-C/SIGTERM.</p>
+      <p class="desc">Run it: <code>cd pianogame\go; go run . tray</code> — right-click the bobmani icon. To quit <i>this</i> Rust server: tray Quit, Ctrl-C, or:</p>
       <button id="quit" style="background:#b91c1c">Quit this server</button>
       <p class="muted" id="quit-msg">Graceful shutdown via POST /shutdown — in-flight replies finish, then the process exits.</p></section>
 
@@ -120,7 +120,7 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <button class="secondary" id="clear">Clear log</button><pre id="log"></pre></section>
   </div>
 
-  <p class="muted">Not yet wired (honest gaps): no ONNX model file ships with the repo (placement uses the labelled heuristic until one is added), native OS tray icon. See ROADMAP.md / TODO.md.</p>
+  <p class="muted">Not yet wired (honest gaps): no trained ONNX placement model ships with the repo (only a Relu fixture; placement uses the labelled heuristic until one is added). See ROADMAP.md / TODO.md.</p>
 </main>
 <script>
 const $=id=>document.getElementById(id);

@@ -209,3 +209,9 @@
 - bobmania + hymnmania at different commits than recorded; ddc (11), hymnmania (5), bobmania (4), ksm-v2 (4), itgmania (3), arrowvortex (2), ffr (2), beatoraja/linthesia (1) dirty files by full per-repo count. Left untouched.
 ### Verified
 - cargo test 40 pass; live /fleet 200 in 2921ms showing bobmania/hymnmania new-commits.
+
+## [0.2.17] - 2026-11-14
+### Added
+- Native Windows system-tray icon in pianogame Go supervisor (fyne.io/systray v1.12.2, RunNativeTray, go run . tray): Open dashboard, Check health, Quit servers (POST Rust /shutdown + QuitAll). pianogame 4f42120; main pointer updated.
+### Verified
+- go vet/test/build pass; tray process stays alive in tray mode (BelowNormal smoke, killed by PID after check). Visual icon click-through not exercised headlessly. cargo test 40 pass.

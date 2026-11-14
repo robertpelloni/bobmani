@@ -58,3 +58,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.16 (2026-11-14)
 - /fleet perf lesson: git submodule status=16.5s, full porcelain=18.9s, --ignore-submodules=dirty=1.1s on this tree. Fleet = ls-files gitlinks + dirty-mode status; modified-content at same commit not shown (documented trade-off). Submodule dirty work untouched. Next: tray icon needs systray dep decision.
+
+## 0.2.17 (2026-11-14)
+- Tray: pianogame/go/supervisor/tray_native.go + icon.ico, 'go run . tray'. Quit POSTs 127.0.0.1:3000/shutdown. Tray menu click-through UNVERIFIED (headless smoke only: process alive). Remaining gap: trained ONNX model only.

@@ -38,3 +38,6 @@
 - [x] 0.2.16 Live /fleet audit on dashboard.
 - [ ] Decide bobmania/hymnmania pointer updates (user call — do not auto-commit submodule work).
 - [ ] Native tray icon; trained placement model.
+- [x] 0.2.17 Native tray icon + Quit servers.
+- [ ] Click-through verify tray menu items on a real desktop session.
+- [ ] Trained placement model; decide bobmania/hymnmania pointers.
