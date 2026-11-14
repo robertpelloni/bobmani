@@ -18,3 +18,10 @@
 - [x] Implement in-memory `parse_sm_content` in `src/arrowvortex/load_sm.rs` and connect to Axum WebSocket server.
 - [ ] Connect WebSocket streams to live frontend chart visualizer.
 - [ ] Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.
+
+## 0.2.11 follow-ups
+- [ ] Native tray icon + Quit wiring to Rust server shutdown endpoint.
+- [ ] Chart visualiser canvas on dashboard (density heatmap).
+- [ ] ONNX predict_place action + integration test.
+- [ ] Fix submodule dirty trees (bobmania, hymnmania modified; ddc/ffr untracked content) — audit before committing pointers.
+- [ ] Merge or close stale branches: scaffold-docs-10743658648208721759, jules-empty-repo-diagnosis-17910503964700985352 (inspect before merging; do not merge blind).

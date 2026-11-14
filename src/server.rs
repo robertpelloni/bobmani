@@ -1,6 +1,6 @@
 use axum::{
     extract::ws::{Message, WebSocket, WebSocketUpgrade},
-    response::IntoResponse,
+    response::{Html, IntoResponse, Json},
     routing::get,
     Router,
 };
@@ -215,8 +215,31 @@ pub fn process_message(text: &str) -> String {
     }
 }
 
+/// Embedded single-page dashboard: every WsRequest action has a labelled
+/// form with tooltips on this one page (no subpages). Highest-value chart
+/// tools first, then audio/onset, then fleet/tray/ops.
+const DASHBOARD_HTML: &str = include_str!("dashboard.html");
+
+async fn dashboard_handler() -> Html<&'static str> {
+    Html(DASHBOARD_HTML)
+}
+
+async fn health_handler() -> Json<serde_json::Value> {
+    Json(serde_json::json!({
+        "ok": true,
+        "service": "bobmani",
+        "version": env!("CARGO_PKG_VERSION"),
+        "websocket": "/ws",
+        "dashboard": "/",
+        "actions": ["ping","status","parse_sm","analyze_density","extract_audio_features","detect_onsets","calculate_ex_score"]
+    }))
+}
+
 pub async fn run_server() {
-    let app = Router::new().route("/ws", get(ws_handler));
+    let app = Router::new()
+        .route("/", get(dashboard_handler))
+        .route("/health", get(health_handler))
+        .route("/ws", get(ws_handler));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("listening on {}", addr);
@@ -355,6 +378,21 @@ mod tests {
         assert!(res_str.contains(r#""ex_score":220"#)); // (50+50)*2 + 10 + 10 = 220
         assert!(res_str.contains(r#""max_ex_score":240"#)); // 120 * 2 = 240
         assert!(res_str.contains(r#""is_valid":true"#));
+    }
+
+    #[test]
+    fn test_dashboard_covers_all_actions() {
+        for needle in [
+            "parse_sm", "analyze_density", "calculate_ex_score", "detect_onsets",
+            "extract_audio_features", "System tray",
+        ] {
+            assert!(DASHBOARD_HTML.contains(needle), "dashboard missing {needle}");
+        }
+        assert!(DASHBOARD_HTML.contains("data-send=\"parse\""));
+        assert!(DASHBOARD_HTML.contains("data-send=\"density\""));
+        assert!(DASHBOARD_HTML.contains("data-send=\"score\""));
+        assert!(DASHBOARD_HTML.contains("data-send=\"onsets\""));
+        assert!(DASHBOARD_HTML.contains("data-send=\"audio\""));
     }
 
     #[test]

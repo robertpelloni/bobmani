@@ -15,3 +15,5 @@
   - Tier 4: Storage, Browser Automation & Multi-Modal I/O (SQLite Persistent Store, Chrome CDP, Email/Webhooks, MIDI Analyzer).
 - **System Tray Protocol**: The Go desktop launcher and background supervisor provide process monitoring for 5 engines, notification balloon alerts, and graceful multi-engine teardown on `quit`.
 - **Bobmania Theme Dashboard**: Bobmania's `ScreenUnifiedDashboard overlay.lua` exposes 13 high-value modules tested via `scripts/audit_dashboard.py`.
+
+- **0.2.11**: Root Rust server is the dashboard host (`/`, `/health`, `/ws`). Cargo.toml version must stay in sync with VERSION.md — it had drifted to 0.1.0. update_docs.sh was destructive (stub-overwrote docs); archived, never restore it.

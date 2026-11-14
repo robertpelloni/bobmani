@@ -1,1 +1,1 @@
-0.2.10 - Native ArrowVortex In-Memory Simfile Parser & Engine Integration
+﻿0.2.11 - Unified Single-Page Dashboard at / (all 7 WebSocket actions, /health)

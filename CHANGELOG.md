@@ -169,3 +169,11 @@
 ## [0.2.0] - 2024-05-XX
 - Resolved Rust compilation errors.
 - Successfully integrated tract-onnx bindings.
+
+## [0.2.11] - 2026-11-14
+### Added
+- Single-page dashboard served by the Rust hub at `/` (src/dashboard.html, embedded via include_str!): labelled forms + tooltips for all 7 actions (ping, status, parse_sm, analyze_density, extract_audio_features, detect_onsets, calculate_ex_score), priority tiers, live telemetry log, fleet and tray cards. No subpages.
+- `GET /health` JSON (ok, version, actions). Cargo.toml version aligned 0.1.0 -> 0.2.11 (was stale vs VERSION.md).
+- `scripts/build.ps1` unified build/test; archived destructive `update_docs.sh` to `scripts/archive/` and replaced it with a deprecation stub.
+### Verified
+- cargo test: 28 passed (14 lib + 14 bin, incl. new test_dashboard_covers_all_actions). Live BelowNormal run: /health 200, / 200 (11076 bytes), WS pong/status/parse_sm correct. Go: go test ./... ok.

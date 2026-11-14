@@ -21,3 +21,10 @@
 1. **Core-Mani WASM Engine**: Complete cross-compilation of timing, chart parsing, and judgment logic into WebAssembly.
 2. **Universal Rhythm Controller**: Unify multi-controller inputs (DDR dance pads, IIDX controllers, MIDI keyboards) across all submodules.
 3. **Embedded Bobcoin Proof-of-Play (PoP)**: On-chain accuracy validation and token reward integration.
+
+## Update 0.2.11 (2026-11-14)
+- [x] Serve unified dashboard from Rust hub at `/` + `/health` (previously docs claimed a dashboard the root server never served).
+- [x] Tray clarified: Go console supervisor only, no native OS tray icon yet.
+- [ ] Native OS tray icon (Windows shell) with Quit that stops the Rust server.
+- [ ] Live chart visualiser canvas fed by analyze_density stream.
+- [ ] ONNX placement inference action over WebSocket.

@@ -1,17 +1,7 @@
-#!/bin/bash
-# Update VERSION.md
-echo "0.2.0 - Consolidation Phase 2 Initialized" > VERSION.md
-
-# Update CHANGELOG.md
-echo "## [0.2.0] - 2024-05-XX" >> CHANGELOG.md
-echo "- Resolved Rust compilation errors." >> CHANGELOG.md
-echo "- Successfully integrated tract-onnx bindings." >> CHANGELOG.md
-
-# Update VISION.md, MEMORY.md, etc.
-echo "# VISION: A unified Rust architecture for rhythm game components" > VISION.md
-echo "# MEMORY: Ported ffr-difficulty-model, arrowvortex parsing to Rust." > MEMORY.md
-echo "# ROADMAP: Connect WebSocket backend, expand Vite UI." > ROADMAP.md
-echo "# TODO: Implement WebSocket server in axum or actix." > TODO.md
-
-git add .
-git commit -m "chore(docs): Update documentation and version bump for Phase 2 consolidation [0.2.0]"
+#!/bin/sh
+# DEPRECATED stub: the old version overwrote VISION.md/MEMORY.md/ROADMAP.md/TODO.md
+# with one-line stubs and ran `git add .`. Archived at scripts/archive/update_docs.sh.bak.
+# Docs are now edited directly; build/test with scripts/build.ps1 (Windows) or:
+#   cargo test && cargo build && (cd pianogame/go && go test ./...)
+echo "update_docs.sh is deprecated. Edit docs directly; see scripts/build.ps1" >&2
+exit 1

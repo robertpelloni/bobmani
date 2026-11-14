@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>bobmani — Unified Dashboard</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;background:#0b1020;color:#e8ecf8}
+header{padding:20px 24px;border-bottom:1px solid #26305a;display:flex;gap:16px;flex-wrap:wrap;align-items:center;position:sticky;top:0;background:#0b1020ee;z-index:5}
+h1{font-size:22px;margin:0}.badge{background:#24306b;border:1px solid #3b4da0;border-radius:999px;padding:2px 10px;font-size:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block}.dot.ok{background:#22c55e}.dot.bad{background:#ef4444}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+.tier{margin:22px 0 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#93a4ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.card{background:#131a33;border:1px solid #26305a;border-radius:14px;padding:16px}
+.card h2{font-size:17px;margin:0 0 4px}.desc{color:#aab4d6;font-size:13px;margin:0 0 10px}
+label{display:block;font-size:13px;margin:8px 0 3px}input,textarea,select{width:100%;background:#0b1020;color:#e8ecf8;border:1px solid #33407a;border-radius:8px;padding:8px}
+textarea{min-height:74px;font-family:ui-monospace,monospace;font-size:12px}
+button{background:#4f6bff;color:#fff;border:0;border-radius:9px;padding:9px 14px;cursor:pointer;margin-top:10px}button:hover{background:#3d55d6}
+button.secondary{background:#24306b}.tip{cursor:help;border-bottom:1px dotted #93a4ff}
+pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;overflow:auto;max-height:220px;font-size:12px;white-space:pre-wrap}
+#log{max-height:300px}.muted{color:#8b96bd;font-size:13px}a{color:#93a4ff}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}.kv b{color:#c7d0f2}
+</style></head><body>
+<header>
+  <h1>bobmani — Unified Dashboard</h1>
+  <span class="badge" id="ver">v…</span>
+  <span><span class="dot" id="dot"></span> <span id="conn">connecting…</span></span>
+  <span class="muted">One page for every backend feature. Highest-value tools first. Hover dotted labels <span class="tip" title="Tooltips explain what a control does, what input it expects, and what you get back.">ⓘ</span> for guidance.</span>
+</header>
+<main>
+  <p class="muted">Live WebSocket: <code id="wsurl"></code> · Health: <a href="/health">/health</a> · All 7 backend actions are wired below — no subpages.</p>
+
+  <div class="tier">Tier 1 — Chart tools (highest value)</div>
+  <div class="grid">
+    <section class="card"><h2>Parse StepMania file <span class="tip" title="Sends parse_sm to the Rust ArrowVortex port. Returns title, artist and chart count.">ⓘ</span></h2>
+      <p class="desc">Paste <code>.sm</code> content to extract metadata without disk I/O.</p>
+      <label for="sm">Simfile content <span class="tip" title="Include #TITLE, #ARTIST and #NOTES tags for a full result.">ⓘ</span></label>
+      <textarea id="sm">#TITLE:Test Track;
+#ARTIST:Example Artist;
+#BPMS:0.000=120.000;
+#NOTES:
+     dance-single:
+     :
+     Beginner:
+     1:
+     0.000,0.000,0.000,0.000,0.000:
+1000
+0100
+0010
+0001
+;</textarea>
+      <button data-send="parse">Parse simfile</button><pre id="out-parse">Result appears here.</pre></section>
+
+    <section class="card"><h2>Density &amp; difficulty <span class="tip" title="analyze_density: notes-per-second, stream % and jack % from the FFR difficulty port.">ⓘ</span></h2>
+      <p class="desc">Rows are <code>time,row</code> per line, e.g. <code>0.0,1000</code> (4-panel bitmask).</p>
+      <label for="notes">Chart notes <span class="tip" title="One note row per line: seconds,panels. Panels use 1=on, 0=off.">ⓘ</span></label>
+      <textarea id="notes">0.0,1000
+0.2,0100
+0.4,0010
+0.6,0001
+0.8,1000
+1.0,1000</textarea>
+      <button data-send="density">Analyse density</button><pre id="out-density">Result appears here.</pre></section>
+
+    <section class="card"><h2>EX score <span class="tip" title="calculate_ex_score: beatoraja ScoreData. PGreat=2, Great=1. Accuracy = EX / max EX.">ⓘ</span></h2>
+      <p class="desc">Beatoraja judgement counts → EX score, max, accuracy and validity.</p>
+      <div class="kv">
+        <label for="epg">Early PGreat</label><input id="epg" type="number" value="50">
+        <label for="lpg">Late PGreat</label><input id="lpg" type="number" value="50">
+        <label for="egr">Early Great</label><input id="egr" type="number" value="10">
+        <label for="lgr">Late Great</label><input id="lgr" type="number" value="10">
+        <label for="tnotes">Total notes</label><input id="tnotes" type="number" value="120">
+      </div>
+      <button data-send="score">Calculate EX score</button><pre id="out-score">Result appears here.</pre></section>
+  </div>
+
+  <div class="tier">Tier 2 — Audio &amp; onset intelligence</div>
+  <div class="grid">
+    <section class="card"><h2>Onset detection <span class="tip" title="detect_onsets: local-peak finding + threshold filter from ddc_onset. Peaks above threshold are kept.">ⓘ</span></h2>
+      <p class="desc">Comma-separated salience values (0–1) and a threshold.</p>
+      <label for="salience">Salience curve</label><textarea id="salience">0, 0.1, 0.9, 0.2, 0, 0.8, 0.1, 0</textarea>
+      <label for="thr">Threshold <span class="tip" title="Higher = fewer, stronger onsets only. Try 0.5.">ⓘ</span></label>
+      <input id="thr" type="number" step="0.05" value="0.5">
+      <button data-send="onsets">Detect onsets</button><pre id="out-onsets">Result appears here.</pre></section>
+
+    <section class="card"><h2>Audio features <span class="tip" title="extract_audio_features: log-Mel framing in Rust. Returns frames × bands × channels. Large inputs are slow — keep samples modest.">ⓘ</span></h2>
+      <p class="desc">Generates 1024 demo samples, or paste your own comma-separated floats.</p>
+      <label for="samples">Samples (blank = demo)</label><textarea id="samples" placeholder="Leave blank for 1024 demo samples"></textarea>
+      <button data-send="audio">Extract features</button><pre id="out-audio">Result appears here.</pre></section>
+
+    <section class="card"><h2>Server status &amp; ping <span class="tip" title="status reports version, health and loaded submodules. Ping measures round-trip via pong timestamp.">ⓘ</span></h2>
+      <p class="desc">Confirms the Rust hub and every ported module are alive.</p>
+      <button data-send="status">Get status</button>
+      <button class="secondary" data-send="ping">Ping</button>
+      <pre id="out-status">Result appears here.</pre></section>
+  </div>
+
+  <div class="tier">Tier 3 — Fleet, tray &amp; operations</div>
+  <div class="grid">
+    <section class="card"><h2>Submodule fleet <span class="tip" title="13 git submodules. Audit locally with: python scripts/sync_submodules.py">ⓘ</span></h2>
+      <p class="desc">Consolidated engines. Run <code>python scripts/sync_submodules.py</code> for a clean/dirty audit.</p>
+      <div class="kv" id="fleet"><span>Loading from status…</span></div></section>
+
+    <section class="card"><h2>System tray &amp; supervisor <span class="tip" title="The tray lives in the Go harness (pianogame/go), not in this Rust server. It supervises rust/go/csharp/java/typescript engines.">ⓘ</span></h2>
+      <p class="desc"><b>Where is it?</b> <code>pianogame/go/supervisor/</code> — <code>TraySupervisor</code> tracks 5 engines, handles Ctrl-C/SIGTERM, and <code>QuitAll()</code> gracefully stops all engines and dismisses the tray. It is a console supervisor today: no native OS tray icon library is linked yet, so no icon appears in the Windows tray when run.</p>
+      <p class="desc">Run it: <code>cd pianogame\go; go run .</code> · Quit: Ctrl-C, or call <code>QuitAll()</code>. To quit <i>this</i> Rust server: Ctrl-C in its terminal.</p></section>
+
+    <section class="card"><h2>Live telemetry log <span class="tip" title="Every request/response through this page is logged here with timestamps.">ⓘ</span></h2>
+      <p class="desc">Watch requests, responses and errors in real time.</p>
+      <button class="secondary" id="clear">Clear log</button><pre id="log"></pre></section>
+  </div>
+
+  <p class="muted">Not yet wired (honest gaps): live chart visualiser canvas, ONNX placement inference over WebSocket, native OS tray icon. See ROADMAP.md / TODO.md.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const wsUrl=(location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
+$('wsurl').textContent=wsUrl;
+let ws, queue=[];
+function log(m){const el=$('log');el.textContent+=`[${new Date().toLocaleTimeString()}] ${m}\n`;el.scrollTop=el.scrollHeight}
+function setConn(ok,txt){$('dot').className='dot '+(ok?'ok':'bad');$('conn').textContent=txt}
+function connect(){ws=new WebSocket(wsUrl);ws.onopen=()=>{setConn(true,'connected');log('WebSocket connected');queue.splice(0).forEach(m=>ws.send(m))};
+ws.onclose=()=>{setConn(false,'disconnected — retrying in 2s');setTimeout(connect,2000)};
+ws.onerror=()=>setConn(false,'connection error');
+ws.onmessage=e=>{log('← '+e.data);try{const r=JSON.parse(e.data);
+ if(r.type==='status'){ $('ver').textContent='v'+r.data.version;
+   $('fleet').innerHTML=r.data.submodules.map(s=>`<span>${s}</span><b>loaded</b>`).join(''); }
+ const map={sm_metadata:'out-parse',density_analysis:'out-density',score_analysis:'out-score',onset_detections:'out-onsets',audio_features:'out-audio',status:'out-status',pong:'out-status',error:'out-status'};
+ const t=map[r.type]; if(t) $(t).textContent=JSON.stringify(r,null,2);
+}catch(_){}}}
+function send(obj,out){const m=JSON.stringify(obj);log('→ '+m);if(out)$(out).textContent='Waiting…';
+ if(ws&&ws.readyState===1)ws.send(m);else queue.push(m)}
+const num=id=>parseFloat($(id).value)||0, int=id=>parseInt($(id).value,10)||0;
+const actions={
+ parse:()=>send({action:'parse_sm',payload:{content:$('sm').value}},'out-parse'),
+ density:()=>{const rows=$('notes').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const[a,b]=l.split(',');return[parseFloat(a), (b||'').trim()]});send({action:'analyze_density',payload:{chart_notes:rows}},'out-density')},
+ score:()=>send({action:'calculate_ex_score',payload:{epg:int('epg'),lpg:int('lpg'),egr:int('egr'),lgr:int('lgr'),notes:int('tnotes')}},'out-score'),
+ onsets:()=>{const s=$('salience').value.split(',').map(x=>parseFloat(x)).filter(x=>!isNaN(x));send({action:'detect_onsets',payload:{onset_salience:s,threshold:num('thr')}},'out-onsets')},
+ audio:()=>{let s=$('samples').value.split(',').map(x=>parseFloat(x)).filter(x=>!isNaN(x));if(!s.length)s=Array.from({length:1024},()=>0.1);send({action:'extract_audio_features',payload:{samples:s}},'out-audio')},
+ status:()=>send({action:'status'},'out-status'),
+ ping:()=>send({action:'ping'},'out-status')};
+document.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>actions[b.dataset.send]());
+$('clear').onclick=()=>$('log').textContent='';
+connect();
+</script></body></html>

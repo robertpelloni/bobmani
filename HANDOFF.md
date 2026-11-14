@@ -36,3 +36,10 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 - `typescript test`: Clean passing (`node dist/test_ws_bridge.js`).
 - `scripts/sync_submodules.py`: SUCCESS.
 - `bobmania/scripts/audit_dashboard.py`: SUCCESS.
+
+## 0.2.11 handoff (2026-11-14, Muse Code / muse-wonder-1.0, C:\Users\hyper\workspace\bobmani)
+- Dashboard now real: GET / serves src/dashboard.html, GET /health, WS /ws unchanged (7 actions). Version single source: VERSION.md + Cargo.toml both 0.2.11; server reports env!(CARGO_PKG_VERSION).
+- Tray truth: pianogame/go/supervisor TraySupervisor = console supervisor for 5 engines with QuitAll()/SIGTERM; NO native Windows tray icon exists. Dashboard Tier-3 card states this honestly.
+- Not working / not running: no native tray icon, no chart visualiser, no ONNX WS action, Go/C#/Java/TS harnesses are demo initialisers (not servers), MS Edge CDP 9222 co-ordination not established (no agent bridge in repo).
+- Cron loop 8b4a5393 every 15m continues this work; delete with cron tool if unwanted.
+- Verified: cargo test 28 pass, live / + /health + WS verified at BelowNormal priority, go test ok. Submodule dirty state left untouched (nondestructive).
