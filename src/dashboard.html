@@ -61,6 +61,11 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
 1.0,1000</textarea>
       <button data-send="density">Analyse density</button><pre id="out-density">Result appears here.</pre></section>
 
+    <section class="card"><h2>Live chart visualiser <span class="tip" title="Renders the notes from the Density card as 4 lanes over time, live as you type. Colour intensity = notes per second in that row. No server round-trip needed for the drawing.">ⓘ</span></h2>
+      <p class="desc">Lanes ← ↓ ↑ → (columns 1–4). Updates instantly from the notes above; density result annotates NPS.</p>
+      <canvas id="chart" width="640" height="220" style="width:100%;background:#070b18;border:1px solid #26305a;border-radius:8px" aria-label="Chart note visualiser"></canvas>
+      <p class="muted" id="chart-meta">No notes yet.</p></section>
+
     <section class="card"><h2>EX score <span class="tip" title="calculate_ex_score: beatoraja ScoreData. PGreat=2, Great=1. Accuracy = EX / max EX.">ⓘ</span></h2>
       <p class="desc">Beatoraja judgement counts → EX score, max, accuracy and validity.</p>
       <div class="kv">
@@ -109,7 +114,7 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <button class="secondary" id="clear">Clear log</button><pre id="log"></pre></section>
   </div>
 
-  <p class="muted">Not yet wired (honest gaps): live chart visualiser canvas, ONNX placement inference over WebSocket, native OS tray icon. See ROADMAP.md / TODO.md.</p>
+  <p class="muted">Not yet wired (honest gaps): ONNX placement inference over WebSocket, native OS tray icon. See ROADMAP.md / TODO.md.</p>
 </main>
 <script>
 const $=id=>document.getElementById(id);
@@ -126,6 +131,7 @@ ws.onmessage=e=>{log('← '+e.data);try{const r=JSON.parse(e.data);
    $('fleet').innerHTML=r.data.submodules.map(s=>`<span>${s}</span><b>loaded</b>`).join(''); }
  const map={sm_metadata:'out-parse',density_analysis:'out-density',score_analysis:'out-score',onset_detections:'out-onsets',audio_features:'out-audio',status:'out-status',pong:'out-status',error:'out-status'};
  const t=map[r.type]; if(t) $(t).textContent=JSON.stringify(r,null,2);
+ if(r.type==='density_analysis'){$('chart-meta').textContent+=` · server NPS ${r.data.nps} · stream ${r.data.stream_percentage}% · jack ${r.data.jack_percentage}%`}
 }catch(_){}}}
 function send(obj,out){const m=JSON.stringify(obj);log('→ '+m);if(out)$(out).textContent='Waiting…';
  if(ws&&ws.readyState===1)ws.send(m);else queue.push(m)}
@@ -140,5 +146,19 @@ const actions={
  ping:()=>send({action:'ping'},'out-status')};
 document.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>actions[b.dataset.send]());
 $('clear').onclick=()=>$('log').textContent='';
-connect();
+// --- Live chart visualiser: parse "time,row" lines, draw 4 lanes x time ---
+function parseNotes(){return $('notes').value.split('\n').map(l=>l.trim()).filter(Boolean)
+  .map(l=>{const[a,b]=l.split(',');return{t:parseFloat(a),row:(b||'').trim()}}).filter(n=>!isNaN(n.t)&&n.row)}
+function drawChart(){const c=$('chart');if(!c)return;const x=c.getContext('2d');const W=c.width,H=c.height;
+  x.clearRect(0,0,W,H);const notes=parseNotes();
+  x.strokeStyle='#26305a';for(let i=1;i<4;i++){x.beginPath();x.moveTo(W*i/4,0);x.lineTo(W*i/4,H);x.stroke()}
+  x.fillStyle='#8b96bd';x.font='11px system-ui';['\u2190','\u2193','\u2191','\u2192'].forEach((a,i)=>x.fillText(a,W*i/4+6,14));
+  if(!notes.length){$('chart-meta').textContent='No notes yet.';return}
+  const maxT=Math.max(...notes.map(n=>n.t),0.1);
+  notes.forEach(n=>{const y=24+(n.t/maxT)*(H-36);
+    [...n.row.padEnd(4,'0').slice(0,4)].forEach((ch,i)=>{if(ch==='1'){x.fillStyle='#4f6bff';x.beginPath();x.arc(W*i/4+W/8,y,7,0,7);x.fill()}})});
+  const hits=notes.reduce((s,n)=>s+[...n.row].filter(ch=>ch==='1').length,0);
+  $('chart-meta').textContent=`${notes.length} rows · ${hits} notes · ${maxT.toFixed(2)}s span · ${(hits/maxT).toFixed(2)} notes/s avg`}
+$('notes').addEventListener('input',drawChart);
+connect();drawChart();
 </script></body></html>

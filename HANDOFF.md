@@ -43,3 +43,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 - Not working / not running: no native tray icon, no chart visualiser, no ONNX WS action, Go/C#/Java/TS harnesses are demo initialisers (not servers), MS Edge CDP 9222 co-ordination not established (no agent bridge in repo).
 - Cron loop 8b4a5393 every 15m continues this work; delete with cron tool if unwanted.
 - Verified: cargo test 28 pass, live / + /health + WS verified at BelowNormal priority, go test ok. Submodule dirty state left untouched (nondestructive).
+
+## 0.2.12 (2026-11-14)
+- Visualiser: #chart canvas + drawChart() in src/dashboard.html, driven by #notes input event and density_analysis responses. Next: ONNX predict action, native tray, submodule audit. Push via SSH URL (HTTPS GITHUB_TOKEN invalid).

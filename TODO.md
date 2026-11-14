@@ -25,3 +25,5 @@
 - [ ] ONNX predict_place action + integration test.
 - [ ] Fix submodule dirty trees (bobmania, hymnmania modified; ddc/ffr untracked content) — audit before committing pointers.
 - [ ] Merge or close stale branches: scaffold-docs-10743658648208721759, jules-empty-repo-diagnosis-17910503964700985352 (inspect before merging; do not merge blind).
+- [x] 0.2.12 Live chart visualiser canvas.
+- [ ] ONNX placement action; native tray icon; submodule dirty-tree audit.

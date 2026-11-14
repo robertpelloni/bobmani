@@ -393,6 +393,8 @@ mod tests {
         assert!(DASHBOARD_HTML.contains("data-send=\"score\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"onsets\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"audio\""));
+        assert!(DASHBOARD_HTML.contains("id=\"chart\""));
+        assert!(DASHBOARD_HTML.contains("drawChart"));
     }
 
     #[test]

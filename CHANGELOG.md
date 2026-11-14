@@ -177,3 +177,9 @@
 - `scripts/build.ps1` unified build/test; archived destructive `update_docs.sh` to `scripts/archive/` and replaced it with a deprecation stub.
 ### Verified
 - cargo test: 28 passed (14 lib + 14 bin, incl. new test_dashboard_covers_all_actions). Live BelowNormal run: /health 200, / 200 (11076 bytes), WS pong/status/parse_sm correct. Go: go test ./... ok.
+
+## [0.2.12] - 2026-11-14
+### Added
+- Live chart visualiser on the single dashboard page: canvas rendering notes (4 lanes x time) live from the density input, with rows/notes/span/notes-per-second meta and server NPS/stream/jack annotation on analyze_density response.
+### Verified
+- cargo test 28 pass, node --check on dashboard JS OK, live / 200 with canvas+drawChart present, /health reports 0.2.12 after rebuild.

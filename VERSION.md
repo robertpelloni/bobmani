@@ -1,1 +1,1 @@
-﻿0.2.11 - Unified Single-Page Dashboard at / (all 7 WebSocket actions, /health)
+﻿0.2.12 - Live chart visualiser canvas on unified dashboard

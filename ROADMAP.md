@@ -28,3 +28,4 @@
 - [ ] Native OS tray icon (Windows shell) with Quit that stops the Rust server.
 - [ ] Live chart visualiser canvas fed by analyze_density stream.
 - [ ] ONNX placement inference action over WebSocket.
+- [x] 0.2.12 Connect live chart visualiser canvas to density input/stream.
