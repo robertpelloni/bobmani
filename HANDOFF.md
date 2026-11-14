@@ -67,3 +67,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.19 (2026-11-14)
 - Tray now tested. Branches: no unmerged work anywhere. Everything previously listed as next is now either done or blocked on user/external input (trained model data, pointer decisions, desktop click-through, npm registry TLS, GITHUB_TOKEN). Loop should slow down rather than invent work.
+
+## 0.2.20 (2026-11-14)
+- CRITICAL local state: C: nearly filled (70MB) by cargo PDBs; cleaned app artifacts only. If cargo test fails LNK1180 again: check Get-PSDrive C first. build.ps1 now trustworthy.

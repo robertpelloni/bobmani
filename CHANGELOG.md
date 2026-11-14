@@ -229,3 +229,12 @@
 - Stale branches scaffold-docs-*, jules-empty-repo-diagnosis-*, origin/jules-1124*: 0 commits ahead of main (fully merged). Deletion left as user decision; nothing merged because nothing was unmerged.
 ### Verified
 - go vet OK; go test ./... pass (supervisor now has tests).
+
+## [0.2.20] - 2026-11-14
+### Fixed
+- Build broke with LNK1180/LNK1140: C: fell to 70MB free, target/ was 12GB of PDBs. cargo clean -p app freed 10.3GiB (regenerable artifacts only; no source/binaries kept by hand). Added [profile.test] debug=1 to Cargo.toml to keep PDBs small.
+- scripts/build.ps1 masked failures (checked only last cargo exit, printed OK during the failure). Now exit-checks every step.
+### Verified
+- pwsh scripts/build.ps1: cargo test 40 pass, cargo build, go test pass, exit 0. Disk 7.4GB free after rebuild.
+### Blocked (external)
+- npm: registry TLS alert 70 fetching @typescript-eslint/visitor-keys 8.62.0 tgz (not in local cache); full TS tsc still 1 pre-existing error. Retry when network allows; do not mirror around it.

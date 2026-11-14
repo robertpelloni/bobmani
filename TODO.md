@@ -47,3 +47,6 @@
 - [x] 0.2.19 Tray contract tests; branch audit.
 - [ ] User decision: delete fully-merged stale branches (local scaffold-docs-*, jules-empty-*).
 - [ ] Trained placement model; tray click-through; npm TLS for full TS build.
+- [x] 0.2.20 Disk/PDB build failure fixed + build.ps1 per-step checks.
+- [ ] Watch C: disk — target/ regrows ~2.5GB per full rebuild.
+- [ ] npm TLS blocker (external); trained model; pointer decisions; tray click-through.

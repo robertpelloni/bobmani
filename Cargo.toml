@@ -1,6 +1,6 @@
 ﻿[package]
 name = "app"
-version = "0.2.19"
+version = "0.2.20"
 edition = "2024"
 
 [dependencies]
@@ -11,3 +11,10 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tokio = { version = "1.52.3", features = ["full"] }
 tract-onnx = "0.23.3"
+
+# Why: full debug PDBs for the tract-onnx dependency graph exceeded the
+# MSVC linker PDB limit (LNK1140/LNK1180) on this machine and filled the
+# disk (target/ reached 12 GB). Line-tables-only keeps test backtraces
+# useful at a fraction of the PDB size.
+[profile.test]
+debug = 1

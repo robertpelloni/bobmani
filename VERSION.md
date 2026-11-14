@@ -1,1 +1,1 @@
-﻿0.2.19 - Tray health/shutdown contract tests; stale-branch audit (all merged)
+﻿0.2.20 - Fix disk-full build failure: test PDB limit + per-step build checks
