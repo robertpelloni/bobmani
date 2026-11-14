@@ -52,3 +52,6 @@
 - [ ] npm TLS blocker (external); trained model; pointer decisions; tray click-through.
 - [x] 0.2.21 TS build green (NODE_OPTIONS TLS fix documented).
 - [ ] Remaining: trained model (needs data), pointer/branch decisions (user), tray click-through (desktop).
+- [x] 0.2.22 Unified 3-language build + disk guard.
+- [ ] USER: free C: disk (1.8GB left, mostly outside bobmani).
+- [ ] Remaining user-gated: trained model, pointer/branch decisions, tray click-through, GITHUB_TOKEN.

@@ -244,3 +244,9 @@
 - TypeScript full build green for first time: npm registry TLS alert 70 was Node/OpenSSL default TLS negotiation in this env; $env:NODE_OPTIONS='--tls-min-v1.2'; npm install succeeds. tsc clean (was 1 pre-existing ast_parser error), all 9 dist/test_*.js pass.
 ### Verified
 - cargo/go already green via scripts/build.ps1 (0.2.20). Disk 5.6GB free — watch target/ regrowth.
+
+## [0.2.22] - 2026-11-14
+### Changed
+- scripts/build.ps1 now verifies every component in one run (cargo test/build, go test, tsc, 9 TS tests) with per-step exit checks, plus a low-disk guard (cargo clean -p app when C: free <4GB; stale test PDBs accumulate ~150MB each).
+### Verified
+- Full build.ps1 green twice, second run exercising the disk guard. NOTE: C: still only ~1.8GB free after a minimal rebuild — most disk use is outside this repo and needs user cleanup.

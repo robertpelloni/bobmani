@@ -1,1 +1,1 @@
-﻿0.2.21 - Full TypeScript build green: npm TLS fix (NODE_OPTIONS=--tls-min-v1.2), tsc clean, 9/9 tests
+﻿0.2.22 - Unified build covers Rust+Go+TypeScript with low-disk guard

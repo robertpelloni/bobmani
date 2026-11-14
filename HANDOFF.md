@@ -73,3 +73,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.21 (2026-11-14)
 - ENV FIX: npm/node TLS to registry.npmjs.org needs NODE_OPTIONS=--tls-min-v1.2 in this environment (PowerShell/.NET TLS worked, Node default did not). All component builds now green: Rust 40 tests, Go all, TS tsc + 9 tests. No invented work remains; rest is user-gated.
+
+## 0.2.22 (2026-11-14)
+- One command verifies everything: pwsh scripts/build.ps1. Disk remains critical (1.8GB) from outside the repo. All non-gated work is complete; loop cycles will repeat verification until user input arrives.
