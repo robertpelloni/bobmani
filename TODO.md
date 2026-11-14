@@ -44,3 +44,6 @@
 - [x] 0.2.18 TS protocol alignment (8 actions).
 - [ ] Fix TS full build: npm install fails TLS to registry.npmjs.org (pre-existing ast_parser dep missing locally).
 - [ ] Trained placement model; bobmania/hymnmania pointer decision; tray click-through on desktop.
+- [x] 0.2.19 Tray contract tests; branch audit.
+- [ ] User decision: delete fully-merged stale branches (local scaffold-docs-*, jules-empty-*).
+- [ ] Trained placement model; tray click-through; npm TLS for full TS build.

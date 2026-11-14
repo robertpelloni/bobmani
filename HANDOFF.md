@@ -64,3 +64,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.18 (2026-11-14)
 - TS bridge reality: rust_protocol.ts is the protocol layer; ws_bridge.ts is socket upgrade only. Old MEMORY/CHANGELOG claims about ws_bridge formatters were wrong. npm registry TLS currently broken in this env. Next: trained model remains only major gap.
+
+## 0.2.19 (2026-11-14)
+- Tray now tested. Branches: no unmerged work anywhere. Everything previously listed as next is now either done or blocked on user/external input (trained model data, pointer decisions, desktop click-through, npm registry TLS, GITHUB_TOKEN). Loop should slow down rather than invent work.
