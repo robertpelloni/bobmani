@@ -30,3 +30,6 @@
 - [x] 0.2.13 predict_placement action + dashboard card.
 - [ ] Ship a real placement.onnx model to exercise the ONNX branch end-to-end.
 - [ ] Native tray icon; submodule dirty-tree audit. NOTE: C: free space low (~2.7GB) — cargo target is large.
+- [x] 0.2.14 Real ONNX fixture + neural-branch test.
+- [ ] Train/source a genuine placement model (fixture is Relu identity, not trained).
+- [ ] Native tray icon; submodule dirty-tree audit.

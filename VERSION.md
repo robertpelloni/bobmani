@@ -1,1 +1,1 @@
-﻿0.2.13 - predict_placement WebSocket action (ONNX when model present, labelled heuristic otherwise)
+﻿0.2.14 - Real ONNX fixture exercises predict_placement neural branch end-to-end

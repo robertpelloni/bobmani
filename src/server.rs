@@ -106,8 +106,22 @@ pub enum WsResponse {
 /// a model file exists (scores >= threshold become placements), else the
 /// labelled heuristic. Returns (placements, model_loaded, source).
 pub fn placement_for(onset_salience: &[f32], threshold: f32) -> (Vec<usize>, bool, String) {
-    use crate::ddc_onset::cnn::{default_model_path, heuristic_placements, PlacementCNN};
-    if let Some(path) = default_model_path() {
+    placement_with_model(
+        onset_salience,
+        threshold,
+        crate::ddc_onset::cnn::default_model_path(),
+    )
+}
+
+/// Same as `placement_for` but with an explicit model path (used by tests so
+/// they never depend on files in the working directory or env vars).
+pub fn placement_with_model(
+    onset_salience: &[f32],
+    threshold: f32,
+    model_path: Option<std::path::PathBuf>,
+) -> (Vec<usize>, bool, String) {
+    use crate::ddc_onset::cnn::{heuristic_placements, PlacementCNN};
+    if let Some(path) = model_path {
         if let Ok(cnn) = PlacementCNN::new(&path.to_string_lossy()) {
             if let Ok(scores) = cnn.predict_salience(onset_salience) {
                 let placements = scores
@@ -464,6 +478,21 @@ mod tests {
         assert!(res_str.contains(r#""placements":[2,5]"#), "{res_str}");
         assert!(res_str.contains(r#""model_loaded":false"#), "{res_str}");
         assert!(res_str.contains("heuristic"), "{res_str}");
+    }
+
+    #[test]
+    fn test_placement_with_real_onnx_fixture() {
+        // Real tract-ONNX inference against the committed Relu fixture:
+        // decreasing salience distinguishes model output (all >= threshold)
+        // from heuristic peaks (only the first frame is a peak).
+        let fixture = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures/placement_identity.onnx");
+        assert!(fixture.exists(), "fixture missing: {fixture:?}");
+        let (placements, model_loaded, source) =
+            placement_with_model(&[0.9, 0.8, 0.7], 0.5, Some(fixture));
+        assert!(model_loaded, "source={source}");
+        assert_eq!(source, "onnx");
+        assert_eq!(placements, vec![0, 1, 2]);
     }
 
     #[test]

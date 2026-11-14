@@ -49,3 +49,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.13 (2026-11-14)
 - predict_placement: src/server.rs placement_for() + src/ddc_onset/cnn.rs (predict_salience, default_model_path, heuristic_placements). No .onnx in repo, so live path is heuristic and labelled. Disk: only ~2.7GB free on C: — watch target/ growth. Next: tray icon or a real model fixture.
+
+## 0.2.14 (2026-11-14)
+- ONNX branch proven: tests/fixtures/placement_identity.onnx + scripts/make_onnx_fixture.py (pip onnx installed user-site). placement_with_model() is the testable seam. Fixture is NOT a trained model. Disk recovered to ~15GB free. Next: native tray or trained model.

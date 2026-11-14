@@ -189,3 +189,9 @@
 - `predict_placement` WS action (8th): PlacementCNN::predict_salience via tract-ONNX when models/placement.onnx or $BOBMANI_ONNX_MODEL exists; otherwise labelled onset-heuristic placements (source=model_loaded flags say which). Dashboard placement card in Tier 2.
 ### Verified
 - cargo test 32 pass (incl. heuristic thresholds + WS no-model path). Live WS: placements [2,5], model_loaded false, source onset_heuristic_no_model.
+
+## [0.2.14] - 2026-11-14
+### Added
+- Real ONNX fixture tests/fixtures/placement_identity.onnx (Relu, dynamic length; regenerate via scripts/make_onnx_fixture.py) proving the tract-ONNX branch: placement_with_model refactor for testability, live WS with $BOBMANI_ONNX_MODEL returns model_loaded:true, source:onnx.
+### Verified
+- cargo test 34 pass. Live: placements [0,1,2] on decreasing salience via ONNX (heuristic would return only [0]).
