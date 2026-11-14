@@ -201,3 +201,11 @@
 - Graceful shutdown: POST /shutdown + Ctrl-C via axum with_graceful_shutdown (watch-flag AppState), dashboard Quit this server button in the tray card. Answers 'can I quit the servers?' for the Rust hub; Go tray QuitAll was already present.
 ### Verified
 - cargo test 34 pass, live POST /shutdown -> process exits, log 'server stopped cleanly', port closed.
+
+## [0.2.16] - 2026-11-14
+### Added
+- GET /fleet: live submodule fleet (recorded commit, new-commits/dirty state) from git ls-files gitlinks + status --ignore-submodules=dirty (~2.9s live; naive per-submodule status and git submodule status timed out at 16-19s, measured). Dashboard fleet card now renders real state.
+### Audit (not changed, user work)
+- bobmania + hymnmania at different commits than recorded; ddc (11), hymnmania (5), bobmania (4), ksm-v2 (4), itgmania (3), arrowvortex (2), ffr (2), beatoraja/linthesia (1) dirty files by full per-repo count. Left untouched.
+### Verified
+- cargo test 40 pass; live /fleet 200 in 2921ms showing bobmania/hymnmania new-commits.

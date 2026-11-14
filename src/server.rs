@@ -317,6 +317,122 @@ pub struct AppState {
     shutdown: watch::Sender<bool>,
 }
 
+/// One parsed line of `git submodule status`:
+/// prefix ' ' = at recorded commit, '+' = different commit checked out,
+/// '-' = not initialised, 'U' = merge conflict.
+#[derive(Debug, PartialEq)]
+pub struct FleetEntry {
+    pub name: String,
+    pub commit: String,
+    pub state: String,
+}
+
+pub fn parse_submodule_status(text: &str) -> Vec<FleetEntry> {
+    text.lines()
+        .filter_map(|line| {
+            let mut chars = line.chars();
+            let prefix = chars.next()?;
+            let rest: String = chars.collect();
+            let mut parts = rest.split_whitespace();
+            let commit = parts.next()?.to_string();
+            let name = parts.next()?.to_string();
+            let state = match prefix {
+                '+' => "different-commit",
+                '-' => "not-initialised",
+                'U' => "conflict",
+                _ => "at-recorded-commit",
+            };
+            Some(FleetEntry { name, commit, state: state.to_string() })
+        })
+        .collect()
+}
+
+/// Parses the submodule lines of root `git status --porcelain` into
+/// name -> content state. Porcelain submodule codes: second column
+/// 'M' = new commits, 'm' = modified content, '?' = untracked content.
+/// Why not `git -C <sub> status` per submodule: that timed out live —
+/// the game-engine trees are huge. Two git calls total keeps /fleet fast.
+pub fn parse_root_submodule_dirty(text: &str) -> std::collections::HashMap<String, String> {
+    let mut map = std::collections::HashMap::new();
+    for line in text.lines() {
+        let bytes: Vec<char> = line.chars().collect();
+        if bytes.len() < 4 {
+            continue;
+        }
+        let code = bytes[1];
+        let name = line[3..].trim().trim_matches('"').to_string();
+        let state = match code {
+            'M' => "new-commits",
+            'm' => "modified-content",
+            '?' => "untracked-content",
+            ' ' => continue,
+            _ => continue,
+        };
+        map.insert(name, state.to_string());
+    }
+    map
+}
+
+fn git_stdout(args: &[&str]) -> String {
+    std::process::Command::new("git")
+        .args(args)
+        .output()
+        .map(|o| String::from_utf8_lossy(&o.stdout).to_string())
+        .unwrap_or_default()
+}
+
+/// Parses `git ls-files -s` gitlink entries (mode 160000) into fleet
+/// entries at their recorded commits. Instant — unlike `git submodule
+/// status`, which took ~16s on this tree (measured) and timed /fleet out.
+pub fn parse_ls_files_gitlinks(text: &str) -> Vec<FleetEntry> {
+    text.lines()
+        .filter_map(|line| {
+            let (meta, name) = line.split_once('\t')?;
+            let mut parts = meta.split_whitespace();
+            if parts.next()? != "160000" {
+                return None;
+            }
+            Some(FleetEntry {
+                name: name.trim().to_string(),
+                commit: parts.next()?.to_string(),
+                state: "at-recorded-commit".to_string(),
+            })
+        })
+        .collect()
+}
+
+/// Live fleet view: recorded commit (index gitlinks) + content state
+/// (`git status --ignore-submodules=dirty`, ~1s measured vs ~19s full).
+/// Trade-off: modified-content inside a submodule at the same commit is
+/// not shown (dirty mode) — new commits and untracked pointers still are.
+/// The dashboard used to show a static "loaded" list; this is the honest,
+/// fast version.
+async fn fleet_handler() -> Json<serde_json::Value> {
+    let entries = tokio::task::spawn_blocking(|| {
+        let subs = parse_ls_files_gitlinks(&git_stdout(&["ls-files", "-s"]));
+        let dirty = parse_root_submodule_dirty(&git_stdout(&[
+            "status",
+            "--porcelain",
+            "--ignore-submodules=dirty",
+        ]));
+        subs.into_iter()
+            .map(|e| {
+                let content = dirty.get(&e.name).cloned();
+                serde_json::json!({
+                    "name": e.name,
+                    "commit": e.commit.chars().take(7).collect::<String>(),
+                    "state": e.state,
+                    "content": content,
+                    "dirty": content.is_some(),
+                })
+            })
+            .collect::<Vec<_>>()
+    })
+    .await
+    .unwrap_or_default();
+    Json(serde_json::json!({"submodules": entries}))
+}
+
 async fn shutdown_handler(State(state): State<Arc<AppState>>) -> Json<serde_json::Value> {
     // Why a graceful flag instead of process::exit: in-flight WebSocket
     // replies finish and the listener closes cleanly, so clients see a
@@ -332,6 +448,7 @@ pub async fn run_server() {
         .route("/", get(dashboard_handler))
         .route("/health", get(health_handler))
         .route("/shutdown", post(shutdown_handler))
+        .route("/fleet", get(fleet_handler))
         .route("/ws", get(ws_handler))
         .with_state(state);
 
@@ -529,6 +646,39 @@ mod tests {
         assert!(model_loaded, "source={source}");
         assert_eq!(source, "onnx");
         assert_eq!(placements, vec![0, 1, 2]);
+    }
+
+    #[test]
+    fn test_parse_submodule_status_states() {
+        let text = " 06a56f5f Simply-Love-SM5 (v1)\n+51c813b4 bobmania (v2)\n-abcdef00 ddc\nU1234567 hymnmania\n";
+        let v = parse_submodule_status(text);
+        assert_eq!(v.len(), 4);
+        assert_eq!(v[0].state, "at-recorded-commit");
+        assert_eq!(v[1].state, "different-commit");
+        assert_eq!(v[1].name, "bobmania");
+        assert_eq!(v[2].state, "not-initialised");
+        assert_eq!(v[3].state, "conflict");
+        assert!(parse_submodule_status("").is_empty());
+    }
+
+    #[test]
+    fn test_parse_ls_files_gitlinks() {
+        let text = "100644 abc123 0\tCargo.toml\n160000 51c813b4be61 0\tbobmania\n160000 06a56f5f5881 0\tSimply-Love-SM5\n";
+        let v = parse_ls_files_gitlinks(text);
+        assert_eq!(v.len(), 2);
+        assert_eq!(v[0].name, "bobmania");
+        assert_eq!(v[0].commit, "51c813b4be61");
+        assert_eq!(v[0].state, "at-recorded-commit");
+    }
+
+    #[test]
+    fn test_parse_root_submodule_dirty() {
+        let text = " M bobmania\n m arrowvortex\n ? ddc\nM  staged.rs\n?? new.txt\n";
+        let m = parse_root_submodule_dirty(text);
+        assert_eq!(m.get("bobmania").map(|s| s.as_str()), Some("new-commits"));
+        assert_eq!(m.get("arrowvortex").map(|s| s.as_str()), Some("modified-content"));
+        assert_eq!(m.get("ddc").map(|s| s.as_str()), Some("untracked-content"));
+        assert!(!m.contains_key("staged.rs")); // staged-only file, not a submodule line we track
     }
 
     #[test]

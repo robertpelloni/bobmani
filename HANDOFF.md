@@ -55,3 +55,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.15 (2026-11-14)
 - Shutdown: src/server.rs AppState/watch + POST /shutdown; dashboard Quit button. Native tray icon still not done (needs Go systray dep + GUI verification). Security note: /shutdown is unauthenticated on localhost only (127.0.0.1 bind) — acceptable for local hub, do not expose remotely.
+
+## 0.2.16 (2026-11-14)
+- /fleet perf lesson: git submodule status=16.5s, full porcelain=18.9s, --ignore-submodules=dirty=1.1s on this tree. Fleet = ls-files gitlinks + dirty-mode status; modified-content at same commit not shown (documented trade-off). Submodule dirty work untouched. Next: tray icon needs systray dep decision.

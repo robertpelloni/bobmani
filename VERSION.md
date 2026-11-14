@@ -1,1 +1,1 @@
-﻿0.2.15 - Graceful server shutdown (POST /shutdown, Ctrl-C, dashboard Quit button)
+﻿0.2.16 - Live /fleet submodule audit endpoint on dashboard

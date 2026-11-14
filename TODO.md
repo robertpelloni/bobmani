@@ -35,3 +35,6 @@
 - [ ] Native tray icon; submodule dirty-tree audit.
 - [x] 0.2.15 Graceful shutdown + dashboard Quit.
 - [ ] Native Windows tray icon (Go systray) wrapping Quit; trained placement model; submodule audit.
+- [x] 0.2.16 Live /fleet audit on dashboard.
+- [ ] Decide bobmania/hymnmania pointer updates (user call — do not auto-commit submodule work).
+- [ ] Native tray icon; trained placement model.

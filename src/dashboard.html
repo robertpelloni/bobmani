@@ -170,5 +170,14 @@ function drawChart(){const c=$('chart');if(!c)return;const x=c.getContext('2d');
   const hits=notes.reduce((s,n)=>s+[...n.row].filter(ch=>ch==='1').length,0);
   $('chart-meta').textContent=`${notes.length} rows · ${hits} notes · ${maxT.toFixed(2)}s span · ${(hits/maxT).toFixed(2)} notes/s avg`}
 $('notes').addEventListener('input',drawChart);
+// Live fleet: real commit + dirty state from /fleet replaces the static list
+fetch('/fleet').then(r=>r.json()).then(d=>{
+  if(!d.submodules||!d.submodules.length)return;
+  $('fleet').innerHTML=d.submodules.map(s=>{
+    const bad=s.state!=='at-recorded-commit'||s.dirty;
+    const label=s.state==='at-recorded-commit'?(s.dirty?(s.content||'dirty'):'clean'):s.state;
+    return `<span>${s.name} <span class="muted">${s.commit}</span></span><b style="color:${bad?'#f59e0b':'#22c55e'}">${label}</b>`}).join('');
+  log(`fleet: ${d.submodules.length} submodules, ${d.submodules.filter(s=>s.dirty).length} dirty`);
+}).catch(e=>log('fleet fetch failed: '+e));
 connect();drawChart();
 </script></body></html>
