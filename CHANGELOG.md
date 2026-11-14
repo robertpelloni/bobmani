@@ -215,3 +215,9 @@
 - Native Windows system-tray icon in pianogame Go supervisor (fyne.io/systray v1.12.2, RunNativeTray, go run . tray): Open dashboard, Check health, Quit servers (POST Rust /shutdown + QuitAll). pianogame 4f42120; main pointer updated.
 ### Verified
 - go vet/test/build pass; tray process stays alive in tray mode (BelowNormal smoke, killed by PID after check). Visual icon click-through not exercised headlessly. cargo test 40 pass.
+
+## [0.2.18] - 2026-11-14
+### Added
+- pianogame/typescript/src/rust_protocol.ts: typed formatRustRequest/parseRustResponse for all 8 Rust actions + test_rust_protocol.ts. Corrects docs: ws_bridge.ts never contained these (raw upgrade handler only).
+### Verified
+- node dist/test_rust_protocol.js pass; live TS->Rust e2e (ping, predict_placement [2,5], parse_sm) OK. Full-project tsc still has 1 pre-existing error: ast_parser.ts missing @typescript-eslint/typescript-estree in node_modules (npm registry TLS failed on reinstall) — untouched by this change.

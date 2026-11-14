@@ -61,3 +61,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.17 (2026-11-14)
 - Tray: pianogame/go/supervisor/tray_native.go + icon.ico, 'go run . tray'. Quit POSTs 127.0.0.1:3000/shutdown. Tray menu click-through UNVERIFIED (headless smoke only: process alive). Remaining gap: trained ONNX model only.
+
+## 0.2.18 (2026-11-14)
+- TS bridge reality: rust_protocol.ts is the protocol layer; ws_bridge.ts is socket upgrade only. Old MEMORY/CHANGELOG claims about ws_bridge formatters were wrong. npm registry TLS currently broken in this env. Next: trained model remains only major gap.

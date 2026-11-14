@@ -17,3 +17,5 @@
 - **Bobmania Theme Dashboard**: Bobmania's `ScreenUnifiedDashboard overlay.lua` exposes 13 high-value modules tested via `scripts/audit_dashboard.py`.
 
 - **0.2.11**: Root Rust server is the dashboard host (`/`, `/health`, `/ws`). Cargo.toml version must stay in sync with VERSION.md — it had drifted to 0.1.0. update_docs.sh was destructive (stub-overwrote docs); archived, never restore it.
+
+- **0.2.18 correction**: TypeScript protocol lives in pianogame/typescript/src/rust_protocol.ts (all 8 actions). ws_bridge.ts has no formatters — earlier docs claiming so were stale.

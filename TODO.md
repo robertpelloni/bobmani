@@ -41,3 +41,6 @@
 - [x] 0.2.17 Native tray icon + Quit servers.
 - [ ] Click-through verify tray menu items on a real desktop session.
 - [ ] Trained placement model; decide bobmania/hymnmania pointers.
+- [x] 0.2.18 TS protocol alignment (8 actions).
+- [ ] Fix TS full build: npm install fails TLS to registry.npmjs.org (pre-existing ast_parser dep missing locally).
+- [ ] Trained placement model; bobmania/hymnmania pointer decision; tray click-through on desktop.
