@@ -1,1 +1,1 @@
-﻿0.2.14 - Real ONNX fixture exercises predict_placement neural branch end-to-end
+﻿0.2.15 - Graceful server shutdown (POST /shutdown, Ctrl-C, dashboard Quit button)

@@ -195,3 +195,9 @@
 - Real ONNX fixture tests/fixtures/placement_identity.onnx (Relu, dynamic length; regenerate via scripts/make_onnx_fixture.py) proving the tract-ONNX branch: placement_with_model refactor for testability, live WS with $BOBMANI_ONNX_MODEL returns model_loaded:true, source:onnx.
 ### Verified
 - cargo test 34 pass. Live: placements [0,1,2] on decreasing salience via ONNX (heuristic would return only [0]).
+
+## [0.2.15] - 2026-11-14
+### Added
+- Graceful shutdown: POST /shutdown + Ctrl-C via axum with_graceful_shutdown (watch-flag AppState), dashboard Quit this server button in the tray card. Answers 'can I quit the servers?' for the Rust hub; Go tray QuitAll was already present.
+### Verified
+- cargo test 34 pass, live POST /shutdown -> process exits, log 'server stopped cleanly', port closed.

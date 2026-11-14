@@ -111,7 +111,9 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
 
     <section class="card"><h2>System tray &amp; supervisor <span class="tip" title="The tray lives in the Go harness (pianogame/go), not in this Rust server. It supervises rust/go/csharp/java/typescript engines.">ⓘ</span></h2>
       <p class="desc"><b>Where is it?</b> <code>pianogame/go/supervisor/</code> — <code>TraySupervisor</code> tracks 5 engines, handles Ctrl-C/SIGTERM, and <code>QuitAll()</code> gracefully stops all engines and dismisses the tray. It is a console supervisor today: no native OS tray icon library is linked yet, so no icon appears in the Windows tray when run.</p>
-      <p class="desc">Run it: <code>cd pianogame\go; go run .</code> · Quit: Ctrl-C, or call <code>QuitAll()</code>. To quit <i>this</i> Rust server: Ctrl-C in its terminal.</p></section>
+      <p class="desc">Run it: <code>cd pianogame\go; go run .</code> · Quit: Ctrl-C, or call <code>QuitAll()</code>. To quit <i>this</i> Rust server: Ctrl-C in its terminal, or:</p>
+      <button id="quit" style="background:#b91c1c">Quit this server</button>
+      <p class="muted" id="quit-msg">Graceful shutdown via POST /shutdown — in-flight replies finish, then the process exits.</p></section>
 
     <section class="card"><h2>Live telemetry log <span class="tip" title="Every request/response through this page is logged here with timestamps.">ⓘ</span></h2>
       <p class="desc">Watch requests, responses and errors in real time.</p>
@@ -151,6 +153,9 @@ const actions={
  ping:()=>send({action:'ping'},'out-status')};
 document.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>actions[b.dataset.send]());
 $('clear').onclick=()=>$('log').textContent='';
+$('quit').onclick=async()=>{if(!confirm('Quit the bobmani server? The dashboard will disconnect.'))return;
+  try{const r=await fetch('/shutdown',{method:'POST'});$('quit-msg').textContent='Shutdown requested: '+JSON.stringify(await r.json())+' — server stopping.';log('POST /shutdown sent')}
+  catch(e){$('quit-msg').textContent='Shutdown request failed (server may already be down): '+e}};
 // --- Live chart visualiser: parse "time,row" lines, draw 4 lanes x time ---
 function parseNotes(){return $('notes').value.split('\n').map(l=>l.trim()).filter(Boolean)
   .map(l=>{const[a,b]=l.split(',');return{t:parseFloat(a),row:(b||'').trim()}}).filter(n=>!isNaN(n.t)&&n.row)}

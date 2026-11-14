@@ -52,3 +52,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.14 (2026-11-14)
 - ONNX branch proven: tests/fixtures/placement_identity.onnx + scripts/make_onnx_fixture.py (pip onnx installed user-site). placement_with_model() is the testable seam. Fixture is NOT a trained model. Disk recovered to ~15GB free. Next: native tray or trained model.
+
+## 0.2.15 (2026-11-14)
+- Shutdown: src/server.rs AppState/watch + POST /shutdown; dashboard Quit button. Native tray icon still not done (needs Go systray dep + GUI verification). Security note: /shutdown is unauthenticated on localhost only (127.0.0.1 bind) — acceptable for local hub, do not expose remotely.

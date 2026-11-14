@@ -1,9 +1,14 @@
 use axum::{
-    extract::ws::{Message, WebSocket, WebSocketUpgrade},
+    extract::{
+        ws::{Message, WebSocket, WebSocketUpgrade},
+        State,
+    },
     response::{Html, IntoResponse, Json},
-    routing::get,
+    routing::{get, post},
     Router,
 };
+use std::sync::Arc;
+use tokio::sync::watch;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::net::SocketAddr;
@@ -300,20 +305,49 @@ async fn health_handler() -> Json<serde_json::Value> {
         "version": env!("CARGO_PKG_VERSION"),
         "websocket": "/ws",
         "dashboard": "/",
+        "shutdown": "POST /shutdown",
         "actions": ["ping","status","parse_sm","analyze_density","extract_audio_features","detect_onsets","calculate_ex_score","predict_placement"]
     }))
 }
 
+/// Shared state: flipping this watch flag gracefully stops the server.
+/// Set by POST /shutdown (the dashboard Quit button) or by Ctrl-C.
+#[derive(Clone)]
+pub struct AppState {
+    shutdown: watch::Sender<bool>,
+}
+
+async fn shutdown_handler(State(state): State<Arc<AppState>>) -> Json<serde_json::Value> {
+    // Why a graceful flag instead of process::exit: in-flight WebSocket
+    // replies finish and the listener closes cleanly, so clients see a
+    // proper close instead of a dropped connection.
+    let _ = state.shutdown.send(true);
+    Json(serde_json::json!({"ok": true, "shutting_down": true}))
+}
+
 pub async fn run_server() {
+    let (shutdown_tx, mut shutdown_rx) = watch::channel(false);
+    let state = Arc::new(AppState { shutdown: shutdown_tx });
     let app = Router::new()
         .route("/", get(dashboard_handler))
         .route("/health", get(health_handler))
-        .route("/ws", get(ws_handler));
+        .route("/shutdown", post(shutdown_handler))
+        .route("/ws", get(ws_handler))
+        .with_state(state);
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("listening on {}", addr);
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .with_graceful_shutdown(async move {
+            tokio::select! {
+                _ = tokio::signal::ctrl_c() => println!("Ctrl-C received, shutting down"),
+                _ = async { let _ = shutdown_rx.changed().await; } => println!("/shutdown requested, shutting down"),
+            }
+        })
+        .await
+        .unwrap();
+    println!("server stopped cleanly");
 }
 
 async fn ws_handler(ws: WebSocketUpgrade) -> impl IntoResponse {
@@ -462,6 +496,8 @@ mod tests {
         assert!(DASHBOARD_HTML.contains("data-send=\"score\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"onsets\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"audio\""));
+        assert!(DASHBOARD_HTML.contains("Quit this server"));
+        assert!(DASHBOARD_HTML.contains("/shutdown"));
         assert!(DASHBOARD_HTML.contains("id=\"chart\""));
         assert!(DASHBOARD_HTML.contains("drawChart"));
     }
