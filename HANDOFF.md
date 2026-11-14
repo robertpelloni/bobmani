@@ -46,3 +46,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.12 (2026-11-14)
 - Visualiser: #chart canvas + drawChart() in src/dashboard.html, driven by #notes input event and density_analysis responses. Next: ONNX predict action, native tray, submodule audit. Push via SSH URL (HTTPS GITHUB_TOKEN invalid).
+
+## 0.2.13 (2026-11-14)
+- predict_placement: src/server.rs placement_for() + src/ddc_onset/cnn.rs (predict_salience, default_model_path, heuristic_placements). No .onnx in repo, so live path is heuristic and labelled. Disk: only ~2.7GB free on C: — watch target/ growth. Next: tray icon or a real model fixture.

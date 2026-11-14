@@ -29,3 +29,4 @@
 - [ ] Live chart visualiser canvas fed by analyze_density stream.
 - [ ] ONNX placement inference action over WebSocket.
 - [x] 0.2.12 Connect live chart visualiser canvas to density input/stream.
+- [x] 0.2.13 ONNX placement action over WebSocket (heuristic fallback labelled).

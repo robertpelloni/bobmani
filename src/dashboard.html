@@ -87,6 +87,10 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <input id="thr" type="number" step="0.05" value="0.5">
       <button data-send="onsets">Detect onsets</button><pre id="out-onsets">Result appears here.</pre></section>
 
+    <section class="card"><h2>Note placement prediction <span class="tip" title="predict_placement: if models/placement.onnx (or $BOBMANI_ONNX_MODEL) exists, runs real tract-ONNX inference; otherwise returns thresholded onset peaks and says so in source. Never fakes neural output.">ⓘ</span></h2>
+      <p class="desc">Reuses the salience + threshold from Onset detection above. Check <code>source</code>: <code>onnx</code> vs <code>onset_heuristic_no_model</code>.</p>
+      <button data-send="placement">Predict placements</button><pre id="out-placement">Result appears here. No ONNX model ships with the repo today.</pre></section>
+
     <section class="card"><h2>Audio features <span class="tip" title="extract_audio_features: log-Mel framing in Rust. Returns frames × bands × channels. Large inputs are slow — keep samples modest.">ⓘ</span></h2>
       <p class="desc">Generates 1024 demo samples, or paste your own comma-separated floats.</p>
       <label for="samples">Samples (blank = demo)</label><textarea id="samples" placeholder="Leave blank for 1024 demo samples"></textarea>
@@ -114,7 +118,7 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <button class="secondary" id="clear">Clear log</button><pre id="log"></pre></section>
   </div>
 
-  <p class="muted">Not yet wired (honest gaps): ONNX placement inference over WebSocket, native OS tray icon. See ROADMAP.md / TODO.md.</p>
+  <p class="muted">Not yet wired (honest gaps): no ONNX model file ships with the repo (placement uses the labelled heuristic until one is added), native OS tray icon. See ROADMAP.md / TODO.md.</p>
 </main>
 <script>
 const $=id=>document.getElementById(id);
@@ -129,7 +133,7 @@ ws.onerror=()=>setConn(false,'connection error');
 ws.onmessage=e=>{log('← '+e.data);try{const r=JSON.parse(e.data);
  if(r.type==='status'){ $('ver').textContent='v'+r.data.version;
    $('fleet').innerHTML=r.data.submodules.map(s=>`<span>${s}</span><b>loaded</b>`).join(''); }
- const map={sm_metadata:'out-parse',density_analysis:'out-density',score_analysis:'out-score',onset_detections:'out-onsets',audio_features:'out-audio',status:'out-status',pong:'out-status',error:'out-status'};
+ const map={sm_metadata:'out-parse',density_analysis:'out-density',score_analysis:'out-score',onset_detections:'out-onsets',audio_features:'out-audio',placement_prediction:'out-placement',status:'out-status',pong:'out-status',error:'out-status'};
  const t=map[r.type]; if(t) $(t).textContent=JSON.stringify(r,null,2);
  if(r.type==='density_analysis'){$('chart-meta').textContent+=` · server NPS ${r.data.nps} · stream ${r.data.stream_percentage}% · jack ${r.data.jack_percentage}%`}
 }catch(_){}}}
@@ -142,6 +146,7 @@ const actions={
  score:()=>send({action:'calculate_ex_score',payload:{epg:int('epg'),lpg:int('lpg'),egr:int('egr'),lgr:int('lgr'),notes:int('tnotes')}},'out-score'),
  onsets:()=>{const s=$('salience').value.split(',').map(x=>parseFloat(x)).filter(x=>!isNaN(x));send({action:'detect_onsets',payload:{onset_salience:s,threshold:num('thr')}},'out-onsets')},
  audio:()=>{let s=$('samples').value.split(',').map(x=>parseFloat(x)).filter(x=>!isNaN(x));if(!s.length)s=Array.from({length:1024},()=>0.1);send({action:'extract_audio_features',payload:{samples:s}},'out-audio')},
+ placement:()=>{const s=$('salience').value.split(',').map(x=>parseFloat(x)).filter(x=>!isNaN(x));send({action:'predict_placement',payload:{onset_salience:s,threshold:num('thr')}},'out-placement')},
  status:()=>send({action:'status'},'out-status'),
  ping:()=>send({action:'ping'},'out-status')};
 document.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>actions[b.dataset.send]());

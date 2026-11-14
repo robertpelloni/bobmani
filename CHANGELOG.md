@@ -183,3 +183,9 @@
 - Live chart visualiser on the single dashboard page: canvas rendering notes (4 lanes x time) live from the density input, with rows/notes/span/notes-per-second meta and server NPS/stream/jack annotation on analyze_density response.
 ### Verified
 - cargo test 28 pass, node --check on dashboard JS OK, live / 200 with canvas+drawChart present, /health reports 0.2.12 after rebuild.
+
+## [0.2.13] - 2026-11-14
+### Added
+- `predict_placement` WS action (8th): PlacementCNN::predict_salience via tract-ONNX when models/placement.onnx or $BOBMANI_ONNX_MODEL exists; otherwise labelled onset-heuristic placements (source=model_loaded flags say which). Dashboard placement card in Tier 2.
+### Verified
+- cargo test 32 pass (incl. heuristic thresholds + WS no-model path). Live WS: placements [2,5], model_loaded false, source onset_heuristic_no_model.

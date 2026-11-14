@@ -32,6 +32,11 @@ pub enum WsRequest {
         onset_salience: Vec<f32>,
         threshold: f32,
     },
+    #[serde(rename = "predict_placement")]
+    PredictPlacement {
+        onset_salience: Vec<f32>,
+        threshold: f32,
+    },
     #[serde(rename = "calculate_ex_score")]
     CalculateExScore {
         epg: i32,
@@ -79,6 +84,13 @@ pub enum WsResponse {
         filtered_peaks: Vec<usize>,
         total_frames: usize,
     },
+    #[serde(rename = "placement_prediction")]
+    PlacementPrediction {
+        placements: Vec<usize>,
+        total_frames: usize,
+        model_loaded: bool,
+        source: String,
+    },
     #[serde(rename = "score_analysis")]
     ScoreAnalysis {
         ex_score: i32,
@@ -88,6 +100,36 @@ pub enum WsResponse {
     },
     #[serde(rename = "error")]
     Error { message: String },
+}
+
+/// Placement decision shared by the WebSocket handler: ONNX inference when
+/// a model file exists (scores >= threshold become placements), else the
+/// labelled heuristic. Returns (placements, model_loaded, source).
+pub fn placement_for(onset_salience: &[f32], threshold: f32) -> (Vec<usize>, bool, String) {
+    use crate::ddc_onset::cnn::{default_model_path, heuristic_placements, PlacementCNN};
+    if let Some(path) = default_model_path() {
+        if let Ok(cnn) = PlacementCNN::new(&path.to_string_lossy()) {
+            if let Ok(scores) = cnn.predict_salience(onset_salience) {
+                let placements = scores
+                    .iter()
+                    .enumerate()
+                    .filter(|&(_, &s)| s >= threshold)
+                    .map(|(i, _)| i)
+                    .collect();
+                return (placements, true, "onnx".to_string());
+            }
+        }
+        return (
+            heuristic_placements(onset_salience, threshold),
+            false,
+            "onset_heuristic_model_error".to_string(),
+        );
+    }
+    (
+        heuristic_placements(onset_salience, threshold),
+        false,
+        "onset_heuristic_no_model".to_string(),
+    )
 }
 
 /// Dispatches an incoming text message and returns the serialized JSON response
@@ -180,6 +222,19 @@ pub fn process_message(text: &str) -> String {
             };
             serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
         }
+        Ok(WsRequest::PredictPlacement { onset_salience, threshold }) => {
+            // Real ONNX path when a model file is present; otherwise the
+            // labelled onset heuristic. `source` always says which ran.
+            let total_frames = onset_salience.len();
+            let (placements, model_loaded, source) = placement_for(&onset_salience, threshold);
+            let res = WsResponse::PlacementPrediction {
+                placements,
+                total_frames,
+                model_loaded,
+                source,
+            };
+            serde_json::to_string(&res).unwrap_or_else(|_| "{}".to_string())
+        }
         Ok(WsRequest::CalculateExScore { epg, lpg, egr, lgr, notes }) => {
             let mut score = ScoreData::new();
             score.epg = epg;
@@ -231,7 +286,7 @@ async fn health_handler() -> Json<serde_json::Value> {
         "version": env!("CARGO_PKG_VERSION"),
         "websocket": "/ws",
         "dashboard": "/",
-        "actions": ["ping","status","parse_sm","analyze_density","extract_audio_features","detect_onsets","calculate_ex_score"]
+        "actions": ["ping","status","parse_sm","analyze_density","extract_audio_features","detect_onsets","calculate_ex_score","predict_placement"]
     }))
 }
 
@@ -384,7 +439,7 @@ mod tests {
     fn test_dashboard_covers_all_actions() {
         for needle in [
             "parse_sm", "analyze_density", "calculate_ex_score", "detect_onsets",
-            "extract_audio_features", "System tray",
+            "extract_audio_features", "predict_placement", "System tray",
         ] {
             assert!(DASHBOARD_HTML.contains(needle), "dashboard missing {needle}");
         }
@@ -395,6 +450,20 @@ mod tests {
         assert!(DASHBOARD_HTML.contains("data-send=\"audio\""));
         assert!(DASHBOARD_HTML.contains("id=\"chart\""));
         assert!(DASHBOARD_HTML.contains("drawChart"));
+    }
+
+    #[test]
+    fn test_process_predict_placement_no_model() {
+        // No model ships with the repo: must be the labelled heuristic path.
+        let req = serde_json::json!({
+            "action": "predict_placement",
+            "payload": {"onset_salience": [0.0,0.1,0.9,0.2,0.0,0.8,0.1,0.0], "threshold": 0.5}
+        }).to_string();
+        let res_str = process_message(&req);
+        assert!(res_str.contains(r#""type":"placement_prediction""#), "{res_str}");
+        assert!(res_str.contains(r#""placements":[2,5]"#), "{res_str}");
+        assert!(res_str.contains(r#""model_loaded":false"#), "{res_str}");
+        assert!(res_str.contains("heuristic"), "{res_str}");
     }
 
     #[test]

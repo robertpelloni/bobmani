@@ -27,3 +27,6 @@
 - [ ] Merge or close stale branches: scaffold-docs-10743658648208721759, jules-empty-repo-diagnosis-17910503964700985352 (inspect before merging; do not merge blind).
 - [x] 0.2.12 Live chart visualiser canvas.
 - [ ] ONNX placement action; native tray icon; submodule dirty-tree audit.
+- [x] 0.2.13 predict_placement action + dashboard card.
+- [ ] Ship a real placement.onnx model to exercise the ONNX branch end-to-end.
+- [ ] Native tray icon; submodule dirty-tree audit. NOTE: C: free space low (~2.7GB) — cargo target is large.

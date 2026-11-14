@@ -1,1 +1,1 @@
-﻿0.2.12 - Live chart visualiser canvas on unified dashboard
+﻿0.2.13 - predict_placement WebSocket action (ONNX when model present, labelled heuristic otherwise)
