@@ -41,3 +41,5 @@ Unified build/test: `pwsh scripts/build.ps1`. Tray supervisor: `cd pianogame\go;
 Stop the Rust hub: Ctrl-C, `POST /shutdown`, or the dashboard Quit button (all graceful).
 
 Tray: `cd pianogame\go; go run . tray` (native icon; Quit servers stops the Rust hub gracefully).
+
+TS deps (this env): $env:NODE_OPTIONS='--tls-min-v1.2'; npm install` in pianogame/typescript, then `npx tsc`.

@@ -50,3 +50,5 @@
 - [x] 0.2.20 Disk/PDB build failure fixed + build.ps1 per-step checks.
 - [ ] Watch C: disk — target/ regrows ~2.5GB per full rebuild.
 - [ ] npm TLS blocker (external); trained model; pointer decisions; tray click-through.
+- [x] 0.2.21 TS build green (NODE_OPTIONS TLS fix documented).
+- [ ] Remaining: trained model (needs data), pointer/branch decisions (user), tray click-through (desktop).

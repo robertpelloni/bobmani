@@ -70,3 +70,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.20 (2026-11-14)
 - CRITICAL local state: C: nearly filled (70MB) by cargo PDBs; cleaned app artifacts only. If cargo test fails LNK1180 again: check Get-PSDrive C first. build.ps1 now trustworthy.
+
+## 0.2.21 (2026-11-14)
+- ENV FIX: npm/node TLS to registry.npmjs.org needs NODE_OPTIONS=--tls-min-v1.2 in this environment (PowerShell/.NET TLS worked, Node default did not). All component builds now green: Rust 40 tests, Go all, TS tsc + 9 tests. No invented work remains; rest is user-gated.

@@ -238,3 +238,9 @@
 - pwsh scripts/build.ps1: cargo test 40 pass, cargo build, go test pass, exit 0. Disk 7.4GB free after rebuild.
 ### Blocked (external)
 - npm: registry TLS alert 70 fetching @typescript-eslint/visitor-keys 8.62.0 tgz (not in local cache); full TS tsc still 1 pre-existing error. Retry when network allows; do not mirror around it.
+
+## [0.2.21] - 2026-11-14
+### Fixed
+- TypeScript full build green for first time: npm registry TLS alert 70 was Node/OpenSSL default TLS negotiation in this env; $env:NODE_OPTIONS='--tls-min-v1.2'; npm install succeeds. tsc clean (was 1 pre-existing ast_parser error), all 9 dist/test_*.js pass.
+### Verified
+- cargo/go already green via scripts/build.ps1 (0.2.20). Disk 5.6GB free — watch target/ regrowth.
