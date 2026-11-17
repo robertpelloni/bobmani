@@ -1,1 +1,1 @@
-﻿0.2.23 - Tier 4 subproject inventory; dashboard live-verified in Edge CDP 9222
+﻿0.2.24 - bobmania audit CWD fix; CSharp harness warning-free; component audit sweep

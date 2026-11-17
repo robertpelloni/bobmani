@@ -79,3 +79,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.23 (2026-11-14)
 - Canonical dashboard = Rust hub /. Legacy pianogame/typescript/src/dashboard.html simulates results; do not mistake it for live. Edge CDP 9222 verification used a NEW tab via agent-browser (pre-existing user tab left untouched). Disk healthy (~210GB free). Remaining gated: trained model, tray click-through (tray process itself verified), GITHUB_TOKEN.
+
+## 0.2.24 (2026-11-14)
+- Component status: Rust 40 tests + Edge-verified dashboard, Go all, TS tsc+9, CSharp dotnet clean, Java blocked (no mvn), bobmania audit 13/13, tray process-verified.

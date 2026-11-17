@@ -57,3 +57,5 @@
 - [ ] Remaining user-gated: trained model, pointer/branch decisions, tray click-through, GITHUB_TOKEN.
 - [x] 0.2.23 Tier 4 subproject inventory on canonical dashboard.
 - [ ] Optional: retire or redirect the legacy pianogame demo dashboard (user call; it is demo-only).
+- [x] 0.2.24 Audit CWD fix + CSharp warning fix.
+- [ ] Install Maven to build pianogame/java; trained model; tray click-through; GITHUB_TOKEN.

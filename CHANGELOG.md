@@ -256,3 +256,10 @@
 - Dashboard Tier 4 'Subprojects & legacy surfaces': inventories every other dashboard (pianogame 15-card demo UI — simulated, not hub-wired; bobmania in-game Lua overlay; standalone engines via /fleet) on the single canonical page so no page is left out or duplicated.
 ### Verified
 - Full scripts/build.ps1 green; dashboard exercised live in MS Edge via CDP 9222 (agent-browser, new tab, existing tabs untouched).
+
+## [0.2.24] - 2026-11-14
+### Fixed
+- bobmania audit_dashboard.py CWD crash fixed (script-relative path; 13/13 from root). bobmania a80903eb.
+- pianogame CSharp AstParser CS8602 null-guard; dotnet build 0 warnings. pianogame 6aae9ca.
+### Not runnable here
+- Java harness needs Maven (not installed) for JavaParser dependency.
