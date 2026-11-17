@@ -61,3 +61,5 @@
 - [ ] Install Maven to build pianogame/java; trained model; tray click-through; GITHUB_TOKEN.
 - [x] 0.2.25 Java harness unblocked via local Maven.
 - [ ] Genuinely remaining: trained placement model (data), tray menu click-through (desktop), GITHUB_TOKEN renewal, stable Edge tab for coordination posts.
+- [x] 0.2.26 Six-component unified build.
+- [ ] Only user-gated items remain (model data, tray clicks, token, coordination tab, disk outside repo).

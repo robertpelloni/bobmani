@@ -1,1 +1,1 @@
-﻿0.2.25 - Java harness unblocked (Maven 3.9.9 local install); every component verified running
+﻿0.2.26 - Unified build now covers all 6 components (Rust, Go, TS, CSharp, Java, bobmania audit)

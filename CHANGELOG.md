@@ -269,3 +269,9 @@
 - Maven 3.9.9 installed to ~/.local/apache-maven-3.9.9 (session PATH only, no system change). pianogame/java now compiles (18 classes) and com.harness.Main runs exit 0 (LLM request, routers, orchestrator, MCP server with 2 tools).
 ### Verified
 - ALL components now verified: Rust 40 tests + Edge dashboard, Go all + tray, TS tsc + 9 tests, CSharp dotnet 0-warn build, Java mvn compile + run, bobmania audit 13/13.
+
+## [0.2.26] - 2026-11-14
+### Changed
+- scripts/build.ps1 covers every component in one run: cargo, Go, TS (tsc + 9 tests), dotnet (0 warnings), mvn compile (user-local Maven, skip-with-warning when absent), bobmania audit 13/13. All steps exit-checked.
+### Verified
+- Full build.ps1 exit 0, all 6 stages green in a single invocation.

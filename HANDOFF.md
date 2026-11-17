@@ -85,3 +85,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.25 (2026-11-14)
 - Maven at ~/.local/apache-maven-3.9.9/bin/mvn.cmd (not on system PATH). Java run needs dependency jars on classpath (mvn compile works standalone). Every component verified. Nothing non-gated remains known.
+
+## 0.2.26 (2026-11-14)
+- Single verification command for the whole project: pwsh scripts/build.ps1 (6 stages). Session work 0.2.11-0.2.26 complete; rest needs user input listed in TODO.

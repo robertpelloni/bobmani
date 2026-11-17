@@ -52,6 +52,19 @@ try {
       }
     }
   } finally { Pop-Location }
+  # C# harness (dotnet is on PATH in the dev env)
+  if (Get-Command dotnet -ErrorAction SilentlyContinue) {
+    Step "dotnet build (C# harness)" { dotnet build pianogame\csharp\Harness -v q --nologo }
+  } else { Write-Host "SKIP dotnet: not installed" }
+
+  # Java harness: Maven lives user-locally (~/.local), not on system PATH.
+  $mvn = Join-Path $env:USERPROFILE ".local\apache-maven-3.9.9\bin\mvn.cmd"
+  if (Test-Path $mvn) {
+    Step "mvn compile (Java harness)" { & $mvn -q -B -f pianogame\java\pom.xml compile }
+  } else { Write-Host "SKIP mvn: not installed (see DEPLOY.md)" }
+
+  Step "bobmania dashboard audit" { python bobmania\scripts\audit_dashboard.py }
+
   $bin = if ($Release) { 'release' } else { 'debug' }
   Write-Host "OK. Run: .\target\$bin\app.exe  ->  http://127.0.0.1:3000/"
 } finally { Pop-Location }
