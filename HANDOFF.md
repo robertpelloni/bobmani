@@ -82,3 +82,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.24 (2026-11-14)
 - Component status: Rust 40 tests + Edge-verified dashboard, Go all, TS tsc+9, CSharp dotnet clean, Java blocked (no mvn), bobmania audit 13/13, tray process-verified.
+
+## 0.2.25 (2026-11-14)
+- Maven at ~/.local/apache-maven-3.9.9/bin/mvn.cmd (not on system PATH). Java run needs dependency jars on classpath (mvn compile works standalone). Every component verified. Nothing non-gated remains known.

@@ -1,1 +1,1 @@
-﻿0.2.24 - bobmania audit CWD fix; CSharp harness warning-free; component audit sweep
+﻿0.2.25 - Java harness unblocked (Maven 3.9.9 local install); every component verified running

@@ -43,3 +43,5 @@ Stop the Rust hub: Ctrl-C, `POST /shutdown`, or the dashboard Quit button (all g
 Tray: `cd pianogame\go; go run . tray` (native icon; Quit servers stops the Rust hub gracefully).
 
 TS deps (this env): $env:NODE_OPTIONS='--tls-min-v1.2'; npm install` in pianogame/typescript, then `npx tsc`.
+
+Java harness: `~/.local/apache-maven-3.9.9/bin/mvn.cmd -f pianogame/java/pom.xml compile` (Maven installed user-locally, not on system PATH).

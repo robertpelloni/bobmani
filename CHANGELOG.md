@@ -263,3 +263,9 @@
 - pianogame CSharp AstParser CS8602 null-guard; dotnet build 0 warnings. pianogame 6aae9ca.
 ### Not runnable here
 - Java harness needs Maven (not installed) for JavaParser dependency.
+
+## [0.2.25] - 2026-11-14
+### Added (environment)
+- Maven 3.9.9 installed to ~/.local/apache-maven-3.9.9 (session PATH only, no system change). pianogame/java now compiles (18 classes) and com.harness.Main runs exit 0 (LLM request, routers, orchestrator, MCP server with 2 tools).
+### Verified
+- ALL components now verified: Rust 40 tests + Edge dashboard, Go all + tray, TS tsc + 9 tests, CSharp dotnet 0-warn build, Java mvn compile + run, bobmania audit 13/13.

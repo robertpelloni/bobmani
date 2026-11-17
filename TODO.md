@@ -59,3 +59,5 @@
 - [ ] Optional: retire or redirect the legacy pianogame demo dashboard (user call; it is demo-only).
 - [x] 0.2.24 Audit CWD fix + CSharp warning fix.
 - [ ] Install Maven to build pianogame/java; trained model; tray click-through; GITHUB_TOKEN.
+- [x] 0.2.25 Java harness unblocked via local Maven.
+- [ ] Genuinely remaining: trained placement model (data), tray menu click-through (desktop), GITHUB_TOKEN renewal, stable Edge tab for coordination posts.
