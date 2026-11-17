@@ -453,8 +453,17 @@ pub async fn run_server() {
         .with_state(state);
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    // Why not unwrap: a second instance (or another local server) holding
+    // port 3000 used to panic with a raw AddrInUse backtrace. Report the
+    // conflict plainly and exit — the first instance keeps serving.
+    let listener = match tokio::net::TcpListener::bind(addr).await {
+        Ok(l) => l,
+        Err(e) => {
+            eprintln!("cannot start: {addr} is unavailable ({e}). Another bobmani instance may already be running — check http://127.0.0.1:3000/health");
+            return;
+        }
+    };
     println!("listening on {}", addr);
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app)
         .with_graceful_shutdown(async move {
             tokio::select! {
@@ -680,6 +689,29 @@ mod tests {
         assert_eq!(m.get("arrowvortex").map(|s| s.as_str()), Some("modified-content"));
         assert_eq!(m.get("ddc").map(|s| s.as_str()), Some("untracked-content"));
         assert!(!m.contains_key("staged.rs")); // staged-only file, not a submodule line we track
+    }
+
+    #[test]
+    fn test_process_edge_inputs_do_not_panic() {
+        // Boundary inputs from the live edge probe: every one must return a
+        // typed response, never panic or hang the connection handler.
+        for req in [
+            r#"{"action":"analyze_density","payload":{"chart_notes":[]}}"#,
+            r#"{"action":"predict_placement","payload":{"onset_salience":[],"threshold":0.5}}"#,
+            r#"{"action":"calculate_ex_score","payload":{"epg":0,"lpg":0,"egr":0,"lgr":0,"notes":0}}"#,
+            r#"{"action":"detect_onsets","payload":{"onset_salience":[0.5,0.9,0.5],"threshold":-1.0}}"#,
+            r#"{"action":"parse_sm","payload":{"content":""}}"#,
+            r#"{"action":"extract_audio_features","payload":{"samples":[]}}"#,
+            r#"{"action":"nope"}"#,
+        ] {
+            let res = process_message(req);
+            assert!(res.contains("\"type\":"), "no typed response for {req}: {res}");
+        }
+        let zero = process_message(
+            r#"{"action":"calculate_ex_score","payload":{"epg":0,"lpg":0,"egr":0,"lgr":0,"notes":0}}"#,
+        );
+        assert!(zero.contains("\"ex_score\":0"), "{zero}");
+        assert!(zero.contains("\"accuracy_rate\":0.0"), "{zero}");
     }
 
     #[test]

@@ -279,3 +279,9 @@
 ## [0.2.27] - 2026-11-14
 ### Verified (recorded)
 - Full public-path coverage in real Edge (CDP 9222): all 8 dashboard actions, visualiser, fleet, empty-input and malformed-payload edges, and Quit button (confirm dialog -> graceful stop). MCP tool sweep done (quirks are HyperNexus-kernel-side). No code defects found in bobmani this cycle.
+
+## [0.2.28] - 2026-11-14
+### Fixed
+- Server panicked (unwrap, AddrInUse) when port 3000 was already held — found by the live edge probe. Bind failure now prints a plain-language message and exits; first instance keeps serving (verified live with two instances).
+### Added
+- Edge-case tests: empty notes/salience/samples/content, zero-note score, negative threshold, unknown action — all typed responses, no panic (42 tests total; also verified live over WS).

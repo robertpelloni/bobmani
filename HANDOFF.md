@@ -93,3 +93,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 - Session arc 0.2.11-0.2.26: dashboard built and Edge-verified, tray, ONNX+fixture, TS protocol, pointers, 6-lang builds green. Public-path verification COMPLETE incl. Quit dialog.
 - Env facts for successor: npm needs NODE_OPTIONS=--tls-min-v1.2; Maven at ~/.local/apache-maven-3.9.9; pushes via SSH URL (HTTPS token invalid); check C: free before cargo (PDB blowup history); Edge tabs are user-active — never type into existing chats.
 - Gated on user: training data, GITHUB_TOKEN, stable coordination tab, disk outside repo, retiring legacy TS demo dashboard. Cron 8b4a5393 still fires every 15m until deleted.
+
+## 0.2.28 (2026-11-14)
+- Edge probe found: second instance on :3000 panicked. Fixed in run_server bind handling. NOTE: other local sessions also bind :3000 at times — if health answers unexpectedly, check who owns the port before trusting it.

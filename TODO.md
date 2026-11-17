@@ -63,3 +63,5 @@
 - [ ] Genuinely remaining: trained placement model (data), tray menu click-through (desktop), GITHUB_TOKEN renewal, stable Edge tab for coordination posts.
 - [x] 0.2.26 Six-component unified build.
 - [ ] Only user-gated items remain (model data, tray clicks, token, coordination tab, disk outside repo).
+- [x] 0.2.28 Port-conflict grace + WS edge tests.
+- [ ] Concurrent-client load probe (multi-socket) as a future robustness pass.

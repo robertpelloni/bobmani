@@ -1,1 +1,1 @@
-﻿0.2.27 - Session handoff: full public-path verification coverage recorded
+﻿0.2.28 - Graceful port-conflict handling + WebSocket edge-case tests
