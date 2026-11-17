@@ -613,6 +613,7 @@ mod tests {
         assert!(DASHBOARD_HTML.contains("data-send=\"score\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"onsets\""));
         assert!(DASHBOARD_HTML.contains("data-send=\"audio\""));
+        assert!(DASHBOARD_HTML.contains("All dashboards, one home"));
         assert!(DASHBOARD_HTML.contains("Quit this server"));
         assert!(DASHBOARD_HTML.contains("/shutdown"));
         assert!(DASHBOARD_HTML.contains("id=\"chart\""));

@@ -1,1 +1,1 @@
-﻿0.2.22 - Unified build covers Rust+Go+TypeScript with low-disk guard
+﻿0.2.23 - Tier 4 subproject inventory; dashboard live-verified in Edge CDP 9222

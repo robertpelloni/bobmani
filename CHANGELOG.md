@@ -250,3 +250,9 @@
 - scripts/build.ps1 now verifies every component in one run (cargo test/build, go test, tsc, 9 TS tests) with per-step exit checks, plus a low-disk guard (cargo clean -p app when C: free <4GB; stale test PDBs accumulate ~150MB each).
 ### Verified
 - Full build.ps1 green twice, second run exercising the disk guard. NOTE: C: still only ~1.8GB free after a minimal rebuild — most disk use is outside this repo and needs user cleanup.
+
+## [0.2.23] - 2026-11-14
+### Added
+- Dashboard Tier 4 'Subprojects & legacy surfaces': inventories every other dashboard (pianogame 15-card demo UI — simulated, not hub-wired; bobmania in-game Lua overlay; standalone engines via /fleet) on the single canonical page so no page is left out or duplicated.
+### Verified
+- Full scripts/build.ps1 green; dashboard exercised live in MS Edge via CDP 9222 (agent-browser, new tab, existing tabs untouched).

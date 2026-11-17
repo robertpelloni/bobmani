@@ -76,3 +76,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.22 (2026-11-14)
 - One command verifies everything: pwsh scripts/build.ps1. Disk remains critical (1.8GB) from outside the repo. All non-gated work is complete; loop cycles will repeat verification until user input arrives.
+
+## 0.2.23 (2026-11-14)
+- Canonical dashboard = Rust hub /. Legacy pianogame/typescript/src/dashboard.html simulates results; do not mistake it for live. Edge CDP 9222 verification used a NEW tab via agent-browser (pre-existing user tab left untouched). Disk healthy (~210GB free). Remaining gated: trained model, tray click-through (tray process itself verified), GITHUB_TOKEN.

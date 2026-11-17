@@ -27,7 +27,7 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
   <span class="muted">One page for every backend feature. Highest-value tools first. Hover dotted labels <span class="tip" title="Tooltips explain what a control does, what input it expects, and what you get back.">ⓘ</span> for guidance.</span>
 </header>
 <main>
-  <p class="muted">Live WebSocket: <code id="wsurl"></code> · Health: <a href="/health">/health</a> · All 7 backend actions are wired below — no subpages.</p>
+  <p class="muted">Live WebSocket: <code id="wsurl"></code> · Health: <a href="/health">/health</a> · All 8 backend actions are wired below — no subpages.</p>
 
   <div class="tier">Tier 1 — Chart tools (highest value)</div>
   <div class="grid">
@@ -120,7 +120,14 @@ pre{background:#070b18;border:1px solid #26305a;border-radius:8px;padding:10px;o
       <button class="secondary" id="clear">Clear log</button><pre id="log"></pre></section>
   </div>
 
-  <p class="muted">Not yet wired (honest gaps): no trained ONNX placement model ships with the repo (only a Relu fixture; placement uses the labelled heuristic until one is added). See ROADMAP.md / TODO.md.</p>
+  <div class="tier">Tier 4 — Subprojects &amp; legacy surfaces</div>
+  <div class="grid">
+    <section class="card"><h2>All dashboards, one home <span class="tip" title="This page is the canonical dashboard. The surfaces below exist elsewhere and are inventoried here so no page is left out or silently duplicated.">ⓘ</span></h2>
+      <p class="desc"><b>pianogame harness</b> (Go/TS/C#/Java libraries, all unit-tested): LLM router, orchestrator, AST, RAG, MIDI, prompt templates, worktree racer. Its old 15-card demo UI (<code>pianogame/typescript/src/dashboard.html</code>, v5.98) simulates results in-page and is <b>not</b> wired to this hub — use it only as a library demo; this page is the live one.</p>
+      <p class="desc"><b>bobmania</b> StepMania theme: in-game <code>ScreenUnifiedDashboard</code> Lua overlay (13 modules, audited by <code>bobmania/scripts/audit_dashboard.py</code>). Runs inside the game, not the browser. <b>Simply-Love-SM5</b>, <b>itgmania</b>, <b>arrowvortex</b>, <b>beatoraja</b>, <b>ksm-v2</b>, <b>linthesia</b>, <b>leraine-studio</b>: standalone engines — see the live fleet card above for their commits and state.</p></section>
+  </div>
+
+  <p class="muted">Not yet wired (honest gaps): no trained ONNX placement model ships with the repo (only a Relu fixture; placement uses the labelled heuristic until one is added), and the legacy pianogame demo dashboard is not connected to this hub. See ROADMAP.md / TODO.md.</p>
 </main>
 <script>
 const $=id=>document.getElementById(id);
@@ -137,7 +144,7 @@ ws.onmessage=e=>{log('← '+e.data);try{const r=JSON.parse(e.data);
    $('fleet').innerHTML=r.data.submodules.map(s=>`<span>${s}</span><b>loaded</b>`).join(''); }
  const map={sm_metadata:'out-parse',density_analysis:'out-density',score_analysis:'out-score',onset_detections:'out-onsets',audio_features:'out-audio',placement_prediction:'out-placement',status:'out-status',pong:'out-status',error:'out-status'};
  const t=map[r.type]; if(t) $(t).textContent=JSON.stringify(r,null,2);
- if(r.type==='density_analysis'){$('chart-meta').textContent+=` · server NPS ${r.data.nps} · stream ${r.data.stream_percentage}% · jack ${r.data.jack_percentage}%`}
+ if(r.type==='density_analysis'){$('chart-meta').textContent+=` · server NPS ${r.data.nps} · stream ${(+r.data.stream_percentage).toFixed(1)}% · jack ${(+r.data.jack_percentage).toFixed(1)}%`}
 }catch(_){}}}
 function send(obj,out){const m=JSON.stringify(obj);log('→ '+m);if(out)$(out).textContent='Waiting…';
  if(ws&&ws.readyState===1)ws.send(m);else queue.push(m)}
