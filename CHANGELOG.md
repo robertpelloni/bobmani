@@ -289,3 +289,7 @@
 ## [0.2.29] - 2026-11-14
 ### Verified
 - Concurrent load probe: 8 parallel WS clients x 10 pings = 80/80 pongs, no panics, clean shutdown. Closes the TODO robustness item. No code change.
+
+## [0.2.30] - 2026-11-14
+### Verified
+- Loop pass: git fetch synced (HEAD == remote), single main branch, submodule pointers match checkouts. pwsh scripts/build.ps1 all 6 stages green (Rust 42 tests, Go, TS tsc+9, CSharp 0-warn, Java mvn, bobmania audit 13/13). Live: /health ok, /fleet 200, WS pong + placement + parse_sm correct, graceful shutdown. Disk 180GB free.

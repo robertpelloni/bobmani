@@ -35,3 +35,4 @@
 - [x] 0.2.16 Live fleet audit endpoint + dashboard.
 - [x] 0.2.17 Native OS tray icon with graceful server quit.
 - [x] 0.2.23 Consolidate/inventory all legacy dashboards onto the canonical page (Tier 4).
+- [x] 0.2.30 Sustained verification loop: build + live protocol re-verified with zero regressions.

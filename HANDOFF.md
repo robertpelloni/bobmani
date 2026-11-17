@@ -96,3 +96,6 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.28 (2026-11-14)
 - Edge probe found: second instance on :3000 panicked. Fixed in run_server bind handling. NOTE: other local sessions also bind :3000 at times — if health answers unexpectedly, check who owns the port before trusting it.
+
+## 0.2.30 loop (2026-11-14)
+- No failures found this pass; no code change. Disk improved to 180GB free (user-side cleanup). Tray click-through, trained model, GITHUB_TOKEN, coordination tab, demo-dashboard retirement still user-gated.

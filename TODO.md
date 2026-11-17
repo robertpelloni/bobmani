@@ -67,3 +67,5 @@
 - [ ] Concurrent-client load probe (multi-socket) as a future robustness pass.
 - [x] 0.2.29 Concurrent-client probe (80/80).
 - [ ] Remaining: disk breakdown (scan running), user-gated items only.
+- [x] 0.2.30 Loop verification pass (all green, no failures).
+- [ ] User-gated only: model data, tray desktop clicks, token renewal, coordination tab, Docker/WSL/cache reclaims (menu in chat 2026-11-14).
