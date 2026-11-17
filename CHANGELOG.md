@@ -275,3 +275,7 @@
 - scripts/build.ps1 covers every component in one run: cargo, Go, TS (tsc + 9 tests), dotnet (0 warnings), mvn compile (user-local Maven, skip-with-warning when absent), bobmania audit 13/13. All steps exit-checked.
 ### Verified
 - Full build.ps1 exit 0, all 6 stages green in a single invocation.
+
+## [0.2.27] - 2026-11-14
+### Verified (recorded)
+- Full public-path coverage in real Edge (CDP 9222): all 8 dashboard actions, visualiser, fleet, empty-input and malformed-payload edges, and Quit button (confirm dialog -> graceful stop). MCP tool sweep done (quirks are HyperNexus-kernel-side). No code defects found in bobmani this cycle.

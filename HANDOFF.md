@@ -88,3 +88,8 @@ We have implemented in-memory StepMania Simfile parsing (`parse_sm_content`) wit
 
 ## 0.2.26 (2026-11-14)
 - Single verification command for the whole project: pwsh scripts/build.ps1 (6 stages). Session work 0.2.11-0.2.26 complete; rest needs user input listed in TODO.
+
+## 0.2.27 FINAL (2026-11-14, muse-wonder-1.0 in Muse Code in C:/Users/hyper/workspace/bobmani on laptop)
+- Session arc 0.2.11-0.2.26: dashboard built and Edge-verified, tray, ONNX+fixture, TS protocol, pointers, 6-lang builds green. Public-path verification COMPLETE incl. Quit dialog.
+- Env facts for successor: npm needs NODE_OPTIONS=--tls-min-v1.2; Maven at ~/.local/apache-maven-3.9.9; pushes via SSH URL (HTTPS token invalid); check C: free before cargo (PDB blowup history); Edge tabs are user-active — never type into existing chats.
+- Gated on user: training data, GITHUB_TOKEN, stable coordination tab, disk outside repo, retiring legacy TS demo dashboard. Cron 8b4a5393 still fires every 15m until deleted.
