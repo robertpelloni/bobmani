@@ -65,3 +65,5 @@
 - [ ] Only user-gated items remain (model data, tray clicks, token, coordination tab, disk outside repo).
 - [x] 0.2.28 Port-conflict grace + WS edge tests.
 - [ ] Concurrent-client load probe (multi-socket) as a future robustness pass.
+- [x] 0.2.29 Concurrent-client probe (80/80).
+- [ ] Remaining: disk breakdown (scan running), user-gated items only.

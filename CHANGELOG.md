@@ -285,3 +285,7 @@
 - Server panicked (unwrap, AddrInUse) when port 3000 was already held — found by the live edge probe. Bind failure now prints a plain-language message and exits; first instance keeps serving (verified live with two instances).
 ### Added
 - Edge-case tests: empty notes/salience/samples/content, zero-note score, negative threshold, unknown action — all typed responses, no panic (42 tests total; also verified live over WS).
+
+## [0.2.29] - 2026-11-14
+### Verified
+- Concurrent load probe: 8 parallel WS clients x 10 pings = 80/80 pongs, no panics, clean shutdown. Closes the TODO robustness item. No code change.
