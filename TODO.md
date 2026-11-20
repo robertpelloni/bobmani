@@ -1,71 +1,25 @@
-# TODO
+# TODO: bobmani
 
-- [x] Phase 2: Consolidate `arrowvortex` core parsing logic into `src/arrowvortex`.
-- [x] Port `ffr-difficulty-model` mathematical logic into `src/ffr_diff_model`.
-- [x] Implement tract-onnx execution pipeline for `ddc_onset` models in `src/ddc_onset`.
-- [x] Clean up Rust compiler warnings (unused imports, unused params, unnecessary mutability) across `arrowvortex`, `ffr_diff_model`, and `ddc`.
-- [x] Redesign unified dashboard UI into high-value prioritized tiers on a single consolidated page.
-- [x] Verify System Tray daemon and graceful shutdown protocols.
-- [x] Implement Axum WebSocket strongly-typed command handler (`ping`, `status`, `parse_sm`) in `src/server.rs`.
-- [x] Expose all ported submodules uniformly across `src/lib.rs`, `src/main.rs`, and `src/ddc_onset/mod.rs`.
-- [x] Add real-time density, stream, and pattern analysis (`analyze_density`) to the Axum WebSocket server in `src/server.rs`.
-- [x] Implement audio framing and multi-channel log-Mel feature generation in `src/ddc/extract_feats.rs` and `src/ddc_onset/spectral.rs`.
-- [x] Wire `extract_audio_features` action into Axum WebSocket server (`src/server.rs`).
-- [x] Implement bidirectional Rust-to-TypeScript WebSocket protocol formatting and parsing in `pianogame/typescript/src/ws_bridge.ts`.
-- [x] Implement `detect_onsets` action in Axum WebSocket server using `find_peaks` and `threshold_peaks` from `ddc_onset::util`.
-- [x] Create `scripts/sync_submodules.py` automated synchronization and health audit tool.
-- [x] Wire `calculate_ex_score` action into Axum WebSocket server using `ScoreData` from `beatoraja::score_data`.
-- [x] Implement in-memory `parse_sm_content` in `src/arrowvortex/load_sm.rs` and connect to Axum WebSocket server.
-- [ ] Connect WebSocket streams to live frontend chart visualizer.
-- [ ] Implement end-to-end integration tests between ONNX chart placement and WebSocket broadcast.
+Current version: v0.2.31 (2026-11-19). This file was a broken symlink that GitHub could not render; it is a real file now.
 
-## 0.2.11 follow-ups
-- [ ] Native tray icon + Quit wiring to Rust server shutdown endpoint.
-- [ ] Chart visualiser canvas on dashboard (density heatmap).
-- [ ] ONNX predict_place action + integration test.
-- [ ] Fix submodule dirty trees (bobmania, hymnmania modified; ddc/ffr untracked content) — audit before committing pointers.
-- [ ] Merge or close stale branches: scaffold-docs-10743658648208721759, jules-empty-repo-diagnosis-17910503964700985352 (inspect before merging; do not merge blind).
-- [x] 0.2.12 Live chart visualiser canvas.
-- [ ] ONNX placement action; native tray icon; submodule dirty-tree audit.
-- [x] 0.2.13 predict_placement action + dashboard card.
-- [ ] Ship a real placement.onnx model to exercise the ONNX branch end-to-end.
-- [ ] Native tray icon; submodule dirty-tree audit. NOTE: C: free space low (~2.7GB) — cargo target is large.
-- [x] 0.2.14 Real ONNX fixture + neural-branch test.
-- [ ] Train/source a genuine placement model (fixture is Relu identity, not trained).
-- [ ] Native tray icon; submodule dirty-tree audit.
-- [x] 0.2.15 Graceful shutdown + dashboard Quit.
-- [ ] Native Windows tray icon (Go systray) wrapping Quit; trained placement model; submodule audit.
-- [x] 0.2.16 Live /fleet audit on dashboard.
-- [ ] Decide bobmania/hymnmania pointer updates (user call — do not auto-commit submodule work).
-- [ ] Native tray icon; trained placement model.
-- [x] 0.2.17 Native tray icon + Quit servers.
-- [ ] Click-through verify tray menu items on a real desktop session.
-- [ ] Trained placement model; decide bobmania/hymnmania pointers.
-- [x] 0.2.18 TS protocol alignment (8 actions).
-- [ ] Fix TS full build: npm install fails TLS to registry.npmjs.org (pre-existing ast_parser dep missing locally).
-- [ ] Trained placement model; bobmania/hymnmania pointer decision; tray click-through on desktop.
-- [x] 0.2.19 Tray contract tests; branch audit.
-- [ ] User decision: delete fully-merged stale branches (local scaffold-docs-*, jules-empty-*).
-- [ ] Trained placement model; tray click-through; npm TLS for full TS build.
-- [x] 0.2.20 Disk/PDB build failure fixed + build.ps1 per-step checks.
-- [ ] Watch C: disk — target/ regrows ~2.5GB per full rebuild.
-- [ ] npm TLS blocker (external); trained model; pointer decisions; tray click-through.
-- [x] 0.2.21 TS build green (NODE_OPTIONS TLS fix documented).
-- [ ] Remaining: trained model (needs data), pointer/branch decisions (user), tray click-through (desktop).
-- [x] 0.2.22 Unified 3-language build + disk guard.
-- [ ] USER: free C: disk (1.8GB left, mostly outside bobmani).
-- [ ] Remaining user-gated: trained model, pointer/branch decisions, tray click-through, GITHUB_TOKEN.
-- [x] 0.2.23 Tier 4 subproject inventory on canonical dashboard.
-- [ ] Optional: retire or redirect the legacy pianogame demo dashboard (user call; it is demo-only).
-- [x] 0.2.24 Audit CWD fix + CSharp warning fix.
-- [ ] Install Maven to build pianogame/java; trained model; tray click-through; GITHUB_TOKEN.
-- [x] 0.2.25 Java harness unblocked via local Maven.
-- [ ] Genuinely remaining: trained placement model (data), tray menu click-through (desktop), GITHUB_TOKEN renewal, stable Edge tab for coordination posts.
-- [x] 0.2.26 Six-component unified build.
-- [ ] Only user-gated items remain (model data, tray clicks, token, coordination tab, disk outside repo).
-- [x] 0.2.28 Port-conflict grace + WS edge tests.
-- [ ] Concurrent-client load probe (multi-socket) as a future robustness pass.
-- [x] 0.2.29 Concurrent-client probe (80/80).
-- [ ] Remaining: disk breakdown (scan running), user-gated items only.
-- [x] 0.2.30 Loop verification pass (all green, no failures).
-- [ ] User-gated only: model data, tray desktop clicks, token renewal, coordination tab, Docker/WSL/cache reclaims (menu in chat 2026-11-14).
+## Actually next (undecided â€” Robert's pick)
+
+- [ ] Ship ONE tool standalone (ddc_onset or the FFR difficulty model) so a chart maker can use it without cloning the 13-submodule tree. This is the only item that makes bobmani a product.
+- [ ] Decide the hymnmania question (open since 2026-10-26): fold hymnmania into bobmani, or keep it a separate repo that is only a submodule here.
+
+## Not built
+
+- [ ] Broadcast WebSocket results to all connected clients â€” replies in `src/server.rs` are per-connection only.
+- [ ] Ship an ONNX placement model with the repo â€” `predict_placement` currently falls back to the labelled onset heuristic in normal use (real inference only when a model file is supplied; the test fixture proves that path).
+
+## Done and verified in the code (v0.2.30 tree)
+
+- [x] 8 WebSocket actions: `ping`, `status`, `parse_sm`, `analyze_density`, `extract_audio_features`, `detect_onsets`, `predict_placement`, `calculate_ex_score`.
+- [x] Single-page dashboard at `/`, `/health`, `/fleet`, `POST /shutdown`, graceful shutdown (Ctrl-C / dashboard Quit), graceful port-conflict exit.
+- [x] Verification loop: concurrent-client probe, WS edge-input tests, six-component build check.
+
+## Vision only â€” do NOT check these off as planned work
+
+- [ ] Core-Mani WASM Engine
+- [ ] Universal Rhythm Controller
+- [ ] Bobcoin Proof-of-Play / matchmaking / fitness telemetry
