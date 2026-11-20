@@ -1,6 +1,6 @@
-﻿[package]
-name = "app"
-version = "0.2.30"
+[package]
+name = "bobmani"
+version = "0.2.31"
 edition = "2024"
 
 [dependencies]
